@@ -1,0 +1,30 @@
+{
+  "name": "SteveBot",
+  "version": "0.0.1",
+  "description": "A Dubtrack.fm Bot using DubAPI",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "dubapi": "~1.3.0",
+    "mongodb": "^2.1.4",
+    "request": "^2.69.0",
+    "underscore": "^1.8.3"
+  },
+  "engines": {
+    "node": "4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coryshaw1/SteveBot"
+  },
+  "keywords": [
+    "node",
+    "bot",
+    "dubtrack",
+    "DubAPI"
+  ],
+  "author": "Cory Shaw",
+  "license": "MIT"
+}
