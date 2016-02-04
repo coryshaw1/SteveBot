@@ -14,7 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Completely restructured and refactored
-    - Inspired by [NitroGhost/dubbot-starter](https://github.com/NitroGhost/dubbot-starter) by @NitroGhost
+    - Inspired by [NitroGhost/dubbot-starter](https://github.com/NitroGhost/dubbot-starter) by [@NitroGhost](https://github.com/NitroGhost)
 - Split out all commands/events into separate files
 - !balance - Can now look up other's balances by `!balance @username`
 - !props/!tune/!heart/!love - Can now prop/heart people not DJing by `!command @username`
