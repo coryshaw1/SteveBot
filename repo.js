@@ -75,7 +75,7 @@ var heartsUser = function(db, user, callback) {
 	            callback();
 	        }else{
 	        	findUserById(db, user.id, function(foundUser){
-					console.log("Updated ", user.username, " hearts ", foundUser.props);
+					console.log("Updated ", user.username, " hearts ", foundUser.hearts);
 					return callback(foundUser);
 	        	});
 	        }
