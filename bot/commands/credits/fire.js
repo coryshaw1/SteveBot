@@ -31,8 +31,8 @@ module.exports = function(bot, db, data) {
 
         repo.propsUser(db, bot.getDJ(), function(user){
             usersInfo.usersThatPropped.push(data.user.id);
-            bot.sendChat('Keep up the good work @' + bot.getDJ().username + '! @' + data.user.username + ' likes your song! ' +
-                'You now have ' + user.props + ' tunes! :musical_note: ');
+            bot.sendChat('Yoooo keep up the good work @' + bot.getDJ().username + '! @' + data.user.username + ' thinks your song is :fire: :fire: :fire:! ' +
+                'You now have ' + user.props + ' flames! :fire: ');
         });
     }
     else{
