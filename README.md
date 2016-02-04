@@ -7,5 +7,6 @@ A Dubtrack Bot using DubAPI
 
 ## Installation
 1. `npm install`
-2. Create `settings.js` using `example-settings.js`, replacing each variable with your credentials
-3. `node bot.js`
+2. `mongod` if your database isn't started
+3. Create `settings.js` using `example-settings.js`, replacing each variable with your credentials
+4. `node index`
