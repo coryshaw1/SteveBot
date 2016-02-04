@@ -3,8 +3,6 @@ var usersInfo = require(process.cwd()+'/bot/utilities/users');
 var _ = require('underscore');
 
 module.exports = function(bot, db, data) {
-    if(!data) return;
-
     if(!bot.getDJ())
         return bot.sendChat('There is no DJ playing!');
 

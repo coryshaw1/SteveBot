@@ -1,7 +1,5 @@
 module.exports = function(bot, db, data) {
-    if(!data) return;
-
-	var uid = data.user.id;
+    var uid = data.user.id;
 	var username = data.user.username;
     var queue = bot.getQueue();
     var booth_time = 0;

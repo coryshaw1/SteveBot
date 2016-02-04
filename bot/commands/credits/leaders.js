@@ -1,8 +1,6 @@
 var repo = require(process.cwd()+'/repo');
 
 module.exports = function(bot, db, data) {
-	if(!data) return;
-
 	repo.propsLeaders(db, function(props){
         var propsChat = 'By !tune :musical_note: : ';
         for(var i = 0; i < props.length; i++){
