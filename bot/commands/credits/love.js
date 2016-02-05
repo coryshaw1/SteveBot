@@ -7,14 +7,14 @@ module.exports = function(bot, db, data) {
         return bot.sendChat('There is no DJ playing!');
 
     if(data.params.length > 0){
-        if(_.contains(usersInfo.usersThatPropped, data.user.id))
+        if(_.contains(usersInfo.usersThatHearted, data.user.id))
             return bot.sendChat('@' + data.user.username + ', you have already given a heart for this song!');
 
         if (data.params.length === 1) {
             if (data.params[0].substr(0, 1) === "@" && data.params[0] !== "@" + data.user.username) {
                 var recipient = bot.getUserByName(data.params[0].replace("@", ""), true);
                 repo.heartsUser(db, recipient, function(user){
-                    usersInfo.usersThatPropped.push(data.user.id);
+                    usersInfo.usersThatHearted.push(data.user.id);
                     bot.sendChat('Keep up the good work @' + recipient.username + '! @' + data.user.username + ' likes your songs! ' +
                         'You now have ' + user.hearts + ' hearts! :heart: ');
                 });
@@ -30,11 +30,11 @@ module.exports = function(bot, db, data) {
         }
     }
     else if(data.user.username !== bot.getDJ().username){
-        if(_.contains(usersInfo.usersThatPropped, data.user.id))
+        if(_.contains(usersInfo.usersThatHearted, data.user.id))
             return bot.sendChat('@' + data.user.username + ', you have already given a heart for this song!');
 
         repo.heartsUser(db, bot.getDJ(), function(user){
-            usersInfo.usersThatPropped.push(data.user.id);
+            usersInfo.usersThatHearted.push(data.user.id);
             bot.sendChat('Keep up the good work @' + bot.getDJ().username + '! @' + data.user.username + ' likes your song! ' +
                 'You now have ' + user.hearts + ' hearts! :heart: ');
         });
