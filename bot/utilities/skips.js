@@ -47,7 +47,7 @@ module.exports.troll = function(bot, db, data) {
 
 	bot.moderateSkip(function(){
 		bot.sendChat("Nice troll @" + dj.username + "... :v:");
-		bot.moderateKickUser(bot.id, "Trolling", function(){
+		bot.moderateKickUser(dj.id, "Trolling", function(){
 			bot.sendChat("Everyone say bye @" + dj.username + "! :v:");
 		});
 	});
