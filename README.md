@@ -1,6 +1,8 @@
 # SteveBot
 A Dubtrack Bot using DubAPI
 
+[List of commands](#commands)
+
 ## Requirements
 1. Node
 2. MongoDB
@@ -14,7 +16,7 @@ A Dubtrack Bot using DubAPI
 ## Thanks
 Inspired by [NitroGhost/dubbot-starter](https://github.com/NitroGhost/dubbot-starter) by [@NitroGhost](https://github.com/NitroGhost)
 
-# Commands
+# [Commands](#commands)
 Below are the list of commands that have been implemented.
 ## Categories
 
