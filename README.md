@@ -29,7 +29,7 @@ Below are the list of commands that have been implemented.
 ### Credits
 
 ##### Adding Credits
- ###### *Adding credits to a user is limited to one time per song.*
+*Adding credits to a user is limited to one time per song.*
 * **!fire** - Add to current DJ's total "props" count using a message of props as :fire:
 * **!fire @username** - Add to @username's total "props" count using a message of props as :fire:
 * **!love** - Add to current DJ's total "hearts" count :heart:
