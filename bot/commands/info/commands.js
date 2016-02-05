@@ -1,3 +1,3 @@
 module.exports = function(bot, db) {
-    bot.sendChat("Here are a few commands to get you started: !rules, !dubx, !eta, !link, !tune, !love");
+    bot.sendChat("Check out all of the commands at my repo: https://github.com/coryshaw1/SteveBot#commands");
 };
