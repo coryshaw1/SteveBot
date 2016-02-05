@@ -14,7 +14,8 @@ A Dubtrack Bot using DubAPI
 4. `node index`
 
 ## Thanks
-Inspired by [NitroGhost/dubbot-starter](https://github.com/NitroGhost/dubbot-starter) by [@NitroGhost](https://github.com/NitroGhost)
+* [anjanms/DubAPI](https://github.com/anjanms/DubAPI) by [@anjanms](https://github.com/anjanms)
+* [NitroGhost/dubbot-starter](https://github.com/NitroGhost/dubbot-starter) by [@NitroGhost](https://github.com/NitroGhost)
 
 # [Commands](#commands)
 Below are the list of commands that have been implemented.
