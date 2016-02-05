@@ -1,4 +1,4 @@
-# SteveBot [![][buildbadge]][buildlink] [![][depbadge]][deplink] [![][licbadge]][liclink]
+# SteveBot [![https://travis-ci.org/coryshaw1/SteveBot.svg?branch=master][https://travis-ci.org/coryshaw1/SteveBot]] [![Dependency Status](https://david-dm.org/coryshaw1/SteveBot.svg)](https://david-dm.org/coryshaw1/SteveBot) [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/coryshaw1/SteveBot/blob/master/LICENSE)
 A Dubtrack Bot using DubAPI
 
 [List of commands](#commands)
