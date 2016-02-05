@@ -1,4 +1,4 @@
-# SteveBot
+# SteveBot [![][buildbadge]][buildlink] [![][depbadge]][deplink] [![][licbadge]][liclink]
 A Dubtrack Bot using DubAPI
 
 [List of commands](#commands)
