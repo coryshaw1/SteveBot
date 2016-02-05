@@ -11,14 +11,18 @@ module.exports = function(bot, db, data) {
             return bot.sendChat('@' + data.user.username + ', you have already given props for this song!');
         
         if (data.params.length === 1) {
-            if (data.params[0].substr(0, 1) === "@") {
+            if (data.params[0].substr(0, 1) === "@" && data.params[0] !== "@" + data.user.username) {
                 var recipient = bot.getUserByName(data.params[0].replace("@", ""), true);
                 repo.propsUser(db, recipient, function(user){
                     usersInfo.usersThatPropped.push(data.user.id);
                     bot.sendChat('Keep up the good work @' + recipient.username + '! @' + data.user.username + ' likes your songs! ' +
                         'You now have ' + user.props + ' tunes! :musical_note: ');
                 });
-            } else {
+            } 
+            else if(data.params[0].substr(0, 1) === "@" && data.params[0] === "@" + data.user.username){
+                 bot.sendChat('Wow @' + data.user.username + ' ... Love yourself in private weirdo... :confounded:');
+            } 
+            else {
                 bot.sendChat("@" + user + " you need to @[username] to props someone");
             }
         } else {

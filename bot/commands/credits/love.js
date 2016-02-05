@@ -11,14 +11,18 @@ module.exports = function(bot, db, data) {
             return bot.sendChat('@' + data.user.username + ', you have already given a heart for this song!');
 
         if (data.params.length === 1) {
-            if (data.params[0].substr(0, 1) === "@") {
+            if (data.params[0].substr(0, 1) === "@" && data.params[0] !== "@" + data.user.username) {
                 var recipient = bot.getUserByName(data.params[0].replace("@", ""), true);
                 repo.heartsUser(db, recipient, function(user){
                     usersInfo.usersThatPropped.push(data.user.id);
                     bot.sendChat('Keep up the good work @' + recipient.username + '! @' + data.user.username + ' likes your songs! ' +
                         'You now have ' + user.hearts + ' hearts! :heart: ');
                 });
-            } else {
+            } 
+            else if(data.params[0].substr(0, 1) === "@" && data.params[0] === "@" + data.user.username){
+                 bot.sendChat('Wow @' + data.user.username + ' ... Love yourself in private weirdo... :confounded:');
+            } 
+            else {
                 bot.sendChat("@" + user + " you need to @[username] to hearts someone");
             }
         } else {
