@@ -9,6 +9,8 @@ var vm = this;
 
 module.exports.startRaffle = function startRaffle(bot) {
 
+    if(vm.raffle) clearTimeout(vm.raffle); //don't have multiple raffle timeouts running at once
+
     //start another raffle in 15-45 min
     setTimeout(function(){vm.startRaffle(bot)}, (Math.floor(Math.random() * (1000*60*45)) + (1000*60*15)));
 
@@ -18,8 +20,6 @@ module.exports.startRaffle = function startRaffle(bot) {
             
     bot.sendChat(":loudspeaker: STARTING A RAFFLE! @djs want to be moved closer to the dj booth? type :point_right: " +
         "!join :point_left: and you might just get lucky! :clock7: you've got 30 seconds!");
-
-    if(vm.raffle) clearTimeout(vm.raffle); //don't have multiple raffle timeouts running at once
 
     vm.raffle = setTimeout(function() {
         var numberEntered = vm.usersInRaffle.length + (vm.lockedNumberOne ? 1 : 0);
