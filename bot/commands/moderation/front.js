@@ -18,7 +18,7 @@ module.exports = function(bot, db, data) {
                     bot.sendChat("@" + data.user.username + " you need to @[username] to move them to the front of the queue");
                 }
             } else {
-                bot.sendChat("@" + data.user.username + " you can only one person to the front at a time");
+                bot.sendChat("@" + data.user.username + " you can only move one person to the front of the queue at a time");
             }
         } else {
             bot.sendChat("@" + data.user.username + " you didn't select a user. You need to @[username] to move them to the front of the queue");
