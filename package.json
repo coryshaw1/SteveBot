@@ -1,6 +1,6 @@
 {
   "name": "SteveBot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {
