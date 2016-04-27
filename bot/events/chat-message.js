@@ -43,7 +43,7 @@ module.exports = function(bot, db) {
             parsedCommands = [];
         //command handler
         tokens.forEach(function(token) {
-            if (token.substr(0, 1) === "!" && parsedCommands.indexOf(token.substr(1)) == -1) {
+            if (token.charAt(0) === "!" && parsedCommands.indexOf(token.substr(1)) == -1) {
                 // add the command used to the data sent from the chat to be used later
                 data.trigger = token.substr(1).toLowerCase();
                 parsedCommands.push(data.trigger);
