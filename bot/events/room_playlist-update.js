@@ -11,7 +11,7 @@ module.exports = function(bot, db) {
             if(usersInfo.usersThatPropped.length > 0) {
                 messageToSend += usersInfo.usersThatPropped.length + " prop" + (usersInfo.usersThatPropped.length > 1 ? "s" : "") + " :fist:";
 
-                if(usersThatHearted.usersThatHearted.length > 0)
+                if(usersInfo.usersThatHearted.length > 0)
                     messageToSend += " and ";
             }
                 
