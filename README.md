@@ -8,6 +8,9 @@ A Dubtrack Bot using DubAPI
 2. MongoDB
 
 ## Installation
+
+*Note* - Windows 10 users may need to `npm install --global --production windows-build-tools` first
+
 1. `npm install`
 2. `mongod` if your database isn't started
 3. Create `settings.js` using `example-settings.js`, replacing each variable with your credentials
