@@ -10,15 +10,15 @@ log.setTimeformat("YYYY-MM-DD HH:mm:ss:SSS");
 
 new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, function(err, bot) {
         
+    if (err) {
+        return log("error", "BOT", err);
+    }
+
     //to find out how to use jethro visit: https://github.com/JethroLogger/Jethro
     bot.log = require("jethro");
     bot.log.setTimeformat("YYYY-MM-DD HH:mm:ss:SSS");
 
     bot.log("info", "BOT", 'Running SteveBot with DubAPI v' + bot.version);
-
-    if (err) {
-        return log("error", "BOT", err);
-    }
 
     //connect to db
     MongoClient.connect(settings.MONGODBURL, function(errDb, db) {
