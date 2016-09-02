@@ -27,7 +27,7 @@ Below are the list of commands that have been implemented.
 * **!ping** - Bot responds with "Pong!"
 * **!pong** - Bot responds with "Ping!"
 * **!thanks** - Bot responds with "You're welcome!"
-* **!ver** or **!version** - Bot responds with "Version: [*version number*]"
+* **!v** or **!ver** or **!version** - Bot responds with "Version: [*version number*]"
 
 ### Credits
 
@@ -48,17 +48,22 @@ Below are the list of commands that have been implemented.
 * **!leaders** - See the leaders of total "hearts" and total "props" in the database
 
 ### Fun
+* **!cat** - Show a random cat picture or gif
+* **!chuck** - Random Chuck Norris joke
+* **!fact** - A random inciteful fact
 * **!join** - Join a running raffle
 * **!missuniverse** - Having a little fun with Steve
 * **!raffle** - Force start a raffle. These normally happen randomly every 15-45 minutes.
     * *Note* - User that issued command must be a Manager or higher in room  
 * **!steve** - Help the rest of the room enjoy Steve even more
+* **!todayfact** - A random inciteful fact about today
 
 ### Info
 * **!commands** - Basic list of commands
 * **!dubx** - Shameless plug to [sinfulBA/DubX](https://github.com/sinfulBA/DubX-Script)
 * **!eta** - Gets the user's estimated time in minutes until their song plays
 * **!help** - Basic list of commands
+* **!lastplayed** or **!lastsong** or **!lasttrack** - Name and link of the song that just played
 * **!link** - Get the current song's name and link. 
     * *Note*: Get's the actual link of the song to SoundCloud instead of the api.soundcloud..../redirect link
 * **!rules** - Rules of the room
