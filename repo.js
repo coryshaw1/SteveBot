@@ -2,19 +2,19 @@ var logUser = function(db, user, callback) {
 	findUserById(db, user.id, function(foundUser) {
 		if(!foundUser){
 			insertUser(db, user, function(newUser){
-				user.logType = 'inserted';
+				user.logType = "inserted";
 				return callback(user);
 			});
 		}
 		else {
 			var username = user.username;
-			db.collection('users').updateOne(
+			db.collection("users").updateOne(
 			{ "id" : user.id },
 			{
 				$set: { "dubs": user.dubs },
 				$currentDate: { "LastConnected": true }
 			}, function(err, results) {
-				user.logType = 'updated';
+				user.logType = "updated";
 				return callback(user);
 		    });
 		}
@@ -22,7 +22,7 @@ var logUser = function(db, user, callback) {
 };
 
 var findUserById = function(db, userid, callback) { 
-	db.collection('users').findOne( { "id": userid }, function(err, doc) {
+	db.collection("users").findOne( { "id": userid }, function(err, doc) {
 		if (doc != null) {
 	        callback(doc);
 	    } else {
@@ -40,14 +40,14 @@ var insertUser = function(db, user, callback) {
 	user.hearts = 0;
 	user.DateAdded = new Date();
 	user.LastConnected = new Date();
-	db.collection('users').insertOne(user, function(err, result) {
+	db.collection("users").insertOne(user, function(err, result) {
 	    callback(result.ops[0]);
   	});
 };
 
 var propsUser = function(db, user, callback) {
-	db.collection('users').updateOne(
-	   { 'id': user.id },
+	db.collection("users").updateOne(
+	   { "id": user.id },
 	   { $inc: { props: 1 } },
 	   { },
 	    function(err,data){
@@ -65,8 +65,8 @@ var propsUser = function(db, user, callback) {
 };
 
 var heartsUser = function(db, user, callback) {
-	db.collection('users').updateOne(
-	   { 'id': user.id },
+	db.collection("users").updateOne(
+	   { "id": user.id },
 	   { $inc: { hearts: 1 } },
 	   { },
 	    function(err,data){
@@ -84,7 +84,7 @@ var heartsUser = function(db, user, callback) {
 };
 
 var propsLeaders = function(db, callback) {
-	var propsCursor = db.collection('users').find().sort( { props: -1 } ).limit(3);
+	var propsCursor = db.collection("users").find().sort( { props: -1 } ).limit(3);
 	propsCursor.toArray(function(err, docs) {
 		if (docs != null) {
 			callback(docs);
@@ -95,7 +95,7 @@ var propsLeaders = function(db, callback) {
 };
 
 var heartsLeaders = function(db, callback) {
-	var heartsCursor = db.collection('users').find().sort( { hearts: -1 } ).limit(3);
+	var heartsCursor = db.collection("users").find().sort( { hearts: -1 } ).limit(3);
 	heartsCursor.toArray(function(err, docs) {
 		if (docs != null) {
 			callback(docs);

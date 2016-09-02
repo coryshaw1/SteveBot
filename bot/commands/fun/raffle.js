@@ -1,9 +1,9 @@
-var raffle = require(process.cwd()+'/bot/utilities/raffle');
+var raffle = require(process.cwd()+"/bot/utilities/raffle");
 
 module.exports = function(bot, db, data) {
-	if(!bot.hasPermission(data.user, 'set-roles') && data.user.username != "mbsurfer") {
+	if(!bot.hasPermission(data.user, "set-roles") && data.user.username != "mbsurfer") {
         return bot.moderateDeleteChat(data.id, function(response){
-            bot.log("info", "BOT", 'Nice try @' + data.user.username + ' :sunglasses:');
+            bot.log("info", "BOT", "Nice try @" + data.user.username + " :sunglasses:");
         });
     }
 
