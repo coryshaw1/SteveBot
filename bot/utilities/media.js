@@ -6,6 +6,7 @@ module.exports.currentName = "";
 module.exports.currentID = "";
 module.exports.currentType = "";
 module.exports.currentDJName = "";
+module.exports.lastMedia = {};
 
 module.exports.getLink = function(bot, callback) {
 	var media = bot.getMedia();

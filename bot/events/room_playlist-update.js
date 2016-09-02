@@ -1,11 +1,35 @@
-var mediaInfo = require(process.cwd()+'/bot/utilities/media');
-var usersInfo = require(process.cwd()+'/bot/utilities/users');
+var mediaInfo = require(process.cwd()+"/bot/utilities/media");
+var usersInfo = require(process.cwd()+"/bot/utilities/users");
 
 module.exports = function(bot, db) {
     bot.on(bot.events.roomPlaylistUpdate, function(data) {
         bot.updub();
 
-        //User props/tunes/hearts stuff
+        if(usersInfo.usersThatPropped.length > 0 || usersInfo.usersThatHearted.length > 0) {
+            var messageToSend = "'" + mediaInfo.currentName + "', queued by " + mediaInfo.currentDJName + " received ";
+
+            if(usersInfo.usersThatPropped.length > 0) {
+                messageToSend += usersInfo.usersThatPropped.length + " prop" + (usersInfo.usersThatPropped.length > 1 ? "s" : "") + " :fist:";
+
+                if(usersThatHearted.usersThatHearted.length > 0)
+                    messageToSend += " and ";
+            }
+                
+            if(usersInfo.usersThatHearted.length > 0) {
+                messageToSend += usersInfo.usersThatHearted.length + " heart" + (usersInfo.usersThatHearted.length > 1 ? "s" : "") + " :heart:";
+            }
+        }
+
+        //Save previous song for !lastplayed
+        mediaInfo.lastMedia.currentName = mediaInfo.currentName;
+        mediaInfo.lastMedia.currentID = mediaInfo.fkid;
+        mediaInfo.lastMedia.currentType = mediaInfo.type;
+        mediaInfo.lastMedia.currentDJName = mediaInfo.currentDJName;
+        mediaInfo.lastMedia.currentLink = mediaInfo.currentLink;
+        mediaInfo.lastMedia.usersThatPropped = usersInfo.usersThatPropped;
+        mediaInfo.lastMedia.usersThatHearted = usersInfo.usersThatHearted;
+
+        //Reset user props/tunes/hearts stuff
         usersInfo.usersThatPropped = [];
         usersInfo.usersThatHearted = [];
 
