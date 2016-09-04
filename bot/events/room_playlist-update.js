@@ -18,6 +18,8 @@ module.exports = function(bot, db) {
             if(usersInfo.usersThatHearted.length > 0) {
                 messageToSend += usersInfo.usersThatHearted.length + " heart" + (usersInfo.usersThatHearted.length > 1 ? "s" : "") + " :heart:";
             }
+
+            bot.sendChat(messageToSend);
         }
 
         //Save previous song for !lastplayed
