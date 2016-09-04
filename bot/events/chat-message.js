@@ -35,7 +35,7 @@ module.exports = function(bot, db) {
         });
     };
     walk(cmd);
-    bot.on("chat-message", function(data) {
+    bot.on(bot.events.chatMessage, function(data) {
         var cmd = data.message,
             //split the whole message words into tokens
             tokens = cmd.split(" "),
