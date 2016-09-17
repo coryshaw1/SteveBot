@@ -1,4 +1,4 @@
-var settings = require(process.cwd() + '/settings.js').settings;
+var settings = require(process.cwd() + '/private/settings.js');
 var request = require('request');
 
 module.exports.currentLink = "";

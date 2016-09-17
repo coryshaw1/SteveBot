@@ -8,16 +8,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - !lock/!pause @username to pause @username's queue
 - !lockskip to skip the current dj and pause their queue
 - !skip and all other !skip [reason]
-- Commands list to readme [https://github.com/coryshaw1/SteveBot#commands](https://github.com/coryshaw1/SteveBot#commands)
-- Add Travis CI build check [https://travis-ci.org/coryshaw1/SteveBot](https://travis-ci.org/coryshaw1/SteveBot)
-- Add node dependency check [https://david-dm.org/coryshaw1/SteveBot](https://david-dm.org/coryshaw1/SteveBot)
+- Commands list to readme [https://github.com/coryshaw1/DerpyBot#commands](https://github.com/coryshaw1/DerpyBot#commands)
+- Add Travis CI build check [https://travis-ci.org/coryshaw1/DerpyBot](https://travis-ci.org/coryshaw1/DerpyBot)
+- Add node dependency check [https://david-dm.org/coryshaw1/DerpyBot](https://david-dm.org/coryshaw1/DerpyBot)
 
 
 ### Changed
 - !raffle can be used by Managers and higher now to manually start a raffle
-- !commands now links to [https://github.com/coryshaw1/SteveBot#commands](https://github.com/coryshaw1/SteveBot#commands)
+- !commands now links to [https://github.com/coryshaw1/DerpyBot#commands](https://github.com/coryshaw1/DerpyBot#commands)
 - Raffles will not start if the queue is empty or only contains 1 person
-- SteveBot now requires at least Node 4.3.0 due to a vulnerability
+- DerpyBot now requires at least Node 4.3.0 due to a vulnerability
 
 ### Fixed
 - Fixed !fire chat output type

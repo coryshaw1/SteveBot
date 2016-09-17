@@ -1,5 +1,5 @@
 {
-  "name": "SteveBot",
+  "name": "DerpyBot",
   "version": "0.0.3",
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
@@ -7,11 +7,12 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "bluebird": "^3.4.6",
     "dubapi": "^1.6.3",
+    "firebase": "^3.4.0",
     "fs": "0.0.2",
     "jethro": "^2.6.6",
     "kerberos": "0.0.18",
-    "mongodb": "^2.1.4",
     "path": "^0.12.7",
     "request": "^2.69.0",
     "underscore": "^1.8.3"
@@ -21,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/coryshaw1/SteveBot"
+    "url": "https://github.com/coryshaw1/DerpyBot"
   },
   "keywords": [
     "node",

@@ -1,4 +1,4 @@
-# SteveBot [![Build Status](https://travis-ci.org/coryshaw1/SteveBot.svg?branch=master)](https://travis-ci.org/coryshaw1/SteveBot) [![Dependency Status](https://david-dm.org/coryshaw1/SteveBot.svg)](https://david-dm.org/coryshaw1/SteveBot) [![Codacy Badge](https://api.codacy.com/project/badge/grade/95e8bcaa4add460fb05bba63c79986c1)](https://www.codacy.com/app/cory-shaw-dev/SteveBot) [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/coryshaw1/SteveBot/blob/master/LICENSE)
+# DerpyBot [![Build Status](https://travis-ci.org/coryshaw1/DerpyBot.svg?branch=master)](https://travis-ci.org/coryshaw1/DerpyBot) [![Dependency Status](https://david-dm.org/coryshaw1/DerpyBot.svg)](https://david-dm.org/coryshaw1/DerpyBot) [![Codacy Badge](https://api.codacy.com/project/badge/grade/95e8bcaa4add460fb05bba63c79986c1)](https://www.codacy.com/app/cory-shaw-dev/DerpyBot) [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/coryshaw1/DerpyBot/blob/master/LICENSE)
 A Dubtrack Bot using DubAPI
 
 [List of commands](#commands)
@@ -86,4 +86,4 @@ Below are the list of commands that have been implemented.
 * **!skip troll** - Skip the current song giving a reason that the song/video is trolling, *this also then kicks the DJ*
 
 
-Much more to come, and suggestions are welcome! Please add an [issue](https://github.com/coryshaw1/SteveBot/issues) for any requests or bugs!
+Much more to come, and suggestions are welcome! Please add an [issue](https://github.com/coryshaw1/DerpyBot/issues) for any requests or bugs!

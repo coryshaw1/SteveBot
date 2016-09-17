@@ -1,115 +1,162 @@
+var _env = process.env.ENV;
+if (_env === null || typeof _env === 'undefined' || _env === "") {
+  _env = "dev";
+}
+
+/**
+ * Logs a user to the db
+ * @param  {Object}   db       Firebase object
+ * @param  {Object}   user     DT user object
+ * @param  {Function} callback [description]
+ */
 var logUser = function(db, user, callback) {
-	findUserById(db, user.id, function(foundUser) {
-		if(!foundUser){
-			insertUser(db, user, function(newUser){
-				user.logType = "inserted";
-				return callback(user);
-			});
-		}
-		else {
-			var username = user.username;
-			db.collection("users").updateOne(
-			{ "id" : user.id },
-			{
-				$set: { "dubs": user.dubs },
-				$currentDate: { "LastConnected": true }
-			}, function(err, results) {
-				user.logType = "updated";
-				return callback(user);
-		    });
-		}
-	});
+  findUserById(db, user.id, function(foundUser) {
+    
+    if(!foundUser){
+      
+      insertUser(db, user, function(error){
+        if (error) return console.log(user.id + " could not be saved");
+
+        user.logType = "inserted";
+        return callback(user);
+      });
+      
+    } else {
+
+      var newdata = {
+        "dubs": user.dubs || null,
+        "LastConnected": true
+      }
+      updateUser(db, user.id, newdata, function(error){
+        if (error) return console.log(user.id + " could not be saved");
+
+        user.logType = "updated";
+        return callback(user);
+      });
+
+    }
+  });
 };
 
+/**
+ * Find a user by user.id
+ * @param  {Object}   db       Firebase object
+ * @param  {int}      userid   
+ * @param  {Function} callback
+ */
 var findUserById = function(db, userid, callback) { 
-	db.collection("users").findOne( { "id": userid }, function(err, doc) {
-		if (doc != null) {
-	        callback(doc);
-	    } else {
-	        callback();
-	    }
-	});
+  var user = db.ref(_env + '/users/' + userid);
+  user.once("value", function(snapshot){
+      var val = snapshot.val();
+      callback(val);
+    }, function(error){
+      console.log("findUserById :" + errorObject.code);
+  });
 };
 
-var updateUser = function(db, userid, user, callback) {
-
+/**
+ * Update a users data in the db
+ * @param  {Object}   db       Firebase object
+ * @param  {int}      userid
+ * @param  {Object}   data     Object containing key/values of what is to be updated
+ * @param  {Function} callback
+ */
+var updateUser = function(db, userid, data, callback) {
+  var updateRef = db.ref(_env + "/users").child(userid);
+  updateRef.update(data, callback);
 };
 
+/**
+ * Pretty self explanatory
+ * @param  {Object}   db       Firebase Object
+ * @param  {Object}   user     DT user object
+ * @param  {Function} callback 
+ */
 var insertUser = function(db, user, callback) {
-	user.props = 0;
-	user.hearts = 0;
-	user.DateAdded = new Date();
-	user.LastConnected = new Date();
-	db.collection("users").insertOne(user, function(err, result) {
-	    callback(result.ops[0]);
-  	});
+  var usersRef = db.ref(_env + "/users");
+  var extraStuff = {
+    props : 0,
+    hearts : 0,
+    DateAdded : new Date(),
+    LastConnected : new Date()
+  };
+  var finalNewUser = Object.assign({}, user, extraStuff);
+  Object.keys(finalNewUser).forEach(function(key){
+    if ( finalNewUser[key] === void(0) ){ 
+      finalNewUser[key] = null; 
+    }
+  });
+  usersRef.child(user.id).set(finalNewUser, callback);
 };
 
+/**
+ * Increment by 1, a value of a user
+ * @param  {Object}   db       Firebase Object
+ * @param  {Object}   user     
+ * @param  {String}   thing    The property to be incremented by
+ * @param  {Function} callback [description]
+ */
+var incrementUser = function(db, user, thing, callback) {
+  var incUser = db.ref(_env + "/users/" + user.id + "/" + thing);
+  incUser.transaction(
+    // increment prop by 1
+    function (current_value) {
+      return (current_value || 0) + 1;
+    },
+    // completion handler
+    function (error) {
+      if (error) {
+        console.log("ERR:", error);
+        callback();
+      } else {
+        findUserById(db, user.id, function(foundUser){
+          console.log("Updated ", user.username, thing, foundUser.props);
+          return callback(foundUser);
+        });
+      }
+    }
+  );
+}
+
+/**
+ * Pass through to incrementUser function
+ */
 var propsUser = function(db, user, callback) {
-	db.collection("users").updateOne(
-	   { "id": user.id },
-	   { $inc: { props: 1 } },
-	   { },
-	    function(err,data){
-	        if (err){
-	            console.log("ERR:", err);
-	            callback();
-	        }else{
-	        	findUserById(db, user.id, function(foundUser){
-					console.log("Updated ", user.username, " props ", foundUser.props);
-					return callback(foundUser);
-	        	});
-	        }
-	    }
-	);
+  incrementUser(db, user, "props", callback);
 };
 
+/**
+ * Pass through to incrementUser function
+ */
 var heartsUser = function(db, user, callback) {
-	db.collection("users").updateOne(
-	   { "id": user.id },
-	   { $inc: { hearts: 1 } },
-	   { },
-	    function(err,data){
-	        if (err){
-	            console.log("ERR:", err);
-	            callback();
-	        }else{
-	        	findUserById(db, user.id, function(foundUser){
-					console.log("Updated ", user.username, " hearts ", foundUser.hearts);
-					return callback(foundUser);
-	        	});
-	        }
-	    }
-	);
+  incrementUser(db, user, "hearts", callback);
 };
+
+
+var getLeaders = function(db, prop, limit, callback) {
+  var leaderUser = db.ref(_env + "/users")
+    .orderByChild(prop)
+    .limitToLast(limit)
+    .once("value", function(snapshot) {
+      callback(snapshot.val());
+  });
+}
 
 var propsLeaders = function(db, callback) {
-	var propsCursor = db.collection("users").find().sort( { props: -1 } ).limit(3);
-	propsCursor.toArray(function(err, docs) {
-		if (docs != null) {
-			callback(docs);
-		} else {
-			callback();
-		}
-	});
+  getLeaders(db, "props" , 3, callback);
 };
 
 var heartsLeaders = function(db, callback) {
-	var heartsCursor = db.collection("users").find().sort( { hearts: -1 } ).limit(3);
-	heartsCursor.toArray(function(err, docs) {
-		if (docs != null) {
-			callback(docs);
-		} else {
-			callback();
-		}
-	});
+  getLeaders(db, "hearts" , 3, callback);
 };
 
-module.exports.logUser = logUser;
-module.exports.findUserById = findUserById;
-module.exports.updateUser = updateUser;
-module.exports.insertUser = insertUser;
-module.exports.propsUser = propsUser;
-module.exports.heartsUser = heartsUser;
-module.exports.propsLeaders = propsLeaders;
-module.exports.heartsLeaders = heartsLeaders;
+module.exports = {
+  logUser  : logUser,
+  findUserById  : findUserById,
+  updateUser  : updateUser,
+  insertUser  : insertUser,
+  propsUser  : propsUser,
+  heartsUser  : heartsUser,
+  propsLeaders  : propsLeaders,
+  heartsLeaders  : heartsLeaders
+};
