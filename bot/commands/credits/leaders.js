@@ -28,7 +28,6 @@ module.exports = function(bot, db, data) {
   var propsNone = 'nobody got props, lame!';
   checkLeaders(bot, db, data, 'props', propsChat, propsNone);
 
-  
   var heartsChat = 'By *!love* :heart: : ';
   var heartNone = 'nobody got any love :crying_cat_face:';
   checkLeaders(bot, db, data, 'hearts', heartsChat, heartNone);

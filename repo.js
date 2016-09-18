@@ -161,18 +161,6 @@ var getLeaders = function(db, prop, limit, callback) {
     });
 };
 
-var propsLeaders = function(db, callback) {
-  getLeaders(db, 'props' , 3, callback);
-};
-
-var heartsLeaders = function(db, callback) {
-  getLeaders(db, 'hearts' , 3, callback);
-};
-
-var flowLeaders = function(db, callback) {
-  getLeaders(db, 'flow' , 3, callback);
-};
-
 module.exports = {
   logUser  : logUser,
   findUserById  : findUserById,
@@ -181,8 +169,5 @@ module.exports = {
   propsUser  : propsUser,
   heartsUser  : heartsUser,
   flowUser : flowUser,
-  propsLeaders  : propsLeaders,
-  heartsLeaders  : heartsLeaders,
-  flowLeaders : flowLeaders,
   getLeaders : getLeaders
 };
