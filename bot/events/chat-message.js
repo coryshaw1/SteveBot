@@ -62,6 +62,7 @@ var handleCommands = function(bot, db, data, parsedCommands) {
 module.exports = function(bot, db) {
     
   walk(localCommands);
+  
   bot.on(bot.events.chatMessage, function(data) {
     var cmd = data.message,
         //split the whole message words into tokens

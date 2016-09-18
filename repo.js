@@ -1,42 +1,9 @@
+'use strict';
+
 var _env = process.env.ENV;
-if (_env === null || typeof _env === 'undefined' || _env === "") {
-  _env = "dev";
+if (_env === null || typeof _env === 'undefined' || _env === '') {
+  _env = 'dev';
 }
-
-/**
- * Logs a user to the db
- * @param  {Object}   db       Firebase object
- * @param  {Object}   user     DT user object
- * @param  {Function} callback [description]
- */
-var logUser = function(db, user, callback) {
-  findUserById(db, user.id, function(foundUser) {
-    
-    if(!foundUser){
-      
-      insertUser(db, user, function(error){
-        if (error) return console.log(user.id + " could not be saved");
-
-        user.logType = "inserted";
-        return callback(user);
-      });
-      
-    } else {
-
-      var newdata = {
-        "dubs": user.dubs || null,
-        "LastConnected": true
-      }
-      updateUser(db, user.id, newdata, function(error){
-        if (error) return console.log(user.id + " could not be saved");
-
-        user.logType = "updated";
-        return callback(user);
-      });
-
-    }
-  });
-};
 
 /**
  * Find a user by user.id
@@ -46,11 +13,11 @@ var logUser = function(db, user, callback) {
  */
 var findUserById = function(db, userid, callback) { 
   var user = db.ref(_env + '/users/' + userid);
-  user.once("value", function(snapshot){
+  user.once('value', function(snapshot){
       var val = snapshot.val();
       callback(val);
     }, function(error){
-      console.log("findUserById :" + errorObject.code);
+      console.log('findUserById :' + error.code);
   });
 };
 
@@ -62,7 +29,7 @@ var findUserById = function(db, userid, callback) {
  * @param  {Function} callback
  */
 var updateUser = function(db, userid, data, callback) {
-  var updateRef = db.ref(_env + "/users").child(userid);
+  var updateRef = db.ref(_env + '/users').child(userid);
   updateRef.update(data, callback);
 };
 
@@ -73,10 +40,11 @@ var updateUser = function(db, userid, data, callback) {
  * @param  {Function} callback 
  */
 var insertUser = function(db, user, callback) {
-  var usersRef = db.ref(_env + "/users");
+  var usersRef = db.ref(_env + '/users');
   var extraStuff = {
     props : 0,
     hearts : 0,
+    flow : 0,
     DateAdded : new Date(),
     LastConnected : new Date()
   };
@@ -90,6 +58,44 @@ var insertUser = function(db, user, callback) {
 };
 
 /**
+ * Logs a user to the db
+ * @param  {Object}   db       Firebase object
+ * @param  {Object}   user     DT user object
+ * @param  {Function} callback [description]
+ */
+var logUser = function(db, user, callback) {
+  findUserById(db, user.id, function(foundUser) {
+    
+    if(!foundUser){
+      
+      insertUser(db, user, function(error){
+        if (error) return console.log(user.id + ' could not be saved');
+
+        user.logType = 'inserted';
+        return callback(user);
+      });
+      
+    } else {
+
+      var newdata = {
+        'dubs': user.dubs || null,
+        'LastConnected': true,
+        'flow' : user.flow || 0
+      };
+
+      updateUser(db, user.id, newdata, function(error){
+        if (error) return console.log(user.id + ' could not be saved');
+
+        user.logType = 'updated';
+        return callback(user);
+      });
+
+    }
+  });
+};
+
+
+/**
  * Increment by 1, a value of a user
  * @param  {Object}   db       Firebase Object
  * @param  {Object}   user     
@@ -97,39 +103,46 @@ var insertUser = function(db, user, callback) {
  * @param  {Function} callback [description]
  */
 var incrementUser = function(db, user, thing, callback) {
-  var incUser = db.ref(_env + "/users/" + user.id + "/" + thing);
+  var incUser = db.ref(_env + '/users/' + user.id + '/' + thing);
   incUser.transaction(
     // increment prop by 1
-    function (current_value) {
-      return (current_value || 0) + 1;
+    function (currentValue) {
+      return (currentValue || 0) + 1;
     },
     // completion handler
     function (error) {
       if (error) {
-        console.log("ERR:", error);
+        console.log('ERR:', error);
         callback();
       } else {
         findUserById(db, user.id, function(foundUser){
-          console.log("Updated ", user.username, thing, foundUser.props);
+          console.log('Updated ', user.username, thing, foundUser.props);
           return callback(foundUser);
         });
       }
     }
   );
-}
-
-/**
- * Pass through to incrementUser function
- */
-var propsUser = function(db, user, callback) {
-  incrementUser(db, user, "props", callback);
 };
 
 /**
- * Pass through to incrementUser function
+ * Pass through to incrementUser function for props
+ */
+var propsUser = function(db, user, callback) {
+  incrementUser(db, user, 'props', callback);
+};
+
+/**
+ * Pass through to incrementUser function for hearts
  */
 var heartsUser = function(db, user, callback) {
-  incrementUser(db, user, "hearts", callback);
+  incrementUser(db, user, 'hearts', callback);
+};
+
+/**
+ * Pass through to incrementUser function for flow
+ */
+var flowUser = function(db, user, callback) {
+  incrementUser(db, user, 'flow', callback);
 };
 
 /**
@@ -140,20 +153,24 @@ var heartsUser = function(db, user, callback) {
  * @param  {Function} callback 
  */
 var getLeaders = function(db, prop, limit, callback) {
-  var leaderUser = db.ref(_env + "/users")
+  return db.ref(_env + '/users')
     .orderByChild(prop)
     .limitToLast(limit)
-    .once("value", function(snapshot) {
+    .once('value', function(snapshot) {
       callback(snapshot.val());
     });
-}
+};
 
 var propsLeaders = function(db, callback) {
-  getLeaders(db, "props" , 3, callback);
+  getLeaders(db, 'props' , 3, callback);
 };
 
 var heartsLeaders = function(db, callback) {
-  getLeaders(db, "hearts" , 3, callback);
+  getLeaders(db, 'hearts' , 3, callback);
+};
+
+var flowLeaders = function(db, callback) {
+  getLeaders(db, 'flow' , 3, callback);
 };
 
 module.exports = {
@@ -163,6 +180,8 @@ module.exports = {
   insertUser  : insertUser,
   propsUser  : propsUser,
   heartsUser  : heartsUser,
+  flowUser : flowUser,
   propsLeaders  : propsLeaders,
-  heartsLeaders  : heartsLeaders
+  heartsLeaders  : heartsLeaders,
+  flowLeaders : flowLeaders
 };
