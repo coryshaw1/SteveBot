@@ -82,7 +82,7 @@ var insertUser = function(db, user, callback) {
   };
   var finalNewUser = Object.assign({}, user, extraStuff);
   Object.keys(finalNewUser).forEach(function(key){
-    if ( finalNewUser[key] === void(0) ){ 
+    if ( finalNewUser[key] === void(0)/* aka undefined */ ){ 
       finalNewUser[key] = null; 
     }
   });
@@ -132,14 +132,20 @@ var heartsUser = function(db, user, callback) {
   incrementUser(db, user, "hearts", callback);
 };
 
-
+/**
+ * Sort by a specific user property and return array
+ * @param  {Object}   db       Firebase database obj
+ * @param  {string}   prop     name of the property to sort by
+ * @param  {int}      limit    
+ * @param  {Function} callback 
+ */
 var getLeaders = function(db, prop, limit, callback) {
   var leaderUser = db.ref(_env + "/users")
     .orderByChild(prop)
     .limitToLast(limit)
     .once("value", function(snapshot) {
       callback(snapshot.val());
-  });
+    });
 }
 
 var propsLeaders = function(db, callback) {

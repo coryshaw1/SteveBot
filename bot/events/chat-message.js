@@ -1,5 +1,6 @@
 var fs = require("fs"),
     path = require("path");
+    triggers = require("../triggers.js")
 
 module.exports = function(bot, db) {
     //cache all the commands here by auto requiring them and passing the bot
@@ -41,12 +42,16 @@ module.exports = function(bot, db) {
             tokens = cmd.split(" "),
             // array of the command triggers
             parsedCommands = [];
+        
         //command handler
         tokens.forEach(function(token) {
             if (token.charAt(0) === "!" && parsedCommands.indexOf(token.substr(1)) == -1) {
+                
                 // add the command used to the data sent from the chat to be used later
                 data.trigger = token.substr(1).toLowerCase();
+                
                 parsedCommands.push(data.trigger);
+
                 //if very first token, it's a command and we can grab the
                 //params (if any) and add to the data sent from chat
                 if (tokens.indexOf(token) === 0) {
@@ -56,6 +61,11 @@ module.exports = function(bot, db) {
                     if (typeof(commands[data.trigger]) !== "undefined") {
                         //passes the bot, db, and the data to the command
                         commands[data.trigger](bot, db, data);
+                    } else if (parsedCommands.length === 1) {
+                        // check if this a trigger that is not a command already
+                        triggers(bot, db, data, function(trig){
+                            bot.sendChat(trig);
+                        });
                     }
                 }
             }
