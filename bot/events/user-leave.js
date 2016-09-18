@@ -1,5 +1,14 @@
+'use strict';
+
+/**
+ * When a user leaves, we don't really do anything so not sure why this is here
+ * maybe just in case we need it in the future
+ * @param  {Object} bot  Dubapi instance
+ */
 module.exports = function(bot) {
-    bot.on(bot.events.userLeave, function(data) {
-    	bot.log("info", "BOT", '[LEAVE]' + '[' + data.user.username + '|' + data.user.id + '|' + data.user.dubs + ']');
-    });
+  bot.on(bot.events.userLeave, function(data) {
+    var user = data.user;
+    var info = `[LEAVE] [${user.username} | ${user.id} | ${user.dubs}]`;
+    bot.log('info', 'BOT', info);
+  });
 };

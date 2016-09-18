@@ -19,13 +19,12 @@ var walk = function(dir) {
               // add commands set in file if they exist
               if(typeof(require(_path).extraCommands) !== 'undefined'){
                   if(Array.isArray(require(_path).extraCommands)){
-                      // add each command in array into overall commands
-                      require(_path).extraCommands.forEach(function(command){
-                          commands[command] = require(_path);
-                      });
-                  }
-                  else {
-                      throw new TypeError('Invalid extraCommands export for file: ' + _path);
+                    // add each command in array into overall commands
+                    require(_path).extraCommands.forEach(function(command){
+                        commands[command] = require(_path);
+                    });
+                  } else {
+                    throw new TypeError('Invalid extraCommands export for file: ' + _path);
                   }
               }
 
@@ -49,11 +48,13 @@ var handleCommands = function(bot, db, data, parsedCommands) {
     return commands[data.trigger](bot, db, data);
   } 
 
+  // if an existing local command doesn't exist, we now check if the command 
+  // is tied to one of the many triggers
   if (parsedCommands.length === 1) {
     triggers(bot, db, data, function(trig){
-        if (trig !== null) { 
-          bot.sendChat(trig); 
-        }
+      if (trig !== null) { 
+        bot.sendChat(trig); 
+      }
     });
   }
 };

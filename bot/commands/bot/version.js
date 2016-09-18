@@ -1,7 +1,12 @@
-var pkg = require(process.cwd() + "/package.json");
+'use strict';
+var pkg = require(process.cwd() + '/package.json');
 
-module.exports = function(bot, db) {
-    bot.sendChat("DerpyBot version: " + pkg.version);
+/**
+ * Displays the current version of the bot listed inthe pacakge.json
+ * @param  {Object} bot Dubapi instance
+ */
+module.exports = function(bot) {
+    bot.sendChat('DerpyBot version: ' + pkg.version);
 };
 
-module.exports.extraCommands = ["v", "ver"];
+module.exports.extraCommands = ['v', 'ver'];
