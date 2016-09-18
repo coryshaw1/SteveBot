@@ -7,6 +7,9 @@ module.exports.usersInRaffle = [];
 
 var vm = this;
 
+// //start another raffle in 15-45 min
+// setTimeout(function(){raffleService.startRaffle(bot)}, (Math.floor(Math.random() * (1000*60*45)) + (1000*60*15)));
+
 module.exports.startRaffle = function startRaffle(bot) {
 
     if(vm.raffle) clearTimeout(vm.raffle); //don't have multiple raffle timeouts running at once

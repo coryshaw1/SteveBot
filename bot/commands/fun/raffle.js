@@ -1,4 +1,5 @@
-var raffle = require(process.cwd()+"/bot/utilities/raffle");
+'use strict';
+var raffle = require(process.cwd() + '/bot/utilities/raffle');
 
 module.exports = function(bot, db, data) {
 	if(!bot.hasPermission(data.user, "set-roles") && data.user.username != "mbsurfer") {

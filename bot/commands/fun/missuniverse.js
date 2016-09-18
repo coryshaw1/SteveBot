@@ -1,3 +1,4 @@
+'use strict';
 module.exports = function(bot, db) {
 	bot.sendChat("And the winner of Miss Universe is...");
     setTimeout(function(){
