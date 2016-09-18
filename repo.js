@@ -183,5 +183,6 @@ module.exports = {
   flowUser : flowUser,
   propsLeaders  : propsLeaders,
   heartsLeaders  : heartsLeaders,
-  flowLeaders : flowLeaders
+  flowLeaders : flowLeaders,
+  getLeaders : getLeaders
 };

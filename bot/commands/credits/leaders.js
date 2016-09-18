@@ -1,65 +1,41 @@
 'use strict';
 var repo = require(process.cwd()+'/repo');
 
-module.exports = function(bot, db, data) {
-  
-  // get Props leader info
-  repo.propsLeaders(db, function(props){
-    var propsChat = 'By *!tune* or *!props* :musical_note: : ';
+function checkLeaders(bot, db, data, type, msgPrefix, msgNone){
+  repo.getLeaders(db, type, 3, function(items){
+    var currentChat = msgPrefix;
     var propsArr = [];
     
-    var keys = Object.keys(props);
+    var keys = Object.keys(items);
     keys.forEach(function(userId){
-      if (props[userId].props > 0) {
-        propsArr.push(props[userId].username + ' (' + props[userId].props + ')');
+      if (items[userId][type] > 0) {
+        propsArr.push(items[userId].username + ' (' + items[userId][type] + ')');
       }
     });
 
     if (propsArr.length === 0){
-      propsChat += 'nobody got props, lame!';
+      currentChat += msgNone;
     } else {
-      propsChat += propsArr.join(', ');
+      currentChat += propsArr.join(', ');
     }
-    bot.sendChat(propsChat);
+    bot.sendChat(currentChat);
   });
+}
 
-  repo.heartsLeaders(db, function(hearts){
-    var heartsChat = 'By *!love* :heart: : ';
-    var heartArr = [];
+module.exports = function(bot, db, data) {
+  
+  var propsChat = 'By *!tune* or *!props* :musical_note: : ';
+  var propsNone = 'nobody got props, lame!';
+  checkLeaders(bot, db, data, 'props', propsChat, propsNone);
 
-    var keys = Object.keys(hearts);
-    keys.forEach(function(userId){
-      if (hearts[userId].hearts > 0) {
-        heartArr.push( hearts[userId].username + ' (' + hearts[userId].hearts + ')' );
-      }
-    });
+  
+  var heartsChat = 'By *!love* :heart: : ';
+  var heartNone = 'nobody got any love :crying_cat_face:';
+  checkLeaders(bot, db, data, 'hearts', heartsChat, heartNone);
 
-    if (heartArr.length === 0){
-      heartsChat += 'nobody got any love :crying_cat_face:';
-    } else {
-      heartsChat += heartArr.join(', ');
-    }
-    bot.sendChat(heartsChat);
-  });
-
-  repo.flowLeaders(db, function(flowpoints){
-    var flowChat = 'By *!flowpoint* :ocean: : ';
-    var flowArr = [];
-
-    var keys = Object.keys(flowpoints);
-    keys.forEach(function(userId){
-      if (flowpoints[userId].flow > 0) {
-        flowArr.push(flowpoints[userId].username + ' (' + flowpoints[userId].flow + ')');
-      }
-    });
-
-    if (flowArr.length === 0){
-      flowChat += 'no flow leaders? DJs all must be AFK';
-    } else {
-      flowChat += flowArr.join(', ');
-    }
-    bot.sendChat(flowChat);
-  });
+  var flowChat = 'By *!flowpoint* :ocean: : ';
+  var flowNone = 'no flow leaders? DJs all must be AFK';
+  checkLeaders(bot, db, data, 'flow', flowChat, flowNone);
 
 };
 
