@@ -75,6 +75,8 @@ module.exports = function(bot, db) {
         if (token.charAt(0) === '$') {
           bot.sendChat('RIP @mixerbot, we will never forget you.');
           bot.sendChat('http://i.imgur.com/xyny6OZ.gif');
+          bot.sendChat('That being said, I\'m the new bot in town!');
+          bot.sendChat('Use "!" instead of "$", all the old triggers should be available.');
         }
 
         if (token.charAt(0) === '!' && parsedCommands.indexOf(token.substr(1)) === -1) {

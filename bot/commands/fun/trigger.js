@@ -8,6 +8,7 @@ ONLY MODS
 in order to erase, you'd !trigger <trigger name>
 (w/ no text)
 
+https://firebase.google.com/docs/database/server/save-data
 */
 
 module.exports = function(bot, db) {
