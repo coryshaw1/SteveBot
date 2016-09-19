@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.0] - 2016-09-17
+## [0.1.0] - 2016-09-19
 ### Added
 - !flowpoint, !flowpoint @username
 - Loaded in all the previous chat triggers from Mixerbot

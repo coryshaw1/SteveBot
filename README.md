@@ -59,8 +59,7 @@ Below are the list of commands that have been implemented.
 ### Fun
 * **!cat** - Show a random cat picture or gif
 * **!fact** - A random inciteful fact
-* **!missuniverse** - Having a little fun with Steve
-* **!steve** - Help the rest of the room enjoy Steve even more (I'm leaving this in for DerpyBot, why not!)
+* **!steve** - To honor the origin of this bot's code
 * **!todayfact** - A random inciteful fact about today
 
 ### Info

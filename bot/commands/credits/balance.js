@@ -5,12 +5,12 @@ function sayMyBalance(bot, user) {
   bot.sendChat(`@${user.username} you have ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :ocean:`);
 }
 
-function sayTheirBalance(bot, user) {
-  bot.sendChat(`@${user.username}, the user @${user.username} has ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :ocean:`);
+function sayTheirBalance(bot, whoAsked, user) {
+  bot.sendChat(`@${whoAsked}, the user @${user.username} has ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :ocean:`);
 }
 
-function lookUpBalance(bot, db, _user, which){
-  repo.findUserById(db, _user.id, function(user){
+function lookUpBalance(bot, db, whoAsked, whoFor, which){
+  repo.findUserById(db, whoFor.id, function(user){
     if (user !== null) {
       if (!user.hearts) { user.hearts = 0; }
       if (!user.props) { user.props = 0; }
@@ -19,7 +19,7 @@ function lookUpBalance(bot, db, _user, which){
       if (!which || which === 'mine' ) {
         sayMyBalance(bot, user);
       } else {
-        sayTheirBalance(bot, user);
+        sayTheirBalance(bot, whoAsked,  user);
       }
     } else {
       bot.sendChat(`Strange, data for that was not found!`);
@@ -31,7 +31,7 @@ function lookUpBalance(bot, db, _user, which){
 module.exports = function(bot, db, data) {
 
   if (typeof(data.params) === 'undefined' || data.params.length === 0) {
-    return lookUpBalance(bot, db, data.user, 'mine');
+    return lookUpBalance(bot, db, data.user.username, data.user, 'mine');
   }
 
   if (data.params.length > 1) {
@@ -50,7 +50,7 @@ module.exports = function(bot, db, data) {
       return;
     }
 
-    return lookUpBalance(bot, db, recipient, 'theirs');
+    return lookUpBalance(bot, db, data.user.username, recipient, 'theirs');
   }
 
 };
