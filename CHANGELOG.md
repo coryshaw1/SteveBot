@@ -12,9 +12,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Updated Readme
 - Switched from using MongoDB to Firebase
 - Disable Raffles
-- Code improvements
+- Lots of Code improvements
 - Added more responses to !bot
 - changed the response to !steve
+- removed !boo
+- removed !chuck
+- removed !missuniverse
+- removed !meh
+- got rid of some undocumented and unnessecary credit related commands
 
 -------------------
 

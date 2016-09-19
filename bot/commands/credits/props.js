@@ -1,46 +1,47 @@
-var repo = require(process.cwd()+'/repo');
-var usersInfo = require(process.cwd()+'/bot/utilities/users');
-var _ = require('underscore');
+'use strict';
+/*************************************************************************************************
+ * Template for awarding a user a point of a specific type
+ * All you need to do is alter the items below and the code will handle the rest
+ */
+
+var pointType = 'props'; // this must match the name in the db
+var repeatCheck = 'usersThatPropped';
+
+var successMsg = function(user, recipient){
+  return `Keep up the good work @${recipient.username}, @${user.username} likes your songs! You now have ${recipient.props} :fist:`;
+};
+
+var noSelfAwardingMsg = function(username){
+  return `Propping yourself @${username} is like patting yourself on the back`;
+};
+
+var noRepeatPointMsg = function(username){
+  return `@${username}, you have already given a :fist: for this song`;
+};
+
+var badFormatMsg = function(username){
+  return `@${username} you need to use @[username] to give a :fist: to someone`;
+};
+
+var noMultiAwarding = function(username){
+  return `@${username} you can only give a :fist: to one person`;
+};
+
+/*************************************************************************************************/
+
+var givePoint = require(process.cwd()+'/bot/utilities/givePoint');
+
+var opts = {
+  pointType : pointType,
+  repeatCheck : repeatCheck,
+  successMsg : successMsg,
+  noSelfAwardingMsg : noSelfAwardingMsg,
+  noRepeatPointMsg : noRepeatPointMsg,
+  badFormatMsg : badFormatMsg,
+  noMultiAwarding : noMultiAwarding
+};
+
 
 module.exports = function(bot, db, data) {
-	if(!bot.getDJ())
-        return bot.sendChat('There is no DJ playing!');
-
-    if(data.params.length > 0){
-        if(_.contains(usersInfo.usersThatPropped, data.user.id))
-            return bot.sendChat('@' + data.user.username + ', you have already given props for this song!');
-
-        if (data.params.length === 1) {
-            if (data.params[0].substr(0, 1) === "@" && data.params[0] !== "@" + data.user.username) {
-                var recipient = bot.getUserByName(data.params[0].replace("@", ""), true);
-                repo.propsUser(db, recipient, function(user){
-                    usersInfo.usersThatPropped.push(data.user.id);
-                    bot.sendChat('Keep up the good work @' + recipient.username + '! @' + data.user.username + ' likes your songs! ' +
-                        'You now have ' + user.props + ' props! :fist: ');
-                });
-            } 
-            else if(data.params[0].substr(0, 1) === "@" && data.params[0] === "@" + data.user.username){
-                 bot.sendChat('Wow @' + data.user.username + ' ... Love yourself in private weirdo... :confounded:');
-            } 
-            else {
-                bot.sendChat("@" + user + " you need to @[username] to props someone");
-            }
-        } else {
-            bot.sendChat("@" + user + " you can give props to one person");
-        }
-    }
-    else if(data.user.username !== bot.getDJ().username){
-        if(_.contains(usersInfo.usersThatPropped, data.user.id))
-            return bot.sendChat('@' + data.user.username + ', you have already given props for this song!');
-
-        repo.propsUser(db, bot.getDJ(), function(user){
-            usersInfo.usersThatPropped.push(data.user.id);
-            bot.sendChat('Keep up the good work @' + bot.getDJ().username + '! @' + data.user.username + ' likes your song! ' +
-                'You now have ' + user.props + ' props! :fist: ');
-        });
-    }
-    else{
-        bot.sendChat('Wow @' + data.user.username + ' ... Love yourself in private weirdo... :confounded:');
-    }
-    
+  givePoint(bot, db, data, opts);
 };

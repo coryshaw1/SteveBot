@@ -14,7 +14,8 @@ module.exports = function(bot, db, data) {
     'https://media.giphy.com/media/3o85xwc5c8DCoAF440/giphy.gif',
     'https://media.giphy.com/media/S0hxMGYFhEMzm/giphy.gif',
     'https://media.giphy.com/media/pIMlKqgdZgvo4/giphy.gif',
-    'MUST KILL ALL HUM... sorry what was I talking about?'
+    'MUST KILL ALL HUM... sorry what was I talking about?',
+    'So I says to Mable I says...'
   ];
 
   bot.sendChat(getRandom(responses));

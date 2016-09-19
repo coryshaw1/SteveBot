@@ -169,5 +169,6 @@ module.exports = {
   propsUser  : propsUser,
   heartsUser  : heartsUser,
   flowUser : flowUser,
-  getLeaders : getLeaders
+  getLeaders : getLeaders,
+  incrementUser : incrementUser
 };
