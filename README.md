@@ -59,7 +59,7 @@ Below are the list of commands that have been implemented.
 ### Fun
 * **!cat** - Show a random cat picture or gif
 * **!fact** - A random inciteful fact
-* **!steve** - To honor the origin of this bot's code
+* **!steve** - Homage to the original code for the bot
 * **!todayfact** - A random inciteful fact about today
 
 ### Info
