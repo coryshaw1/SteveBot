@@ -1,5 +1,4 @@
 'use strict';
-module.exports = function(bot, db) {
-  bot.sendChat('All hail the one true Steve!');
-  bot.sendChat('http://i.imgur.com/zQrmXJa.gif');
+module.exports = function(bot) {
+  bot.sendChat('I was Stevebot in a previous life, I am DerpyBot now');
 };
