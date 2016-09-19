@@ -1,4 +1,4 @@
 node_modules/
 settings.js
-private/
+private/*
 .DS_Store

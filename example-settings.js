@@ -1,9 +1,9 @@
-var settings = {
-	"USERNAME": "yourBotUserName",
-	"PASSWORD": "yourBotPassword",
-	"ROOMNAME": "trapcity",
-	"MONGODBURL": "mongodb://localhost:27017/dbname",
-	"SOUNDCLOUDID": "soundcloudApiId"
+module.exports = {
+  'USERNAME': 'login',
+  'PASSWORD': 'password',
+  'ROOMNAME': 'dubtrack room name',
+  'SOUNDCLOUDID': 'Soundcloud app client ID',
+  'FIREBASE' : {
+    'BASEURL' : 'firebase url'
+  }
 };
-
-module.exports.settings = settings;

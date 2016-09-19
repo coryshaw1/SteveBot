@@ -2,22 +2,36 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.0] - 2016-09-17
+### Added
+- !flowpoint, !flowpoint @username
+- Loaded in all the previous chat triggers from Mixerbot
+
+### Changed
+- Stevebot became DerpyBot
+- Updated Readme
+- Switched from using MongoDB to Firebase
+- Disable Raffles
+- Code improvements
+
+-------------------
+
 ## [0.0.3] - 2016-02-09
 ### Added
 - !front @username to move @username to front of queue
 - !lock/!pause @username to pause @username's queue
 - !lockskip to skip the current dj and pause their queue
 - !skip and all other !skip [reason]
-- Commands list to readme [https://github.com/coryshaw1/DerpyBot#commands](https://github.com/coryshaw1/DerpyBot#commands)
-- Add Travis CI build check [https://travis-ci.org/coryshaw1/DerpyBot](https://travis-ci.org/coryshaw1/DerpyBot)
-- Add node dependency check [https://david-dm.org/coryshaw1/DerpyBot](https://david-dm.org/coryshaw1/DerpyBot)
+- Commands list to readme [https://github.com/coryshaw1/stevebot#commands](https://github.com/coryshaw1/stevebot#commands)
+- Add Travis CI build check [https://travis-ci.org/coryshaw1/stevebot](https://travis-ci.org/coryshaw1/stevebot)
+- Add node dependency check [https://david-dm.org/coryshaw1/stevebot](https://david-dm.org/coryshaw1/stevebot)
 
 
 ### Changed
 - !raffle can be used by Managers and higher now to manually start a raffle
-- !commands now links to [https://github.com/coryshaw1/DerpyBot#commands](https://github.com/coryshaw1/DerpyBot#commands)
+- !commands now links to [https://github.com/coryshaw1/stevebot#commands](https://github.com/coryshaw1/stevebot#commands)
 - Raffles will not start if the queue is empty or only contains 1 person
-- DerpyBot now requires at least Node 4.3.0 due to a vulnerability
+- stevebot now requires at least Node 4.3.0 due to a vulnerability
 
 ### Fixed
 - Fixed !fire chat output type

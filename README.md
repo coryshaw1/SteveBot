@@ -1,24 +1,29 @@
-# DerpyBot [![Build Status](https://travis-ci.org/coryshaw1/DerpyBot.svg?branch=master)](https://travis-ci.org/coryshaw1/DerpyBot) [![Dependency Status](https://david-dm.org/coryshaw1/DerpyBot.svg)](https://david-dm.org/coryshaw1/DerpyBot) [![Codacy Badge](https://api.codacy.com/project/badge/grade/95e8bcaa4add460fb05bba63c79986c1)](https://www.codacy.com/app/cory-shaw-dev/DerpyBot) [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/coryshaw1/DerpyBot/blob/master/LICENSE)
+![DerpyBot Avatar](http://i.imgur.com/p999E1u.png)
+# DerpyBot 
+
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/franciscog/DerpyBot/blob/master/LICENSE)
+
 A Dubtrack Bot using DubAPI
 
 [List of commands](#commands)
 
 ## Requirements
-1. Node
-2. MongoDB
+1. Node >= 4.0.0
 
 ## Installation
 
 *Note* - Windows 10 users may need to `npm install --global --production windows-build-tools` first
 
 1. `npm install`
-2. `mongod` if your database isn't started
-3. Create `settings.js` using `example-settings.js`, replacing each variable with your credentials
-4. `node index`
+2. Create a new folder off the root of the repo called `private`
+3. Create a new app in Firebase and export the service account credentials as json, rename it to `serviceAccountCredentials.json` and place it inside the private folder. It's in the Permissions settings somewhere.  It was hard to find and I don't remember exactly now but I'll find out and edit this later
+4. Create `settings.js` using `example-settings.js`, replacing each variable with your credentials and place that inside the `private` folder as well
+3. `node index`
 
 ## Thanks
 * [anjanms/DubAPI](https://github.com/anjanms/DubAPI) by [@anjanms](https://github.com/anjanms)
 * [NitroGhost/dubbot-starter](https://github.com/NitroGhost/dubbot-starter) by [@NitroGhost](https://github.com/NitroGhost)
+* And most important, [coryshaw1/SteveBot](https://github.com/coryshaw1/SteveBot) by [@coryshaw1](https://github.com/coryshaw1)
 
 # [Commands](#commands)
 Below are the list of commands that have been implemented.
@@ -36,7 +41,8 @@ Below are the list of commands that have been implemented.
 
 ##### Adding Credits
 *Adding credits to a user is limited to one time per song.*
-* **!fire** - Add to current DJ's total "props" count using a message of props as :fire:
+* **!flowpoint** - Add to current DJ's total "flowpoints" count using a message of flow as :ocean:
+* **!flowpoint @username** - Add to @username's total "flowpoints" count using a message of flow as :ocean:
 * **!fire @username** - Add to @username's total "props" count using a message of props as :fire:
 * **!love** - Add to current DJ's total "hearts" count :heart:
 * **!love @username** - Add to @username's total "hearts" count :heart:
@@ -48,17 +54,14 @@ Below are the list of commands that have been implemented.
 ##### Credit Info
 * **!balance** - See the amount of total "hearts" and total "props" connected to your name
 * **!balance @username** - See the amount of total "hearts" and total "props" connected to @username
-* **!leaders** - See the leaders of total "hearts" and total "props" in the database
+* **!leaders** - See the leaders of total "hearts", "props", and total "flowpoints" in the database
 
 ### Fun
 * **!cat** - Show a random cat picture or gif
 * **!chuck** - Random Chuck Norris joke
 * **!fact** - A random inciteful fact
-* **!join** - Join a running raffle
 * **!missuniverse** - Having a little fun with Steve
-* **!raffle** - Force start a raffle. These normally happen randomly every 15-45 minutes.
-    * *Note* - User that issued command must be a Manager or higher in room  
-* **!steve** - Help the rest of the room enjoy Steve even more
+* **!steve** - Help the rest of the room enjoy Steve even more (I'm leaving this in for DerpyBot, why not!)
 * **!todayfact** - A random inciteful fact about today
 
 ### Info
@@ -86,4 +89,4 @@ Below are the list of commands that have been implemented.
 * **!skip troll** - Skip the current song giving a reason that the song/video is trolling, *this also then kicks the DJ*
 
 
-Much more to come, and suggestions are welcome! Please add an [issue](https://github.com/coryshaw1/DerpyBot/issues) for any requests or bugs!
+Much more to come, and suggestions are welcome! Please add an [issue](https://github.com/franciscog/DerpyBot/issues) for any requests or bugs!

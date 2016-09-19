@@ -79,7 +79,7 @@ var logUser = function(db, user, callback) {
 
       var newdata = {
         'dubs': user.dubs || null,
-        'LastConnected': true,
+        'LastConnected': new Date(),
         'flow' : user.flow || 0
       };
 
