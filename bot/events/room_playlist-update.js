@@ -22,7 +22,7 @@ module.exports = function(bot, db) {
 
     if (usersInfo.usersThatFlowed.length > 0) {
       plural = usersInfo.usersThatFlowed.length > 1 ? 's' : '';
-      messageToSend.push(`${usersInfo.usersThatFlowed.length} flowpoint${plural} :ocean:`);
+      messageToSend.push(`${usersInfo.usersThatFlowed.length} flowpoint${plural} :surfer:`);
     }
 
     if (messageToSend.length > 0) {

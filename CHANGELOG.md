@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.0] - 2016-09-20
+TODO for final 0.1.0 release
+- Erase Triggers, Mod only
+- Replace Triggers, Mod only
+- Reset all point types at the 1st of the month
+
+## [0.1.0] - 2016-09-XX
 ### Added
 - !flowpoint, !flowpoint @username
 - Loaded in all the previous chat triggers from Mixerbot
@@ -13,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Stevebot became DerpyBot
 - Updated Readme
 - Switched from using MongoDB to Firebase
-- Disable Raffles
+- Disabled Raffles
 - Lots of Code improvements
 - Added more responses to !bot
 - changed the response to !steve
@@ -25,6 +30,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - made !help and !commands the same (both do !commands)
 
 -------------------
+
+## Change Log for previous SteveBot
 
 ## [0.0.3] - 2016-02-09
 ### Added

@@ -47,13 +47,15 @@ var handleCommands = function(bot, db, data) {
     return commands[data.trigger](bot, db, data);
   }
 
-  // if it's not an existing command caught by the code above
-  // lets check if it's one of the many existing triggers
-  triggers(bot, db, data, function(trig){
-    if (trig !== null) { 
-      bot.sendChat(trig); 
-    }
-  });
+  if (data.params.length === 0) {
+    // if it's not an existing command caught by the code above
+    // lets check if it's one of the many existing triggers
+    triggers(bot, db, data, function(trig){
+      if (trig !== null) { 
+        bot.sendChat(trig); 
+      }
+    });
+  } 
 };
 
 

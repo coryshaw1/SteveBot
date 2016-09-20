@@ -2,11 +2,11 @@
 var repo = require(process.cwd()+'/repo');
 
 function sayMyBalance(bot, user) {
-  bot.sendChat(`@${user.username} you have ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :ocean:`);
+  bot.sendChat(`@${user.username} you have ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :surfer:`);
 }
 
 function sayTheirBalance(bot, whoAsked, user) {
-  bot.sendChat(`@${whoAsked}, the user @${user.username} has ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :ocean:`);
+  bot.sendChat(`@${whoAsked}, the user @${user.username} has ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :surfer:`);
 }
 
 function lookUpBalance(bot, db, whoAsked, whoFor, which){

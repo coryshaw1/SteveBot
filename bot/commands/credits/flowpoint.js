@@ -9,7 +9,7 @@ var pointType = 'flow'; // this must match the name in the db
 var repeatCheck = 'usersThatFlowed';
 
 var successMsg = function(user, recipient){
-  return `@${user.username} has awarded @${recipient.username} 1 flowpoint :ocean:!`;
+  return `@${user.username} has awarded @${recipient.username} 1 flowpoint :surfer:!`;
 };
 
 var noSelfAwardingMsg = function(username){
