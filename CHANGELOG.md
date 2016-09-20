@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - !flowpoint, !flowpoint @username
 - Loaded in all the previous chat triggers from Mixerbot
+- !trigger, add new triggers
 
 ### Changed
 - Stevebot became DerpyBot

@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var triggers = require('../triggers.js');
+var triggers = require( process.cwd() + '/bot/utilities/triggers.js');
 var commands = {};
 var localCommands = process.cwd() + '/bot/commands';
 
@@ -35,7 +35,7 @@ var walk = function(dir) {
   });
 };
 
-var handleCommands = function(bot, db, data, parsedCommands) {
+var handleCommands = function(bot, db, data) {
   
   // first go through the commands in /commands to see if they exist
   if (typeof(commands[data.trigger]) !== 'undefined'){
@@ -46,56 +46,42 @@ var handleCommands = function(bot, db, data, parsedCommands) {
     }
 
     return commands[data.trigger](bot, db, data);
-  } 
-
-  // if an existing local command doesn't exist, we now check if the command 
-  // is tied to one of the many triggers
-  if (parsedCommands.length === 1) {
-    triggers(bot, db, data, function(trig){
-      if (trig !== null) { 
-        bot.sendChat(trig); 
-      }
-    });
   }
+
+  // if it's not an existing command caught by the code above
+  // lets check if it's one of the many existing triggers
+  triggers(bot, db, data, function(trig){
+    if (trig !== null) { 
+      bot.sendChat(trig); 
+    }
+  });
 };
+
 
 module.exports = function(bot, db) {
     
   walk(localCommands);
   
   bot.on(bot.events.chatMessage, function(data) {
-    var cmd = data.message,
-        //split the whole message words into tokens
-        tokens = cmd.split(' '),
-        // array of the command triggers
-        parsedCommands = [];
-    
-    //command handler
-    tokens.forEach(function(token) {
-        if (token.charAt(0) === '$') {
-          bot.sendChat('RIP @mixerbot, we will never forget you.');
-          bot.sendChat('http://i.imgur.com/xyny6OZ.gif');
-          bot.sendChat('That being said, I\'m the new bot in town!');
-          bot.sendChat('Use "!" instead of "$", all the old triggers should be available.');
-        }
+    var cmd = data.message;
+    //split the whole message words into tokens
+    var  tokens = cmd.split(' ');
 
-        if (token.charAt(0) === '!' && parsedCommands.indexOf(token.substr(1)) === -1) {
-            
-          // add the command used to the data sent from the chat to be used later
-          data.trigger = token.substr(1).toLowerCase();
-          
-          parsedCommands.push(data.trigger);
+    if (tokens.length > 0 && tokens[0].charAt(0) === '!') {
+      data.trigger = tokens[0].substring(1).toLowerCase();
+      
+      //the params are an array of the remaining tokens
+      data.params = tokens.slice(1);
+      return handleCommands(bot, db, data);
+    }
 
-          //if very first token, it's a command and we can grab the
-          //params (if any) and add to the data sent from chat
-          if (tokens.indexOf(token) === 0) {
-              //the params are an array of the remaining tokens
-              data.params = tokens.slice(1);
-              
-              //execute the command
-              handleCommands(bot, db, data, parsedCommands);
-          }
-        }
-    });
+    if (tokens.length === 1 && tokens[0].charAt(0) === '$') {
+      bot.sendChat('RIP @mixerbot, we will never forget you.');
+      bot.sendChat('http://i.imgur.com/xyny6OZ.gif');
+      bot.sendChat('That being said, I\'m the new bot in town!');
+      bot.sendChat('Use "!" instead of "$", all the old triggers should be available.');
+      return;
+    }
+
   });
 };

@@ -1,16 +1,52 @@
 'use strict';
-/*
+var repo = require(process.cwd()+'/repo');
 
-ONLY MODS
+function displayHelp(bot){
+  bot.sendChat('*usage:* !trigger <trigger_name> <trigger_text>');
+  bot.sendChat('Don\'t add the "!" when creating a trigger');
+}
 
-!trigger <trigger name> <trigger text>
+module.exports = function(bot, db, data) {
+  if (data.params === void(0) || data.params.length < 1) {
+    return displayHelp(bot);
+  }
 
-in order to erase, you'd !trigger <trigger name>
-(w/ no text)
+  // if not a MOD, GTFO!
+  if ( !bot.hasPermission(bot.getUserByName(data.user.username), 'skip') ) {
+    return bot.sendChat('Ah ah ah, not without the magic word! (only mods can do this)');
+  }
 
-https://firebase.google.com/docs/database/server/save-data
-*/
+  if (data.params[0].charAt(0) === '!') {
+    displayHelp(bot);
+    return;
+  }
 
-module.exports = function(bot, db) {
-  bot.sendChat('The ability to add/change a trigger is coming soon!');
+  data.triggerName = data.params[0];
+  data.triggerText = data.params.slice(1).join(' ');
+
+  repo.getTrigger(bot, db, data.triggerName, function(val){
+    
+    if (val === null && data.params.length > 1) {
+      // creating a new trigger
+      return repo.insertTrigger(db, data, function(){
+        bot.sendChat(`trigger for !${data.triggerName} created, try it out!`);
+        return;
+      });
+    }
+
+    if (val !== null && data.params.length > 1) {
+      // updating an existing trigger
+      bot.sendChat('trigger replacement functionality is coming soon');
+      return;
+    }
+
+    if (val !== null && data.params.length === 1) {
+      // deleting a trigger
+      bot.sendChat('trigger erase functionality is coming soon');
+      return;
+    }
+
+
+  });
+
 };

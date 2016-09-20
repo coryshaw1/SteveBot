@@ -161,6 +161,41 @@ var getLeaders = function(db, prop, limit, callback) {
     });
 };
 
+/**
+ * Get a trigger from the database
+ * @param  {Object}   bot         dubapi instance
+ * @param  {Object}   db          Firebase instance
+ * @param  {String}   triggerName trigger to look up
+ * @param  {Function} callback    
+ */
+var getTrigger = function (bot, db, triggerName, callback) {
+  db.ref('triggers')
+    .orderByChild('Trigger')
+    .equalTo(triggerName + ':')
+    .once('value', function(snapshot) {
+      var val = snapshot.val();
+      if (typeof callback === 'function') {
+        return callback(val);
+      }
+  });
+};
+
+var updateTrigger = function(){
+
+};
+
+var insertTrigger  = function(db, data, callback) {
+  db.ref('triggers').push().set({
+    Author: data.user.username,
+    Returns: data.triggerText,
+    Trigger: data.triggerName + ':'
+  }, callback);
+};
+
+var deleteTrigger = function() {
+
+};
+
 module.exports = {
   logUser  : logUser,
   findUserById  : findUserById,
@@ -170,5 +205,9 @@ module.exports = {
   heartsUser  : heartsUser,
   flowUser : flowUser,
   getLeaders : getLeaders,
-  incrementUser : incrementUser
+  incrementUser : incrementUser,
+  getTrigger : getTrigger,
+  updateTrigger : updateTrigger,
+  insertTrigger : insertTrigger,
+  deleteTrigger : deleteTrigger
 };
