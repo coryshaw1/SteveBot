@@ -29,6 +29,8 @@ module.exports = function(bot, db, data) {
       // deleting a trigger
       var keys = Object.keys(val);
       return repo.deleteTrigger(db, keys[0], function(){
+        var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
+        bot.log('info', 'BOT', info);
         bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
       });
     } else {

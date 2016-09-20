@@ -29,6 +29,8 @@ module.exports = function(bot, db, data) {
     if (val === null && data.params.length > 1) {
       // creating a new trigger
       return repo.insertTrigger(db, data, function(){
+        var inf = `[TRIG] NEW [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
+        bot.log('info', 'BOT', inf);
         bot.sendChat(`trigger for *!${data.triggerName}* created, try it out!`);
       });
     }
@@ -38,6 +40,8 @@ module.exports = function(bot, db, data) {
       // updating an existing trigger
       keys = Object.keys(val);
       return repo.updateTrigger(db, data, keys[0], function(){
+        var info = `[TRIG] CHANGED [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
+        bot.log('info', 'BOT', info);
         bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
       });
     }
@@ -46,6 +50,8 @@ module.exports = function(bot, db, data) {
       // deleting a trigger
       keys = Object.keys(val);
       return repo.deleteTrigger(db, keys[0], function(){
+        var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
+        bot.log('info', 'BOT', info);
         bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
       });
     }

@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 TODO for final 0.1.0 release
 - Reset all point types at the 1st of the month
-- get all lastplay, firstplay, plays, info
+- add more logging
 
 ## [0.1.0] - 2016-09-XX
 ### Added
