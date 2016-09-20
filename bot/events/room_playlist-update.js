@@ -26,7 +26,7 @@ module.exports = function(bot, db) {
     }
 
     if (messageToSend.length > 0) {
-      finalChat = `'${mediaInfo.currentName}', queud by ${mediaInfo.currentDJName} received `;
+      finalChat = `'${mediaInfo.currentName}', queued by ${mediaInfo.currentDJName} received `;
       finalChat += messageToSend.join( ' and ' );
       bot.sendChat(finalChat);
     }
