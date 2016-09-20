@@ -2,11 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.0] - 2016-09-19
+## [0.1.0] - 2016-09-20
 ### Added
 - !flowpoint, !flowpoint @username
 - Loaded in all the previous chat triggers from Mixerbot
 - !trigger, add new triggers
+- !sayhi @[username]
 
 ### Changed
 - Stevebot became DerpyBot
@@ -21,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - removed !missuniverse
 - removed !meh
 - got rid of some undocumented and unnessecary credit related commands
+- made !help and !commands the same (both do !commands)
 
 -------------------
 

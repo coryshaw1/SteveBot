@@ -1,3 +1,3 @@
 module.exports = function(bot, db) {
-    bot.sendChat("Absolutely no country of any kind!");
+  bot.sendChat("Use the !yesplay and !noplay commands to view the rules in detail");
 };

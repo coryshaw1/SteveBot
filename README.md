@@ -16,7 +16,7 @@ A Dubtrack Bot using DubAPI
 
 1. `npm install`
 2. Create a new folder off the root of the repo called `private`
-3. Create a new app in Firebase and export the service account credentials as json, rename it to `serviceAccountCredentials.json` and place it inside the private folder. It's in the Permissions settings somewhere.  It was hard to find and I don't remember exactly now but I'll find out and edit this later
+3. Create a new app in Firebase and export the service account credentials as json, rename it to `serviceAccountCredentials.json` and place it inside the private folder. It's in the Permissions settings somewhere.  Firebase Console for your project -> Permissions -> Service Accounts -> Create Service Account,  then follow the steps, give it "project -> editor" permissions, then download and rename the JSON it provides.
 4. Create `settings.js` using `example-settings.js`, replacing each variable with your credentials and place that inside the `private` folder as well
 3. `node index`
 
@@ -57,6 +57,8 @@ Below are the list of commands that have been implemented.
 * **!leaders** - See the leaders of total "hearts", "props", and total "flowpoints" in the database
 
 ### Fun
+* **!trigger \[trigger_name\] \[trigger_text\]** - to create a new chat trigger. Trigger won't work if it matches one of the existing commands.
+* **!sayhi @username** - introduce the bot to a user
 * **!cat** - Show a random cat picture or gif
 * **!fact** - A random inciteful fact
 * **!steve** - Homage to the original code for the bot

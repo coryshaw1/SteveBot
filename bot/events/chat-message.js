@@ -36,7 +36,6 @@ var walk = function(dir) {
 };
 
 var handleCommands = function(bot, db, data) {
-  
   // first go through the commands in /commands to see if they exist
   if (typeof(commands[data.trigger]) !== 'undefined'){
     
