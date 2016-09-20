@@ -180,8 +180,15 @@ var getTrigger = function (bot, db, triggerName, callback) {
   });
 };
 
-var updateTrigger = function(){
-
+var updateTrigger = function(db, data, triggerKey, callback){
+  var triggerRef = db.ref('triggers');
+  triggerRef.set({
+    triggerKey: {
+      Author: data.user.username,
+      Returns: data.triggerText,
+      Trigger: data.triggerName + ':'
+    }
+  },callback);
 };
 
 var insertTrigger  = function(db, data, callback) {
@@ -192,8 +199,11 @@ var insertTrigger  = function(db, data, callback) {
   }, callback);
 };
 
-var deleteTrigger = function() {
-
+var deleteTrigger = function(db, triggerKey, callback) {
+  var triggerRef = db.ref('triggers');
+  triggerRef.set({
+    triggerKey: null
+  },callback);
 };
 
 module.exports = {

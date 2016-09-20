@@ -3,15 +3,16 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 TODO for final 0.1.0 release
-- Erase Triggers, Mod only
-- Replace Triggers, Mod only
 - Reset all point types at the 1st of the month
+- get all lastplay, firstplay, plays, info
 
 ## [0.1.0] - 2016-09-XX
 ### Added
 - !flowpoint, !flowpoint @username
 - Loaded in all the previous chat triggers from Mixerbot
-- !trigger, add new triggers
+- !trigger, add new triggers (mod only)
+- !erase / !delete,  remove triggers (mod only)
+- Change a current trigger (mod only)
 - !sayhi @[username]
 
 ### Changed

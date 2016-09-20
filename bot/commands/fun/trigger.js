@@ -29,21 +29,25 @@ module.exports = function(bot, db, data) {
     if (val === null && data.params.length > 1) {
       // creating a new trigger
       return repo.insertTrigger(db, data, function(){
-        bot.sendChat(`trigger for !${data.triggerName} created, try it out!`);
-        return;
+        bot.sendChat(`trigger for *!${data.triggerName}* created, try it out!`);
       });
     }
 
+    var keys;
     if (val !== null && data.params.length > 1) {
       // updating an existing trigger
-      bot.sendChat('trigger replacement functionality is coming soon');
-      return;
+      keys = Object.keys(val);
+      return repo.updateTrigger(db, data, keys[0], function(){
+        bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
+      });
     }
 
     if (val !== null && data.params.length === 1) {
       // deleting a trigger
-      bot.sendChat('trigger erase functionality is coming soon');
-      return;
+      keys = Object.keys(val);
+      return repo.deleteTrigger(db, keys[0], function(){
+        bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
+      });
     }
 
 

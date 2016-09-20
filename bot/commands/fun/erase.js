@@ -27,10 +27,16 @@ module.exports = function(bot, db, data) {
 
     if (val !== null && data.params.length === 1) {
       // deleting a trigger
-      bot.sendChat('Trigger erase functionality is coming soon');
-      return;
+      var keys = Object.keys(val);
+      return repo.deleteTrigger(db, keys[0], function(){
+        bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
+      });
+    } else {
+      return bot.sendChat(`Trigger for *!${data.triggerName}* not found`);
     }
 
   });
 
 };
+
+module.exports.extraCommands = ['delete'];
