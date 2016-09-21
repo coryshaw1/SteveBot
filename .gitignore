@@ -2,3 +2,5 @@ node_modules/
 settings.js
 private/*
 .DS_Store
+tool/*.json
+tool/temp.js

@@ -28,11 +28,15 @@ module.exports = function(bot, db, data) {
     if (val !== null && data.params.length === 1) {
       // deleting a trigger
       var keys = Object.keys(val);
-      return repo.deleteTrigger(db, keys[0], function(){
-        var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
-        bot.log('info', 'BOT', info);
-        bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
-      });
+      return repo.deleteTrigger(db, keys[0])
+        .then(function(){
+          var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
+          bot.log('info', 'BOT', info);
+          bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
+        })
+        .catch(function(err){
+          if (err) { bot.log(`[TRIG] DEL ERROR: ${err}`); }
+        });
     } else {
       return bot.sendChat(`Trigger for *!${data.triggerName}* not found`);
     }

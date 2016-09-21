@@ -180,30 +180,46 @@ var getTrigger = function (bot, db, triggerName, callback) {
   });
 };
 
-var updateTrigger = function(db, data, triggerKey, callback){
-  var triggerRef = db.ref('triggers');
-  triggerRef.set({
-    triggerKey: {
-      Author: data.user.username,
-      Returns: data.triggerText,
-      Trigger: data.triggerName + ':'
-    }
-  },callback);
-};
-
-var insertTrigger  = function(db, data, callback) {
-  db.ref('triggers').push().set({
+/**
+ * Updates a trigger in the DB
+ * @param  {Object} db   Firebase instance
+ * @param  {Object} data Trigger data, see function for details, needs {Author, Returns, Trigger}
+ * @return {Firebase.Promise}
+ */
+var updateTrigger = function(db, data, triggerKey){
+  if (!triggerKey || !data || !data.triggerText || !data.triggerText) { return; }
+  var updateObj = {
     Author: data.user.username,
     Returns: data.triggerText,
     Trigger: data.triggerName + ':'
-  }, callback);
+  };
+  return db.ref('triggers/'+triggerKey).set(updateObj);
 };
 
-var deleteTrigger = function(db, triggerKey, callback) {
-  var triggerRef = db.ref('triggers');
-  triggerRef.set({
-    triggerKey: null
-  },callback);
+/**
+ * Insert a new trigger into the DB
+ * @param  {Object} db   Firebase instance
+ * @param  {Object} data Trigger data, see function for details, needs {Author, Returns, Trigger}
+ * @return {Firebase.Promise}
+ */
+var insertTrigger  = function(db, data) {
+  if (!data || !data.triggerText || !data.triggerText) { return; }
+  return db.ref('triggers').push().set({
+    Author: data.user.username,
+    Returns: data.triggerText,
+    Trigger: data.triggerName + ':'
+  });
+};
+
+/**
+ * Delete a trigger in the db
+ * @param  {Object} db         Firebase Instance
+ * @param  {String} triggerKey The key of the location of the trigger
+ * @return {Firebase.Promise}  Returns a promise
+ */
+var deleteTrigger = function(db, triggerKey) {
+  if (!triggerKey) { return; }
+  return db.ref('triggers/' + triggerKey).set(null);
 };
 
 module.exports = {

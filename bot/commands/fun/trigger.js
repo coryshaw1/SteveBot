@@ -28,32 +28,49 @@ module.exports = function(bot, db, data) {
     
     if (val === null && data.params.length > 1) {
       // creating a new trigger
-      return repo.insertTrigger(db, data, function(){
-        var inf = `[TRIG] NEW [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
-        bot.log('info', 'BOT', inf);
-        bot.sendChat(`trigger for *!${data.triggerName}* created, try it out!`);
-      });
+      return repo.insertTrigger(db, data)
+        .then(function(){
+          var inf = `[TRIG] ADD [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
+          bot.log('info', 'BOT', inf);
+          bot.sendChat(`trigger for *!${data.triggerName}* created, try it out!`);
+        })
+        .catch(function(err){
+          if (err) { bot.log(`[TRIG] DEL ADD: ${err}`);}
+        });
+    }
+
+    if (val === null && data.params.length === 1) {
+      // trying to delete a trigger that doesn't exist
+      return bot.sendChat('You can\'t delete a trigger that doesn\'t exist');
     }
 
     var keys;
     if (val !== null && data.params.length > 1) {
       // updating an existing trigger
       keys = Object.keys(val);
-      return repo.updateTrigger(db, data, keys[0], function(){
-        var info = `[TRIG] CHANGED [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
-        bot.log('info', 'BOT', info);
-        bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
-      });
+      return repo.updateTrigger(db, data, keys[0])
+        .then(function(){
+          var info = `[TRIG] CHANGED [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
+          bot.log('info', 'BOT', info);
+          bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
+        })
+        .catch(function(err){
+          if (err) { bot.log(`[TRIG] DEL CHANGED: ${err}`); }
+        });
     }
 
     if (val !== null && data.params.length === 1) {
       // deleting a trigger
       keys = Object.keys(val);
-      return repo.deleteTrigger(db, keys[0], function(){
-        var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
-        bot.log('info', 'BOT', info);
-        bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
-      });
+      return repo.deleteTrigger(db, keys[0])
+        .then(function(){
+          var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
+          bot.log('info', 'BOT', info);
+          bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
+        })
+        .catch(function(err){
+          if (err) { bot.log(`[TRIG] DEL ERROR: ${err}`); }
+        });
     }
 
 
