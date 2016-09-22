@@ -4,8 +4,8 @@
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "./node_modules/eslint/bin/eslint.js ."
+    "start" : "env ENV=dev nodemon index.js",
+    "test" : "env ENV=test mocha -c --reporter=nyan tests"
   },
   "dependencies": {
     "dubapi": "^1.6.3",
@@ -35,7 +35,9 @@
   "author": "Cory Shaw, Francisco",
   "license": "MIT",
   "devDependencies": {
+    "chai": "^3.5.0",
     "eslint": "^1.10.3",
-    "marked": "^0.3.6"
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0"
   }
 }

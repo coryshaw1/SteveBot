@@ -21,7 +21,9 @@ var db = firebase.database();
 db.ref().once('value', function(snapshot) {
   var val = snapshot.val();
   if (val !== null) {
-    fs.writeFileSync(`backup-${Date.now()}.json`, JSON.stringify(val), 'utf8');
+    // save backups outside of the repo
+    var loc = '../../derypbot-backups';
+    fs.writeFileSync(`${loc}/backup-${Date.now()}.json`, JSON.stringify(val), 'utf8');
     process.exit();
   }
 });

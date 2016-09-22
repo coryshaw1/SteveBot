@@ -1,4 +1,4 @@
 'use strict';
 module.exports = function(bot) {
-    bot.sendChat('You\'re welcome!');
+  return bot.sendChat('You\'re welcome!');
 };

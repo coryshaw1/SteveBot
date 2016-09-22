@@ -1,3 +1,4 @@
-module.exports = function(bot, db) {
-    bot.sendChat("pong!");
+'use strict';
+module.exports = function(bot) {
+    return bot.sendChat('pong!');
 };
