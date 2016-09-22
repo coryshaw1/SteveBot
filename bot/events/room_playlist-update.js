@@ -1,6 +1,7 @@
 'use strict';
 var mediaInfo = require(process.cwd()+'/bot/utilities/media');
 var usersInfo = require(process.cwd()+'/bot/utilities/users');
+var youtube = require(process.cwd()+'/bot/utilities/youtube');
 
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
@@ -61,6 +62,17 @@ module.exports = function(bot, db) {
     mediaInfo.currentDJName = '404usernamenotfound';
     if ( data.user !== void(0) && data.user.username !== void(0) ) {
       mediaInfo.currentDJName = data.user.username;
+    }
+
+    //****************************/
+    
+    if (data && data.media && data.media.songLength >= 6000000) { // 10min
+      // bot.sendChat('[AUTOMOD] Skip in 30 seconds - reply *!noskip* to stop'); 
+      // bot.sendChat('Hey @everyone, This tracks exceeds the room track length limit, I\'m going to skip this track in the next 30 seconds unless someone responds with *!noskip*');
+    }
+
+    if (data && data.media && !data.media.streamUrl){
+      youtube(bot, data.media.fkid);
     }
 
   });
