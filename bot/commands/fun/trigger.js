@@ -7,6 +7,11 @@ function displayHelp(bot){
 }
 
 module.exports = function(bot, db, data) {
+  if (!data || !data.user || !data.user.username) {
+    bot.log('error', 'BOT', '[TRIG] ERROR [Missing data or username]');
+    return bot.sendChat('An error occured, try again');
+  }
+
   if (data.params === void(0) || data.params.length < 1) {
     return displayHelp(bot);
   }

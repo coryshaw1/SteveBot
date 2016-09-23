@@ -7,7 +7,7 @@ var request = require('request');
 // https://developers.google.com/youtube/v3/docs/videos#status
 
 function makeYTurl(id) {
-  return `https://www.googleapis.com/youtube/v3/videos?part=status&id=${id}&key=${YOUR_API_KEY}`;
+  return `https://www.googleapis.com/youtube/v3/videos?part=status,contentDetails&id=${id}&key=${YOUR_API_KEY}`;
 }
 
 /*
@@ -71,9 +71,10 @@ function checkStatus(bot, ytID, body) {
 }
 
 module.exports = function(bot, ytID) {
+  if (!settings || !YOUR_API_KEY ) { return; }
+
   request(makeYTurl(ytID), function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      console.log(body);
       return checkStatus(bot, ytID, body);
     }
   });
