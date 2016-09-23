@@ -31,7 +31,8 @@ Below are the list of commands that have been implemented.
 
 ### Bot
 
-* **!bot** - Bot responds with "I'm still here"
+* **!bot** - Chooses a random a response from [this array](https://github.com/FranciscoG/DerpyBot/blob/master/bot/commands/bot/bot.js#L10)
+* **!sayhi @username** - introduce the bot to a user
 * **!ping** - Bot responds with "Pong!"
 * **!pong** - Bot responds with "Ping!"
 * **!thanks** - Bot responds with "You're welcome!"
@@ -57,12 +58,12 @@ Below are the list of commands that have been implemented.
 * **!leaders** - See the leaders of total "hearts", "props", and total "flowpoints" in the database
 
 ### Fun
-* **!trigger \[trigger_name\] \[trigger_text\]** - to create a new chat trigger. Trigger won't work if it matches one of the existing commands.
-* **!sayhi @username** - introduce the bot to a user
+* **!trigger \[trigger_name\] \[trigger_text\]** - to create a new chat trigger. Trigger won't work if it matches one of the existing commands. [MODS ONLY]
 * **!cat** - Show a random cat picture or gif
 * **!fact** - A random inciteful fact
 * **!steve** - Homage to the original code for the bot
 * **!todayfact** - A random inciteful fact about today
+* **!giphy [search text]** - Return a random giphy image (rating: P-13 or below)
 
 ### Info
 * **!commands** - Basic list of commands
@@ -73,6 +74,9 @@ Below are the list of commands that have been implemented.
 * **!link** - Get the current song's name and link. 
     * *Note*: Get's the actual link of the song to SoundCloud instead of the api.soundcloud..../redirect link
 * **!rules** - Rules of the room
+
+### Auto-Moderation    
+* Automatically skips broken youtube links
 
 ### Moderation
 ##### For Mods and higher

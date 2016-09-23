@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 TODO for final 0.1.0 release
 - Reset all point types at the 1st of the month
 - add more logging
+- bad Soundcloud link skipping
+- ability to skip songs after XX minutes
+- !info display song data for current song
 
 ## [0.1.0] - 2016-09-XX
 ### Added

@@ -34,7 +34,10 @@ var badStatus = [
 
 function checkStatus(bot, ytID, body) {
   if (!body) { return; }
-  var dj = bot.getDJ();
+
+  // set DJ name
+  var dj = bot.getDJ().username || "";
+  if (dj !== ""){ dj = "@"+dj; }
 
   var yt = JSON.parse(body);
   if (yt && yt.items && yt.items.length > 0 && yt.items[0].status) {
@@ -46,7 +49,7 @@ function checkStatus(bot, ytID, body) {
       var reason = yt.items[0].status.uploadStatus;
       bot.log('info', 'BOT', `[SKIP] video with id ${ytID} had status of ${reason}`);
       return bot.moderateSkip(function(){
-        bot.sendChat(`Sorry @${dj.username} this Youtube video is broken`);
+        bot.sendChat(`Sorry ${dj} this Youtube video is broken`);
       });
     }
 
@@ -54,7 +57,7 @@ function checkStatus(bot, ytID, body) {
     if (status.privacyStatus && status.privacyStatus === 'private') {
       bot.log('info', 'BOT', `[SKIP] video with id ${ytID} was private}`);
       return bot.moderateSkip(function(){
-        bot.sendChat(`Sorry @${dj.username} this Youtube video is broken`);
+        bot.sendChat(`Sorry ${dj} this Youtube video is private`);
       });
     }
 
@@ -64,7 +67,7 @@ function checkStatus(bot, ytID, body) {
     bot.log('info', 'BOT', `[SKIP] video with id ${ytID} doesn't exist anymore}`);
     // bot.sendChat('Is this video borken? Should I be skipping it?');
     return bot.moderateSkip(function(){
-      bot.sendChat(`Sorry @${dj.username} this Youtube video is broken`);
+      bot.sendChat(`Sorry ${dj} this Youtube video is broken`);
     });
   }
 
