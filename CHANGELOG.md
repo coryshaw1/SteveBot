@@ -14,6 +14,8 @@ TODO for final 0.1.0 release
 - !erase / !delete,  remove triggers (mod only)
 - Change a current trigger (mod only)
 - !sayhi @[username]
+- !giphy [search text]
+- youtube broken link auto skip
 
 ### Changed
 - Stevebot became DerpyBot
