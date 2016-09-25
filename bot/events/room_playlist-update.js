@@ -2,6 +2,8 @@
 var mediaInfo = require(process.cwd()+'/bot/utilities/media');
 var usersInfo = require(process.cwd()+'/bot/utilities/users');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
+var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
+var checkPath = require(process.cwd()+'/bot/utilities/checkPath');
 
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
@@ -66,13 +68,24 @@ module.exports = function(bot, db) {
 
     //****************************/
     
-    if (data && data.media && data.media.songLength >= 6000000) { // 10min
-      // bot.sendChat('[AUTOMOD] Skip in 30 seconds - reply *!noskip* to stop'); 
-      // bot.sendChat('Hey @everyone, This tracks exceeds the room track length limit, I\'m going to skip this track in the next 30 seconds unless someone responds with *!noskip*');
+    // set time limit here
+    var minToMs = 10/*min*/ * 60/*sec*/ * 1000 /*ms*/;
+
+    var songLength = checkPath(data, 'data.media.songLength') || null;
+    if (songLength >= minToMs) {
+      bot.sendChat('Hey this song is pretty long, just sayin\'... you all cool with this?');
     }
 
-    if (data && data.media && !data.media.streamUrl){
-      youtube(bot, data.media.fkid);
+    var songID = checkPath(data, 'data.media.fkid') || null;
+    var type = checkPath(data, 'data.media.type') || null;
+    if (!type || !songID) { return; }
+
+    if (type.toUpperCase() === 'YOUTUBE'){
+      return youtube(bot, songID);
+    }
+
+    if (type.toUpperCase() === 'SOUNDCLOUD'){
+      // return soundcloud(bot, songID);
     }
 
   });
