@@ -33,12 +33,12 @@ var badStatus = [
   'rejected'
 ];
 
-function trackIssue(db, obj, id, reason){
-  repo.trackSongIssues(db, obj, id, reason);
+function trackIssue(db, ytResponse, media, reason){
+  repo.trackSongIssues(db, ytResponse, media, reason);
 }
 
-function checkStatus(bot, db, ytID, body) {
-  if (!body || !bot || !db) { return; }
+function checkStatus(bot, db, media, body) {
+  if (!body) { return; }
 
   // set DJ name
   var dj = bot.getDJ().username || '';
@@ -54,8 +54,8 @@ function checkStatus(bot, db, ytID, body) {
       var reason = yt.items[0].status.uploadStatus;
 
       // log issues to console and to firebase
-      bot.log('info', 'BOT', `[SKIP] video with id ${ytID} had status of ${reason}`);
-      trackIssue(db, yt, ytID, `${reason}`);
+      bot.log('info', 'BOT', `[SKIP] video with id ${media.fkid} had status of ${reason}`);
+      trackIssue(db, yt, media, `${reason}`);
 
       // skip it and send message
       return bot.moderateSkip(function(){
@@ -66,8 +66,8 @@ function checkStatus(bot, db, ytID, body) {
     // if video is private then we skip
     if (status.privacyStatus && status.privacyStatus === 'private') {
       // log to console and firebase
-      bot.log('info', 'BOT', `[SKIP] video with id ${ytID} was private`);
-      trackIssue(db, yt, ytID, 'private');
+      bot.log('info', 'BOT', `[SKIP] video with id ${media.fkid} was private`);
+      trackIssue(db, yt, media, 'private');
 
       // skip it and send message
       return bot.moderateSkip(function(){
@@ -83,8 +83,9 @@ function checkStatus(bot, db, ytID, body) {
     if (yt.items[0].contentDetails.regionRestriction) {
         var _region = yt.items[0].contentDetails.regionRestriction;
       
-        bot.sendChat(`FYI, this video has some region restrictions`);
-
+        bot.sendChat(`*FYI, this Youtube video has some region restrictions:*`);
+        bot.sendChat(`${media.name}`);
+        
         if (_region.allowed && _region.allowed.length > 0) {
           var _a = Array.isArray(_region.allowed) ? _region.allowed.join(',') : _region.allowed; 
           bot.sendChat('> *allowed in:* `' + _a + '`');
@@ -93,14 +94,14 @@ function checkStatus(bot, db, ytID, body) {
           var _b = Array.isArray(_region.blocked) ? _region.blocked.join(',') : _region.blocked;
           bot.sendChat('> *blocked in:* `' + _b + '`');
         }
-        trackIssue(db, yt, ytID, 'region restrictions');
+        trackIssue(db, yt, media, 'region restrictions');
     }
   }
 
   if (yt && yt.items && yt.items.length === 0){
     // log to console and firebase
-    bot.log('info', 'BOT', `[SKIP] video with id ${ytID} doesn't exist anymore`);
-    trackIssue(db, yt, ytID, 'video doesn\'t exist');
+    bot.log('info', 'BOT', `[SKIP] video with id ${media.fkid} doesn't exist anymore`);
+    trackIssue(db, yt, media, 'video doesn\'t exist');
     
     // skip it and send message
     return bot.moderateSkip(function(){
@@ -110,12 +111,12 @@ function checkStatus(bot, db, ytID, body) {
 
 }
 
-module.exports = function(bot, db, ytID) {
-  if (!settings || !YOUR_API_KEY || !ytID || !bot) { return; }
+module.exports = function(bot, db, media) {
+  if (!settings || !YOUR_API_KEY || !media || !bot) { return; }
 
-  request(makeYTurl(ytID), function (error, response, body) {
+  request(makeYTurl(media.fkid), function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      return checkStatus(bot, db, ytID, body);
+      return checkStatus(bot, db, media, body);
     }
   });
 };

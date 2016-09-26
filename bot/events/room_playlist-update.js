@@ -9,6 +9,8 @@ module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
 
+    console.log(data.media);
+
     var messageToSend = [];
     var plural = '';
     var finalChat = '';
@@ -66,18 +68,19 @@ module.exports = function(bot, db) {
 
     var songLength = checkPath(data, 'data.media.songLength') || null;
     if (songLength >= minToMs) {
-      bot.sendChat('Hey this song is pretty long, just sayin\'... you all cool with this?');
+      bot.sendChat('Just a friendly warning that this song is 10 minutes or greater');
     }
 
     var songID = checkPath(data, 'data.media.fkid') || null;
     var type = checkPath(data, 'data.media.type') || null;
     if (!type || !songID) { return; }
-
-    if (type.toUpperCase() === 'YOUTUBE'){
-      return youtube(bot, db, songID);
+    type = type.toUpperCase();
+    
+    if (type === 'YOUTUBE'){
+      return youtube(bot, db, data.media);
     }
 
-    if (type.toUpperCase() === 'SOUNDCLOUD'){
+    if (type === 'SOUNDCLOUD'){
       // return soundcloud(bot, songID);
     }
 

@@ -229,12 +229,18 @@ var deleteTrigger = function(db, triggerKey) {
  * @param  {String} reason      what the issue was
  * @param  {Function} callback 
  */
-var trackSongIssues = function(db, media, id, reason) {
+var trackSongIssues = function(db, ytResponse, media, reason) {
   var songIssues = db.ref('/song_issues');
-  media.reason = reason;
-  songIssues.child(id).set(media, function(err){
+  
+  ytResponse.reason = reason;
+  ytResponse.date = new Date();
+  ytResponse.timestamp = Date.now();
+
+  var saveObj = Object.assign({}, ytResponse, media);
+
+  songIssues.child(media.fkid).set(saveObj, function(err){
     if (err) { 
-      console.log('Error saving issue for id ' + id ); 
+      console.log('Error saving issue for id ' + media.fkid ); 
       console.log(err); 
     }
   });
