@@ -19,22 +19,18 @@ function checkLeaders(bot, db, data, type, msgPrefix, msgNone){
       currentChat += propsArr.join(', ');
     }
     bot.sendChat(msgPrefix);
-    bot.sendChat("> " + currentChat);
+    bot.sendChat('> ' + currentChat);
   });
 }
 
 module.exports = function(bot, db, data) {
   
-  var propsChat = 'By *!tune* :musical_note:, *!props* :fist:, or *!fire* :fire:';
-  var propsNone = 'nobody got props, lame!';
+  var propsChat = 'By !props, :heart:, :musical_note:, :fist:, :fire:, etc...';
+  var propsNone = 'nobody got any props';
   checkLeaders(bot, db, data, 'props', propsChat, propsNone);
 
-  var heartsChat = 'By *!love* :heart:';
-  var heartNone = 'nobody got any love :crying_cat_face:';
-  checkLeaders(bot, db, data, 'hearts', heartsChat, heartNone);
-
   var flowChat = 'By *!flowpoint* :surfer:';
-  var flowNone = 'no flow leaders? DJs all must be AFK';
+  var flowNone = 'there are currently no flow leaders';
   checkLeaders(bot, db, data, 'flow', flowChat, flowNone);
 
 };

@@ -5,6 +5,5 @@
  */
 module.exports = {
   usersThatPropped : [],
-  usersThatHearted : [],
   usersThatFlowed : []
 };

@@ -4,10 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 TODO for final 0.1.0 release
 - Reset all point types at the 1st of the month
-- add more logging
 - bad Soundcloud link skipping
 - ability to skip songs after XX minutes
-- !info display song data for current song
+- make dope, dig, nice, ill, sick also increment props
+- add !flattr & !tip @[username] capabilities, need accesss to PMs from dubapi first
 
 ## [0.1.0] - 2016-09-XX
 ### Added
@@ -19,6 +19,7 @@ TODO for final 0.1.0 release
 - !sayhi @[username]
 - !giphy [search text]
 - youtube broken link auto skip
+- bot notifies chat of youtube region registriction
 
 ### Changed
 - Stevebot became DerpyBot
@@ -34,6 +35,7 @@ TODO for final 0.1.0 release
 - removed !meh
 - got rid of some undocumented and unnessecary credit related commands
 - made !help and !commands the same (both do !commands)
+- moved !heart points to incrememnt props, no more separate !heart points
 
 -------------------
 

@@ -43,7 +43,6 @@ var insertUser = function(db, user, callback) {
   var usersRef = db.ref(_env + '/users');
   var extraStuff = {
     props : 0,
-    hearts : 0,
     flow : 0,
     DateAdded : new Date(),
     LastConnected : new Date()
@@ -76,11 +75,11 @@ var logUser = function(db, user, callback) {
       });
       
     } else {
-
       var newdata = {
         'dubs': user.dubs || null,
-        'LastConnected': new Date(),
-        'flow' : user.flow || 0
+        'LastConnected': Date.now(),
+        'flow' : user.flow || 0,
+        'props' : user.props || 0,
       };
 
       updateUser(db, user.id, newdata, function(error){
@@ -222,6 +221,25 @@ var deleteTrigger = function(db, triggerKey) {
   return db.ref('triggers/' + triggerKey).set(null);
 };
 
+/**
+ * Pretty self explanatory
+ * @param  {Object}   db       Firebase Object
+ * @param  {Object}   media    DubApi's current media info object
+ * @param  {String|Int} id     data.media.fkid
+ * @param  {String} reason      what the issue was
+ * @param  {Function} callback 
+ */
+var trackSongIssues = function(db, media, id, reason) {
+  var songIssues = db.ref('/song_issues');
+  media.reason = reason;
+  songIssues.child(id).set(media, function(err){
+    if (err) { 
+      console.log('Error saving issue for id ' + id ); 
+      console.log(err); 
+    }
+  });
+};
+
 module.exports = {
   logUser  : logUser,
   findUserById  : findUserById,
@@ -235,5 +253,6 @@ module.exports = {
   getTrigger : getTrigger,
   updateTrigger : updateTrigger,
   insertTrigger : insertTrigger,
-  deleteTrigger : deleteTrigger
+  deleteTrigger : deleteTrigger,
+  trackSongIssues : trackSongIssues
 };

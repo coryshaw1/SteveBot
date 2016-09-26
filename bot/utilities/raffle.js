@@ -2,7 +2,6 @@ module.exports.raffle = null;
 module.exports.raffleStarted = false;
 module.exports.lockedNumberOne = false;
 module.exports.usersThatPropped = [];
-module.exports.usersThatHearted = [];
 module.exports.usersInRaffle = [];
 
 var vm = this;

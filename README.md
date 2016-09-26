@@ -45,8 +45,8 @@ Below are the list of commands that have been implemented.
 * **!flowpoint** - Add to current DJ's total "flowpoints" count using a message of flow as :ocean:
 * **!flowpoint @username** - Add to @username's total "flowpoints" count using a message of flow as :ocean:
 * **!fire @username** - Add to @username's total "props" count using a message of props as :fire:
-* **!love** - Add to current DJ's total "hearts" count :heart:
-* **!love @username** - Add to @username's total "hearts" count :heart:
+* **!love** - Add to current DJ's total "props" count with a message of :heart:
+* **!love @username** - Add to @username's total "props" count with a message of :heart:
 * **!props** - Add to current DJ's total "props" count using a message of props as :fist:
 * **!props @username** - Add to @username's total "props" count using a message of props as :fist:
 * **!tune** - Add to current DJ's total "props" count using a message of props as :musical_note:

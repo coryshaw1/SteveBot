@@ -8,7 +8,7 @@ var pointType = 'props'; // this must match the name in the db
 var repeatCheck = 'usersThatPropped';
 
 var successMsg = function(user, recipient){
-  return `Keep up the good work @${recipient.username}, @${user.username} likes your songs! You now have ${recipient.props} :fist:`;
+  return `Keep up the good work @${recipient.username}, @${user.username} likes your song! You now have ${recipient.props} props :fist:`;
 };
 
 var noSelfAwardingMsg = function(username){

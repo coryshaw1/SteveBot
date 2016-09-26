@@ -2,7 +2,7 @@
 var mediaInfo = require(process.cwd()+'/bot/utilities/media');
 var usersInfo = require(process.cwd()+'/bot/utilities/users');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
-var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
+// var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
 var checkPath = require(process.cwd()+'/bot/utilities/checkPath');
 
 module.exports = function(bot, db) {
@@ -15,12 +15,7 @@ module.exports = function(bot, db) {
 
     if (usersInfo.usersThatPropped.length > 0) {
       plural = usersInfo.usersThatPropped.length > 1 ? 's' : '';
-      messageToSend.push(`${usersInfo.usersThatPropped.length} prop${plural} :fist:`);
-    }
-
-    if (usersInfo.usersThatHearted.length > 0) {
-      plural = usersInfo.usersThatHearted.length > 1 ? 's' : '';
-      messageToSend.push(`${usersInfo.usersThatHearted.length} heart${plural} :heart:`);
+      messageToSend.push(`${usersInfo.usersThatPropped.length} prop${plural} props :fist: :heart: :musical_note:`);
     }
 
     if (usersInfo.usersThatFlowed.length > 0) {
@@ -41,12 +36,10 @@ module.exports = function(bot, db) {
     mediaInfo.lastMedia.currentDJName = mediaInfo.currentDJName;
     mediaInfo.lastMedia.currentLink = mediaInfo.currentLink;
     mediaInfo.lastMedia.usersThatPropped = usersInfo.usersThatPropped;
-    mediaInfo.lastMedia.usersThatHearted = usersInfo.usersThatHearted;
     mediaInfo.lastMedia.usersThatFlowed = usersInfo.usersThatFlowed;
 
-    //Reset user props/tunes/hearts stuff
+    //Reset user props/tunes stuff
     usersInfo.usersThatPropped = [];
-    usersInfo.usersThatHearted = [];
     usersInfo.usersThatFlowed = [];
 
     //Media info
@@ -68,7 +61,7 @@ module.exports = function(bot, db) {
 
     //****************************/
     
-    // set time limit here
+    // set your minutes time limit here
     var minToMs = 10/*min*/ * 60/*sec*/ * 1000 /*ms*/;
 
     var songLength = checkPath(data, 'data.media.songLength') || null;
@@ -81,7 +74,7 @@ module.exports = function(bot, db) {
     if (!type || !songID) { return; }
 
     if (type.toUpperCase() === 'YOUTUBE'){
-      return youtube(bot, songID);
+      return youtube(bot, db, songID);
     }
 
     if (type.toUpperCase() === 'SOUNDCLOUD'){

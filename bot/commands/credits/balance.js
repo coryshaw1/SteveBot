@@ -2,19 +2,24 @@
 var repo = require(process.cwd()+'/repo');
 
 function sayMyBalance(bot, user) {
-  bot.sendChat(`@${user.username} you have ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :surfer:`);
+  var flowS = user.flow > 1 || user.flow <= 0 ? 's' : '';
+  var propS = user.props > 1 || user.props <= 0 ? 's' : '';
+
+  bot.sendChat(`@${user.username} you have ${user.props} prop${propS} :fist: and ${user.flow} flowpoint${flowS} :surfer:`);
 }
 
 function sayTheirBalance(bot, whoAsked, user) {
-  bot.sendChat(`@${whoAsked}, the user @${user.username} has ${user.hearts} :heart: and ${user.props} :musical_note: and ${user.flow} :surfer:`);
+  var flowS = user.flow > 1 || user.flow <= 0 ? 's' : '';
+  var propS = user.props > 1 || user.props <= 0 ? 's' : '';
+
+  bot.sendChat(`@${whoAsked}, the user @${user.username} has ${user.props} prop${propS} :fist: and ${user.flow} flowpoint${flowS} :surfer:`);
 }
 
 function lookUpBalance(bot, db, whoAsked, whoFor, which){
   repo.findUserById(db, whoFor.id, function(user){
     if (user !== null) {
-      if (!user.hearts) { user.hearts = 0; }
-      if (!user.props) { user.props = 0; }
-      if (!user.flow) { user.flow = 0; }
+      if (user.props === void(0) || user.props === null) { user.props = 0; }
+      if (user.flow === void(0) || user.flow === null) { user.flow = 0; }
       
       if (!which || which === 'mine' ) {
         sayMyBalance(bot, user);
@@ -54,3 +59,5 @@ module.exports = function(bot, db, data) {
   }
 
 };
+
+module.exports.extraCommands = ['stats', 'score'];
