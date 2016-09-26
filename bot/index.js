@@ -18,7 +18,9 @@ var db = firebase.database();
 new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, function(err, bot) {
         
     if (err) {
-        return log('error', 'BOT', err);
+        log('error', 'BOT', err);
+        process.exit(1);
+        return;
     }
 
     //to find out how to use jethro visit: https://github.com/JethroLogger/Jethro

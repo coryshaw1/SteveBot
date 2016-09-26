@@ -38,7 +38,7 @@ function trackIssue(db, obj, id, reason){
 }
 
 function checkStatus(bot, db, ytID, body) {
-  if (!body) { return; }
+  if (!body || !bot || !db) { return; }
 
   // set DJ name
   var dj = bot.getDJ().username || '';
