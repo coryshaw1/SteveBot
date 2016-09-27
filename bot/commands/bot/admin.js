@@ -1,6 +1,6 @@
 'use strict';
 var settings = require(process.cwd() + '/private/settings.js');
-var checkPath = require(process.cwd() + '/utilities/checkPath.js');
+var checkPath = require(process.cwd() + '/bot/utilities/checkPath.js');
 
 module.exports = function(bot, db, data) {
   if (!bot) { return; }
@@ -28,7 +28,7 @@ module.exports = function(bot, db, data) {
   switch(command) {
     case 'restart':
       bot.sendChat(':recycle: brb! :recycle: ');
-      process.exit(1);
+      process.exit(0);
       break;
     // more commands to come
     default:
