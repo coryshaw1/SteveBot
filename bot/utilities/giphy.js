@@ -21,29 +21,31 @@ var getRandom = function (list) {
 };
 
 var reformatRandomImage = function(data) {
+  var url = null;
   switch (Giphy.options.size) {
     case 'original':
-      return data.image_original_url;
+      url = data.image_original_url;
       break;
     case 'downsized':
-      return data.fixed_height_small_url;
+      url = data.fixed_height_small_url;
       break;
     case 'fixed':
-      return data.fixed_height_downsampled_url;
+      url = data.fixed_height_downsampled_url;
       break;
     default:
       throw new Error('Not a valid option size for images');
   }
+  return url;
 };
 
 var buildAPI = function(query){
   var apiPath = ROOT_API;
 
   if (Giphy.options.random) {
-    apiPath += 'random'
+    apiPath += 'random';
     apiPath += '?tag=' + query.replace(/ /g, "+");
   } else {
-    apiPath += 'search'
+    apiPath += 'search';
     apiPath += '?q=' + query.replace(/ /g, "+");
     apiPath += '&limit=' + Giphy.options.limit;
   }
@@ -58,7 +60,6 @@ function APICall(query, callback) {
 
   return request.get(apiPath, function (error, response, body) {
     if (error) {
-      console.error('Error fetching result from Giphy');
       callback( error, null );
       return;
     } 
@@ -91,7 +92,7 @@ var getGif = function(options, query, callback){
   }
 
   APICall(query, callback);
-}
+};
 
 module.exports = {
  getGif : getGif,
