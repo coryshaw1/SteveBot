@@ -9,7 +9,7 @@ module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
 
-    console.log(data.media);
+    // console.log(data.media);
 
     var messageToSend = [];
     var plural = '';
