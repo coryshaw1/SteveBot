@@ -4,11 +4,23 @@ var settings = require(process.cwd() + '/private/settings.js');
 var repo = require(process.cwd()+'/repo');
 var YOUR_API_KEY = settings.YT_API;
 var request = require('request');
-
 // https://developers.google.com/youtube/v3/docs/videos#status
 
+var Youtube = {
+  'base' : 'https://www.googleapis.com/youtube/v3/videos?',
+  options : {
+    part : 'status,contentDetails',
+    key : settings.YT_API
+  }
+};
+
 function makeYTurl(id) {
-  return `https://www.googleapis.com/youtube/v3/videos?part=status,contentDetails&id=${id}&key=${YOUR_API_KEY}`;
+  var queryString = [];
+  Youtube.options.id = id;
+  for (var key in Youtube.options) {
+    queryString.push(key + '=' + Youtube.options[key] );
+  }
+  return Youtube.base + queryString.join('&');
 }
 
 /*
