@@ -41,8 +41,8 @@ function checkStatus(bot, db, media, body) {
   if (!body) { return; }
 
   // set DJ name
-  var dj = bot.getDJ().username || '';
-  if (dj !== ''){ dj = '@'+dj; }
+  var dj = bot.getDJ();
+  dj = dj === void(0) ? '@'+dj : dj.username;
 
   var yt = JSON.parse(body);
   if (yt && yt.items && yt.items.length > 0 && yt.items[0].status) {

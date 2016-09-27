@@ -1,4 +1,6 @@
 'use strict';
+var log = require('jethro');
+log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
 
 var _env = process.env.ENV;
 if (_env === null || typeof _env === 'undefined' || _env === '') {
@@ -17,7 +19,7 @@ var findUserById = function(db, userid, callback) {
       var val = snapshot.val();
       callback(val);
     }, function(error){
-      console.log('findUserById :' + error.code);
+      log('error', 'REPO', 'findUserById :' + error.code);
   });
 };
 
@@ -68,7 +70,9 @@ var logUser = function(db, user, callback) {
     if(!foundUser){
       
       insertUser(db, user, function(error){
-        if (error) return console.log(user.id + ' could not be saved');
+        if (error) {
+          return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
+        }
 
         user.logType = 'inserted';
         return callback(user);
@@ -79,11 +83,13 @@ var logUser = function(db, user, callback) {
         'dubs': user.dubs || null,
         'LastConnected': Date.now(),
         'flow' : user.flow || 0,
-        'props' : user.props || 0,
+        'props' : user.props || 0
       };
 
       updateUser(db, user.id, newdata, function(error){
-        if (error) return console.log(user.id + ' could not be saved');
+        if (error) {
+          return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
+        }
 
         user.logType = 'updated';
         return callback(user);
@@ -111,11 +117,10 @@ var incrementUser = function(db, user, thing, callback) {
     // completion handler
     function (error) {
       if (error) {
-        console.log('ERR:', error);
+        log('error', 'REPO', 'incrementUser:' + error);
         callback();
       } else {
         findUserById(db, user.id, function(foundUser){
-          console.log('Updated ', user.username, thing, foundUser.props);
           return callback(foundUser);
         });
       }
@@ -240,8 +245,7 @@ var trackSongIssues = function(db, ytResponse, media, reason) {
 
   songIssues.child(media.fkid).set(saveObj, function(err){
     if (err) { 
-      console.log('Error saving issue for id ' + media.fkid ); 
-      console.log(err); 
+      log('error', 'REPO', 'trackSongIssues: Error saving for id ' + media.fkid);
     }
   });
 };

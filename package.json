@@ -4,7 +4,8 @@
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "test" : "./node_modules/eslint/bin/eslint.js ."
   },
   "dependencies": {
     "dubapi": "^1.6.3",

@@ -4,6 +4,8 @@ var settings = require(process.cwd() + '/private/settings.js');
 // var usersInfo = require(process.cwd()+'/bot/utilities/users');
 var request = require('request');
 // var _ = require('underscore');
+var log = require('jethro');
+log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
 
 var flattrApi = {
   'authorize' : 'https://flattr.com/oauth/authorize',
@@ -42,7 +44,9 @@ function getCode(cb){
       'redirect_uri': 'http://localhost'
     }
   }, function(error, response, body) {
-    if (error) { console.log(error); }
+    if (error) { 
+      log('error', 'FLATTR', 'getCode :' + error);
+    }
     if (!error && response.statusCode === 200) {
       if (typeof cb !== 'undefined') { cb(body); }
     }
@@ -61,7 +65,9 @@ function getToken(code, cb) {
       'redirect_uri' : 'http://localhost'
     }
   }, function(error, response, body) {
-    if (error) { console.log(error); }
+    if (error) { 
+      log('error', 'FLATTR', 'getToken :' + error);
+    }
     if (!error && response.statusCode === 200) {
       if (typeof cb !== 'undefined') { cb(body); }
     }

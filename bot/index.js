@@ -38,7 +38,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
 
         if(err) bot.log('error', 'BOT', err.stack);
 
-        process.exit();
+        process.exit(err ? 1 : 0);
     }
 
     //Properly disconnect from room and close db connection when program stops

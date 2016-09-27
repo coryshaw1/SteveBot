@@ -1,5 +1,5 @@
 'use strict';
-
+/* eslint no-console: 0 */
 /************************************************************************
 
 Load the Triggers data file and create new keys in Firebase

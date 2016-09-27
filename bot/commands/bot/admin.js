@@ -3,9 +3,11 @@ var settings = require(process.cwd() + '/private/settings.js');
 var checkPath = require(process.cwd() + '/bot/utilities/checkPath.js');
 
 module.exports = function(bot, db, data) {
-  if (!bot) { return; }
+  if (typeof bot !== 'object' || typeof data !== 'object') {
+    return;
+  }
 
-  var userName = checkPath(data, 'data.user.username') || null;
+  var userName = checkPath(data, 'data.user.username');
   if (!userName) { return; }
 
   // check if person sending chat is the owner
@@ -27,7 +29,7 @@ module.exports = function(bot, db, data) {
   var extra = data.params.slice(1);
   switch(command) {
     case 'restart':
-      bot.sendChat(':recycle: brb! :recycle: ');
+      bot.sendChat(':recycle: brb! :recycle:');
       process.exit(0);
       break;
     // more commands to come

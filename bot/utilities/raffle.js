@@ -14,7 +14,9 @@ module.exports.startRaffle = function startRaffle(bot) {
     if(vm.raffle) clearTimeout(vm.raffle); //don't have multiple raffle timeouts running at once
 
     //start another raffle in 15-45 min
-    setTimeout(function(){vm.startRaffle(bot)}, (Math.floor(Math.random() * (1000*60*45)) + (1000*60*15)));
+    setTimeout(function(){
+        vm.startRaffle(bot);
+    }, (Math.floor(Math.random() * (1000*60*45)) + (1000*60*15)));
 
     if(bot.getQueue().length <= 1 || vm.raffleStarted === true) return; //don't start a raffle if queue is too small or another is started
 
