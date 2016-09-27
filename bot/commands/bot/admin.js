@@ -30,7 +30,7 @@ module.exports = function(bot, db, data) {
   switch(command) {
     case 'restart':
       bot.sendChat(':recycle: brb! :recycle:');
-      process.exit(0);
+      setTimeout(process.exit, 1500);
       break;
     // more commands to come
     default:
@@ -38,3 +38,11 @@ module.exports = function(bot, db, data) {
   }
 
 };
+
+/******
+
+Ideas:
+- restore - restore firebase from latest backup
+
+
+*******/
