@@ -45,6 +45,18 @@ var badStatus = [
   'rejected'
 ];
 
+var getRandom = function (list) {
+  return list[Math.floor((Math.random()*list.length))];
+};
+
+var DE_responses = [
+  'Hey all, you\'ll never guess which country is blocking this video...',
+  'Oh look, another video blocked in Germany (Deutschland)',
+  'Sorry my German Chillout humanoid friends, you won\'t be able to hear this track, it\'s blocked in your country.',
+  'This video is blocked in Germany, how ... unusual ... :confused: ',
+  'Please sign my petition to allow the German peoples to hear chill music so they can finally hear great tracks like this.  Thank you.'
+];
+
 function trackIssue(db, ytResponse, media, reason){
   repo.trackSongIssues(db, ytResponse, media, reason);
 }
@@ -94,7 +106,13 @@ function checkStatus(bot, db, media, body) {
   if (yt && yt.items && yt.items.length > 0 && yt.items[0].contentDetails) {
     if (yt.items[0].contentDetails.regionRestriction) {
         var _region = yt.items[0].contentDetails.regionRestriction;
-      
+        
+        // yes we get THAT many blocked youtube videos in Germany that we might
+        // as well make fun of it
+        if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
+          return bot.sendChat( getRandom(DE_responses) );
+        }
+
         bot.sendChat(`*FYI, this Youtube video has some region restrictions:*`);
         bot.sendChat(`${media.name}`);
         
