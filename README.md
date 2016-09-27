@@ -2,6 +2,7 @@
 # DerpyBot 
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/franciscog/DerpyBot/blob/master/LICENSE)
+![build](https://travis-ci.org/FranciscoG/DerpyBot.svg)
 
 A Dubtrack Bot using DubAPI
 
