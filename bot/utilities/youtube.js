@@ -49,7 +49,7 @@ var getRandom = function (list) {
   return list[Math.floor((Math.random()*list.length))];
 };
 
-var DE_responses = [
+var responsesDE = [
   'Hey all, you\'ll never guess which country is blocking this video...',
   'Oh look, another video blocked in Germany (Deutschland)',
   'Sorry my German Chillout humanoid friends, you won\'t be able to hear this track, it\'s blocked in your country.',
@@ -110,7 +110,8 @@ function checkStatus(bot, db, media, body) {
         // yes we get THAT many blocked youtube videos in Germany that we might
         // as well make fun of it
         if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
-          return bot.sendChat( getRandom(DE_responses) );
+          trackIssue(db, yt, media, 'region restrictions');
+          return bot.sendChat( getRandom(responsesDE) );
         }
 
         bot.sendChat(`*FYI, this Youtube video has some region restrictions:*`);

@@ -4,6 +4,7 @@ var DubAPI = require('dubapi'),
     firebase = require('firebase'),
     settings = require(process.cwd() + '/private/settings.js');
 
+
 //make logger timestamp more readable
 log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
 
@@ -19,7 +20,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
         
     if (err) {
         log('error', 'BOT', err);
-        process.exit(1);
+        process.exit(1); // exit so pm2 can restart
         return;
     }
 

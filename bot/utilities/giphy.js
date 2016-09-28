@@ -43,10 +43,10 @@ var buildAPI = function(query){
 
   if (Giphy.options.random) {
     apiPath += 'random';
-    apiPath += '?tag=' + query.replace(/ /g, "+");
+    apiPath += '?tag=' + query.replace(/ /g, '+');
   } else {
     apiPath += 'search';
-    apiPath += '?q=' + query.replace(/ /g, "+");
+    apiPath += '?q=' + query.replace(/ /g, '+');
     apiPath += '&limit=' + Giphy.options.limit;
   }
   apiPath += '&fmt=json';
@@ -55,7 +55,7 @@ var buildAPI = function(query){
   return apiPath;
 };
 
-function APICall(query, callback) {
+function apiCall(query, callback) {
   var apiPath = buildAPI(query);
 
   return request.get(apiPath, function (error, response, body) {
@@ -91,7 +91,7 @@ var getGif = function(options, query, callback){
     Giphy.options = Object.assign({}, Giphy.options, options);
   }
 
-  APICall(query, callback);
+  apiCall(query, callback);
 };
 
 module.exports = {
