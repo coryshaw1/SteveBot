@@ -115,7 +115,7 @@ function checkStatus(bot, db, media, body) {
           return bot.sendChat( getRandom(responsesDE) );
         }
 
-        bot.sendChat(`*FYI, this Youtube video has some region restrictions:*`);
+        bot.sendChat(`*FYI, this Youtube video has region restrictions:*`);
         bot.sendChat(`${media.name}`);
         
         if (_region.allowed && _region.allowed.length > 0) {
