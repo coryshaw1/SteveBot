@@ -111,6 +111,7 @@ function checkStatus(bot, db, media, body) {
         // as well make fun of it
         if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
           trackIssue(db, yt, media, 'region restrictions');
+          bot.sendChat(`${media.name}`);
           return bot.sendChat( getRandom(responsesDE) );
         }
 
@@ -119,11 +120,11 @@ function checkStatus(bot, db, media, body) {
         
         if (_region.allowed && _region.allowed.length > 0) {
           var _a = Array.isArray(_region.allowed) ? _region.allowed.join(',') : _region.allowed; 
-          bot.sendChat('> *allowed in:* `' + _a + '`');
+          bot.sendChat('> *allowed in:* ' + _a);
         }
         if (_region.blocked && _region.blocked.length > 0) {
           var _b = Array.isArray(_region.blocked) ? _region.blocked.join(',') : _region.blocked;
-          bot.sendChat('> *blocked in:* `' + _b + '`');
+          bot.sendChat('> *blocked in:* ' + _b);
         }
         trackIssue(db, yt, media, 'region restrictions');
     }
