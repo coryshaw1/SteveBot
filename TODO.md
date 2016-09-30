@@ -10,7 +10,8 @@ Things I'd like (or need) to do
 - make dope, dig, nice, ill, sick also increment props
 - add !flattr & !tip @[username] capabilities, need accesss to PMs from dubapi first
 - track short-term song history and make sure song hasn't been played within X amount of time
-- setup continuous integration.  If Travis doesn't fail, auto-merge into master, then use cron to auto-update on server 
+- setup continuous integration.  If Travis doesn't fail, auto-merge into master, then use cron to auto-update on server
+- move commands into a gh-pages accessible file
 
 ## Long-term
 - switch to TypeScript, instead of ES6/Babel cause I'd like to catch some errors on compile
