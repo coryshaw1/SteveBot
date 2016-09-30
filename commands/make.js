@@ -15,6 +15,7 @@ var commands = require('./COMMANDS.md');
 var converted = marked(commands);
 var newIndex = index.replace("%%MARKDOWN%%", converted);
 
+/* eslint no-console: 0 */
 fs.writeFile("./index.html", newIndex, function(err) {
     if(err) {
         return console.log(err);
