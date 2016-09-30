@@ -2,24 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-TODO for final 0.1.0 release
-- Reset all point types at the 1st of the month
-- bad Soundcloud link skipping
-- ability to skip songs after XX minutes
-- make dope, dig, nice, ill, sick also increment props
-- add !flattr & !tip @[username] capabilities, need accesss to PMs from dubapi first
+## [0.1.1] - 2016-10-XX
+### Changed
+- changing how firebase is accessed
 
-## [0.1.0] - 2016-09-XX
+## [0.1.0] - 2016-09-30
 ### Added
 - !flowpoint, !flowpoint @username
 - Loaded in all the previous chat triggers from Mixerbot
-- !trigger, add new triggers (mod only)
-- !erase / !delete,  remove triggers (mod only)
-- Change a current trigger (mod only)
+- !trigger, add/update/del triggers (mod only)
 - !sayhi @[username]
 - !giphy [search text]
 - youtube broken link auto skip
 - bot notifies chat of youtube region registriction
+- !admin, adding some admin commands, right now it only can restart (owner of bot only)
 
 ### Changed
 - Stevebot became DerpyBot
