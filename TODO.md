@@ -1,6 +1,8 @@
 # TODO
 Things I'd like (or need) to do
 
+MOVE THESE INTO ISSUES
+
 ## Short-term
 - I think the point system is not working/saving properly, gotta look into that
 - fix trigger so people don't accidentally delete a trigger (either add separate commands for updating/deleting, or !trigger args like !trigger add/del/up)

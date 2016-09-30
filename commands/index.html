@@ -1,1 +1,86 @@
-<p>Commands will be listed here eventual</p>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Air</title>
+<link rel="stylesheet" href="air.css">
+</head>
+<body>
+  <p><img src="http://i.imgur.com/p999E1u.png" alt="DerpyBot Avatar"></p>
+<h1 id="commands">Commands</h1>
+<h2 id="categories">Categories</h2>
+<h3 id="bot">Bot</h3>
+<ul>
+<li><strong>!bot</strong> - Chooses a random a response from <a href="https://github.com/FranciscoG/DerpyBot/blob/master/bot/commands/bot/bot.js#L10">this array</a></li>
+<li><strong>!sayhi @username</strong> - introduce the bot to a user</li>
+<li><strong>!ping</strong> - Bot responds with &quot;Pong!&quot;</li>
+<li><strong>!pong</strong> - Bot responds with &quot;Ping!&quot;</li>
+<li><strong>!thanks</strong> - Bot responds with &quot;You&#39;re welcome!&quot;</li>
+<li><strong>!v</strong> or <strong>!ver</strong> or <strong>!version</strong> - Bot responds with &quot;Version: [<em>version number</em>]&quot;</li>
+</ul>
+<h3 id="credits">Credits</h3>
+<h5 id="adding-credits">Adding Credits</h5>
+<p><em>Adding credits to a user is limited to one time per song.</em></p>
+<ul>
+<li><strong>!flowpoint</strong> - Add to current DJ&#39;s total &quot;flowpoints&quot; count using a message of flow as :ocean:</li>
+<li><strong>!flowpoint @username</strong> - Add to @username&#39;s total &quot;flowpoints&quot; count using a message of flow as :ocean:</li>
+<li><strong>!fire @username</strong> - Add to @username&#39;s total &quot;props&quot; count using a message of props as :fire:</li>
+<li><strong>!love</strong> - Add to current DJ&#39;s total &quot;props&quot; count with a message of :heart:</li>
+<li><strong>!love @username</strong> - Add to @username&#39;s total &quot;props&quot; count with a message of :heart:</li>
+<li><strong>!props</strong> - Add to current DJ&#39;s total &quot;props&quot; count using a message of props as :fist:</li>
+<li><strong>!props @username</strong> - Add to @username&#39;s total &quot;props&quot; count using a message of props as :fist:</li>
+<li><strong>!tune</strong> - Add to current DJ&#39;s total &quot;props&quot; count using a message of props as :musical_note:</li>
+<li><strong>!tune @username</strong> - Add to @username&#39;s total &quot;props&quot; count using a message of props as :musical_note:</li>
+</ul>
+<h5 id="credit-info">Credit Info</h5>
+<ul>
+<li><strong>!balance</strong> - See the amount of total &quot;hearts&quot; and total &quot;props&quot; connected to your name</li>
+<li><strong>!balance @username</strong> - See the amount of total &quot;hearts&quot; and total &quot;props&quot; connected to @username</li>
+<li><strong>!leaders</strong> - See the leaders of total &quot;hearts&quot;, &quot;props&quot;, and total &quot;flowpoints&quot; in the database</li>
+</ul>
+<h3 id="fun">Fun</h3>
+<ul>
+<li><strong>!trigger [trigger_name] [trigger_text]</strong> - to create a new chat trigger. Trigger won&#39;t work if it matches one of the existing commands. [MODS ONLY]</li>
+<li><strong>!cat</strong> - Show a random cat picture or gif</li>
+<li><strong>!fact</strong> - A random inciteful fact</li>
+<li><strong>!steve</strong> - To honor the origin of this bot&#39;s code</li>
+<li><strong>!todayfact</strong> - A random inciteful fact about today</li>
+<li><strong>!giphy [search text]</strong> - Return a random giphy image (rating: P-13 or below)</li>
+</ul>
+<h3 id="info">Info</h3>
+<ul>
+<li><strong>!commands</strong> - Basic list of commands</li>
+<li><strong>!dubx</strong> - Shameless plug to <a href="https://github.com/sinfulBA/DubX-Script">sinfulBA/DubX</a></li>
+<li><strong>!eta</strong> - Gets the user&#39;s estimated time in minutes until their song plays</li>
+<li><strong>!help</strong> - Basic list of commands</li>
+<li><strong>!lastplayed</strong> or <strong>!lastsong</strong> or <strong>!lasttrack</strong> - Name and link of the song that just played</li>
+<li><strong>!link</strong> - Get the current song&#39;s name and link. <ul>
+<li><em>Note</em>: Get&#39;s the actual link of the song to SoundCloud instead of the api.soundcloud..../redirect link</li>
+</ul>
+</li>
+<li><strong>!rules</strong> - Rules of the room</li>
+</ul>
+<h3 id="auto-moderation">Auto-Moderation</h3>
+<ul>
+<li>Automatically skips broken youtube links</li>
+</ul>
+<h3 id="moderation">Moderation</h3>
+<h5 id="for-mods-and-higher">For Mods and higher</h5>
+<ul>
+<li><strong>!front @username</strong> - Move @username to the front of the queue</li>
+<li><strong>!lock @username</strong> - Lock/Pause @username&#39;s queue from playing</li>
+<li><strong>!lockskip</strong> - Skip the current DJ, and lock/pause their queue. Useful for DJs that are AFK and continue to requeue</li>
+<li><strong>!pause @username</strong> - Lock/Pause @username&#39;s queue from playing</li>
+</ul>
+<h5 id="for-resident-djs-and-higher">For Resident DJs and higher</h5>
+<ul>
+<li><strong>!skip</strong> - Skip the current song without reason or message using a reason of (broke, nsfw, op, theme, troll, and more to come) can leave blank if just want to skip without reason</li>
+<li><strong>!skip broke</strong> or <strong>!skip broken</strong> - Skip the current song giving a reason that the song/video no longer exists or is unavailable in all countries </li>
+<li><strong>!skip nsfw</strong> - Skip the current song giving a reason that the song/video is not safe for a work environment</li>
+<li><strong>!skip op</strong> - Skip the current song giving a reason that the song/video is overplayed and banned from the room</li>
+<li><strong>!skip troll</strong> - Skip the current song giving a reason that the song/video is trolling, <em>this also then kicks the DJ</em></li>
+</ul>
+<p>Much more to come, and suggestions are welcome! Please add an <a href="https://github.com/franciscog/DerpyBot/issues">issue</a> for any requests or bugs!</p>
+
+</body>
+</html>
