@@ -4,3 +4,4 @@ private/*
 .DS_Store
 tool/*.json
 tool/temp.js
+npm-debug.log

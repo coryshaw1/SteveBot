@@ -43,7 +43,6 @@ var handleCommands = function(bot, db, data) {
     if (data.trigger === 'raffle' || data.trigger === 'join') {
       return bot.sendChat('Raffles have been disabled, gambling is a serious problem');
     }
-
     return commands[data.trigger](bot, db, data);
   }
 

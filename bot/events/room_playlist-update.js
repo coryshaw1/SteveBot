@@ -1,6 +1,6 @@
 'use strict';
 var mediaInfo = require(process.cwd()+'/bot/utilities/media');
-var usersInfo = require(process.cwd()+'/bot/utilities/users');
+var userStore = require(process.cwd()+ '/bot/store/users.js');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
 // var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
 var _ = require('lodash');
@@ -15,14 +15,16 @@ module.exports = function(bot, db) {
     var plural = '';
     var finalChat = '';
 
-    if (usersInfo.usersThatPropped.length > 0) {
-      plural = usersInfo.usersThatPropped.length > 1 ? 's' : '';
-      messageToSend.push(`${usersInfo.usersThatPropped.length} prop${plural} props :fist: :heart: :musical_note:`);
+    var propped = userStore.getProps();
+    if (propped.length > 0) {
+      plural = propped.length > 1 ? 's' : '';
+      messageToSend.push(`${propped.length} prop${plural} props :fist: :heart: :musical_note:`);
     }
 
-    if (usersInfo.usersThatFlowed.length > 0) {
-      plural = usersInfo.usersThatFlowed.length > 1 ? 's' : '';
-      messageToSend.push(`${usersInfo.usersThatFlowed.length} flowpoint${plural} :surfer:`);
+    var flowed = userStore.getFlows();
+    if (flowed.length > 0) {
+      plural = flowed.length > 1 ? 's' : '';
+      messageToSend.push(`${flowed.length} flowpoint${plural} :surfer:`);
     }
 
     if (messageToSend.length > 0) {
@@ -37,12 +39,11 @@ module.exports = function(bot, db) {
     mediaInfo.lastMedia.currentType = mediaInfo.type;
     mediaInfo.lastMedia.currentDJName = mediaInfo.currentDJName;
     mediaInfo.lastMedia.currentLink = mediaInfo.currentLink;
-    mediaInfo.lastMedia.usersThatPropped = usersInfo.usersThatPropped;
-    mediaInfo.lastMedia.usersThatFlowed = usersInfo.usersThatFlowed;
+    mediaInfo.lastMedia.usersThatPropped = propped;
+    mediaInfo.lastMedia.usersThatFlowed = flowed;
 
     //Reset user props/tunes stuff
-    usersInfo.usersThatPropped = [];
-    usersInfo.usersThatFlowed = [];
+    userStore.clear();
 
     //Media info
     mediaInfo.getLink(bot, function(link){

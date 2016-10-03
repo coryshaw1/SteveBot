@@ -1,7 +1,7 @@
 'use strict';
 var repo = require(process.cwd()+'/repo');
-var usersInfo = require(process.cwd()+'/bot/utilities/users');
 var _ = require('underscore');
+var userStore = require(process.cwd()+ '/bot/store/users.js');
 
 /**
  * Save point to db and send chat message
@@ -12,7 +12,8 @@ var _ = require('underscore');
  */
 function addPoint(bot, db, data, recipient, opts) {
   repo.incrementUser(db, recipient, opts.pointType, function(user){
-    usersInfo[ opts.repeatCheck ].push(data.user.id);
+    if (!user) {return;}
+    userStore.addPoint( opts.repeatCheck, data.user.id);
     bot.sendChat( opts.successMsg(data.user, user) );
   });
 }
@@ -27,7 +28,7 @@ module.exports = function(bot, db, data, opts) {
   if (data.params === void(0) || data.params.length === 0){
 
     // no repeat giving
-    if(_.contains(usersInfo[ opts.repeatCheck ], data.user.id)) {
+    if(userStore.hasId( opts.repeatCheck, data.user.id) ) {
       return bot.sendChat( opts.noRepeatPointMsg(data.user.username) );
     }
 
@@ -59,7 +60,7 @@ module.exports = function(bot, db, data, opts) {
     }
 
     // can't give points twice for the same song
-    if(_.contains(usersInfo[ opts.repeatCheck ], data.user.id)) {
+    if(userStore.hasId( opts.repeatCheck, data.user.id) ) {
       return bot.sendChat( opts.noRepeatPointMsg(data.user.username) );
     }
 

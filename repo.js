@@ -118,7 +118,7 @@ var incrementUser = function(db, user, thing, callback) {
     function (error) {
       if (error) {
         log('error', 'REPO', 'incrementUser:' + error);
-        callback();
+        callback(null);
       } else {
         findUserById(db, user.id, function(foundUser){
           return callback(foundUser);
