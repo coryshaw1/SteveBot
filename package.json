@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start" : "env ENV=dev nodemon index.js",
-    "test" : "env ENV=test mocha -c --reporter=nyan tests"
+    "test" : "env ENV=test mocha -c -t 8000 --reporter=nyan tests",
+    "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "dependencies": {
     "dubapi": "^1.6.3",

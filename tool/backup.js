@@ -22,7 +22,7 @@ db.ref().once('value', function(snapshot) {
   var val = snapshot.val();
   if (val !== null) {
     // save backups outside of the repo
-    var loc = '../../derypbot-backups';
+    var loc = '.';
     fs.writeFileSync(`${loc}/backup-${Date.now()}.json`, JSON.stringify(val), 'utf8');
     process.exit();
   }
