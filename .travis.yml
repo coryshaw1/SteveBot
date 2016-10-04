@@ -13,4 +13,5 @@ addons:
 before_install:
   - openssl aes-256-cbc -K $encrypted_dae008b4772b_key -iv $encrypted_dae008b4772b_iv
     -in secrets.tar.enc -out secrets.tar -d
-  - OLD_PWD=`pwd`; cd /home/travis/build/FranciscoG/DerpyBot/private; tar xvf $OLD_PWD/secrets.tar; cd $OLD_PWD
+  - tar xvf secrets.tar -C /home/travis/build/FranciscoG/DerpyBot/private
+  - ls -lah private
