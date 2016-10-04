@@ -4,8 +4,8 @@
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {
-    "start" : "env ENV=dev nodemon index.js",
-    "test" : "env ENV=test mocha -c -t 8000 --reporter=spec tests",
+    "start": "env ENV=dev nodemon index.js",
+    "test": "env ENV=test mocha -c -t 8000 --reporter=spec tests",
     "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "dependencies": {
@@ -14,7 +14,7 @@
     "fs": "0.0.2",
     "jethro": "^2.6.6",
     "kerberos": "0.0.18",
-    "lodash": "^4.16.2",
+    "lodash": "^4.16.3",
     "path": "^0.12.7",
     "request": "^2.69.0",
     "simple-lastfm": "git+https://github.com/atomjack/simple-lastfm.git",

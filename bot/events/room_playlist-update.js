@@ -1,87 +1,100 @@
 'use strict';
-var mediaInfo = require(process.cwd()+'/bot/utilities/media');
+var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 var userStore = require(process.cwd()+ '/bot/store/users.js');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
 // var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
+var checkPath = require(process.cwd()+'/bot/utilities/checkPath');
 var _ = require('lodash');
+
+function reviewPoints(bot, currentSong) {
+  var propped = userStore.getProps();
+  var flowed = userStore.getFlows();
+
+  var messageToSend = [];
+  var plural = '';
+  var finalChat = '';
+
+ 
+  if (propped.length > 0) {
+    plural = propped.length > 1 ? 's' : '';
+    messageToSend.push(`${propped.length} prop${plural} props :fist: :heart: :musical_note:`);
+  }
+
+  if (flowed.length > 0) {
+    plural = flowed.length > 1 ? 's' : '';
+    messageToSend.push(`${flowed.length} flowpoint${plural} :surfer:`);
+  }
+
+  if (messageToSend.length > 0) {
+    finalChat = `'${currentSong.name}', queued by ${currentSong.dj} received `;
+    finalChat += messageToSend.join( ' and ' );
+    bot.sendChat(finalChat);
+  }
+}
 
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
-
+    
     // console.log(data.media);
-
-    var messageToSend = [];
-    var plural = '';
-    var finalChat = '';
-
+    /************************************************************
+     *  song info and trackinng
+     */
+    
+    var currentSong = mediaStore.getCurrent();
     var propped = userStore.getProps();
-    if (propped.length > 0) {
-      plural = propped.length > 1 ? 's' : '';
-      messageToSend.push(`${propped.length} prop${plural} props :fist: :heart: :musical_note:`);
-    }
-
     var flowed = userStore.getFlows();
-    if (flowed.length > 0) {
-      plural = flowed.length > 1 ? 's' : '';
-      messageToSend.push(`${flowed.length} flowpoint${plural} :surfer:`);
-    }
-
-    if (messageToSend.length > 0) {
-      finalChat = `'${mediaInfo.currentName}', queued by ${mediaInfo.currentDJName} received `;
-      finalChat += messageToSend.join( ' and ' );
-      bot.sendChat(finalChat);
-    }
+    
+    // send chat message if there were any props or flow points given
+    reviewPoints(bot, currentSong);
 
     //Save previous song for !lastplayed
-    mediaInfo.lastMedia.currentName = mediaInfo.currentName;
-    mediaInfo.lastMedia.currentID = mediaInfo.fkid;
-    mediaInfo.lastMedia.currentType = mediaInfo.type;
-    mediaInfo.lastMedia.currentDJName = mediaInfo.currentDJName;
-    mediaInfo.lastMedia.currentLink = mediaInfo.currentLink;
-    mediaInfo.lastMedia.usersThatPropped = propped;
-    mediaInfo.lastMedia.usersThatFlowed = flowed;
+    currentSong.usersThatFlowed = flowed.length;
+    currentSong.usersThatPropped = propped.length;
+    mediaStore.setLast(currentSong);
 
     //Reset user props/tunes stuff
     userStore.clear();
 
-    //Media info
-    mediaInfo.getLink(bot, function(link){
-        mediaInfo.currentLink = !link ? '' : link;
-    });
-    mediaInfo.lastMediaFKID = mediaInfo.currentID;
+    // start new song store
+    var newSong = {};
 
+    // get current song link
+    mediaStore.getLink(bot, function(link){
+        newSong.link = !link ? '' : link;
+    });
+
+    // if no data.media from the api then stop now
     if(!data.media) { return; }
 
-    mediaInfo.currentName = data.media.name;
-    mediaInfo.currentID = data.media.fkid;
-    mediaInfo.currentType = data.media.type;
-    
-    mediaInfo.currentDJName = '404usernamenotfound';
-    if ( data.user !== void(0) && data.user.username !== void(0) ) {
-      mediaInfo.currentDJName = data.user.username;
-    }
+    newSong.name = data.media.name;
+    newSong.id = data.media.fkid;
+    newSong.type = data.media.type;
+    newSong.dj = _.get(data, 'user.username', '404usernamenotfound');
 
-    //****************************/
+    // store new song data reseting current in the store
+    mediaStore.setCurrent(newSong);
+
+    /************************************************************
+     * song issues
+     */
     
     // set your minutes time limit here
     var minToMs = 10/*min*/ * 60/*sec*/ * 1000 /*ms*/;
 
-    var songLength = checkPath(data, 'data.media.songLength') || null;
-    if (songLength >= minToMs) {
+    var songLength = _.get(data, 'media.songLength');
+    if (songLength && songLength >= minToMs) {
       bot.sendChat('Just a friendly warning that this song is 10 minutes or greater');
     }
 
     var songID = _.get(data, 'media.fkid');
     var type = _.get(data, 'media.type');
-
     if (!type || !songID) { return; }
+
     type = type.toUpperCase();
-    
     if (type === 'YOUTUBE'){
       return youtube(bot, db, data.media);
     }
-
     if (type === 'SOUNDCLOUD'){
       // return soundcloud(bot, songID);
     }
