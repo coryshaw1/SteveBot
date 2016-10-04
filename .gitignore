@@ -1,7 +1,10 @@
 node_modules/
 settings.js
-private/*
+private/*.json
+private/*.tar
+private/*.js
 .DS_Store
 tool/*.json
 tool/temp.js
 npm-debug.log
+*.tar

@@ -14,8 +14,8 @@ if (_env === null || typeof _env === 'undefined' || _env === '') {
  * @param  {Function} callback
  */
 var findUserById = function(db, userid, callback) { 
-  var user = db.ref(_env + '/users/' + userid);
-  user.on('value', function(snapshot){
+  var user = db.ref(_env + '/users').child(userid);
+  user.once('value', function(snapshot){
       var val = snapshot.val();
       callback(val);
     }, function(error){
@@ -160,7 +160,7 @@ var getLeaders = function(db, prop, limit, callback) {
   return db.ref(_env + '/users')
     .orderByChild(prop)
     .limitToLast(limit)
-    .on('value', function(snapshot) {
+    .once('value', function(snapshot) {
       callback(snapshot.val());
     });
 };
@@ -176,7 +176,7 @@ var getTrigger = function (bot, db, triggerName, callback) {
   db.ref('triggers')
     .orderByChild('Trigger')
     .equalTo(triggerName + ':')
-    .on('value', function(snapshot) {
+    .once('value', function(snapshot) {
       var val = snapshot.val();
       if (typeof callback === 'function') {
         return callback(val);
