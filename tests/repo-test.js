@@ -5,14 +5,8 @@ var expect = chai.expect;
 var should = chai.should;
 
 var repo = require(process.cwd()+'/repo');
-var settings = require(process.cwd() + '/private/settings.js');
-var firebase = require('firebase');
-
-firebase.initializeApp({
-  serviceAccount: process.cwd() + '/private/serviceAccountCredentials.json',
-  databaseURL: settings.FIREBASE.BASEURL
-});
-var db = firebase.database();
+var stubs = require('./stubs.js');
+var db = stubs.db();
 
 // create a testData.js and put it in /private
 // take a few users from the db and add them in an object replacing their
