@@ -32,6 +32,28 @@ function reviewPoints(bot, currentSong) {
   }
 }
 
+function songWarning(bot, db, data){ 
+  // set your minutes time limit here
+  var minToMs = 10/*min*/ * 60/*sec*/ * 1000 /*ms*/;
+
+  var songLength = _.get(data, 'media.songLength');
+  if (songLength && songLength >= minToMs) {
+    bot.sendChat('Just a friendly warning that this song is 10 minutes or greater');
+  }
+
+  var songID = _.get(data, 'media.fkid');
+  var type = _.get(data, 'media.type');
+  if (!type || !songID) { return; }
+
+  type = type.toUpperCase();
+  if (type === 'YOUTUBE'){
+    return youtube(bot, db, data.media);
+  }
+  if (type === 'SOUNDCLOUD'){
+    // return soundcloud(bot, songID);
+  }
+}
+
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
@@ -45,9 +67,16 @@ module.exports = function(bot, db) {
     var propped = userStore.getProps();
     var flowed = userStore.getFlows();
     
+    /************************************************************
+     * review points
+     */
     // send chat message if there were any props or flow points given
     reviewPoints(bot, currentSong);
 
+    /************************************************************
+     * save current song as last song data in the store
+     */
+    
     //Save previous song for !lastplayed
     currentSong.usersThatFlowed = flowed.length;
     currentSong.usersThatPropped = propped.length;
@@ -79,25 +108,7 @@ module.exports = function(bot, db) {
      * song issues
      */
     
-    // set your minutes time limit here
-    var minToMs = 10/*min*/ * 60/*sec*/ * 1000 /*ms*/;
-
-    var songLength = _.get(data, 'media.songLength');
-    if (songLength && songLength >= minToMs) {
-      bot.sendChat('Just a friendly warning that this song is 10 minutes or greater');
-    }
-
-    var songID = _.get(data, 'media.fkid');
-    var type = _.get(data, 'media.type');
-    if (!type || !songID) { return; }
-
-    type = type.toUpperCase();
-    if (type === 'YOUTUBE'){
-      return youtube(bot, db, data.media);
-    }
-    if (type === 'SOUNDCLOUD'){
-      // return soundcloud(bot, songID);
-    }
+    songWarning(bot, db, data);
 
   });
 };
