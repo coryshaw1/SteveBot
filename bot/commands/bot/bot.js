@@ -1,12 +1,12 @@
 'use strict';
-var checkPath = require(process.cwd()+'/bot/utilities/checkPath');
+var _ = require('lodash');
 
 var getRandom = function (list) {
   return list[Math.floor((Math.random()*list.length))];
 };
 
 module.exports = function(bot, db, data) {
-  var name = checkPath(data, 'data.user.username') || 'there';
+  var name = _.get(data, 'user.username', 'there');
   var responses = [
     'I\'m still here!',
     '!human',

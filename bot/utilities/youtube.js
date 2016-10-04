@@ -1,5 +1,5 @@
 'use strict';
-
+var _ = require('lodash');
 var settings = require(process.cwd() + '/private/settings.js');
 var repo = require(process.cwd()+'/repo');
 var YOUR_API_KEY = settings.YT_API;
@@ -39,7 +39,7 @@ function makeYTurl(id) {
   https://developers.google.com/youtube/v3/docs/videos#status.uploadStatus
   https://developers.google.com/youtube/v3/docs/videos#contentDetails.regionRestriction
  */
-var badStatus = [
+var badStatuses = [
   'deleted',
   'failed',
   'rejected'
@@ -51,7 +51,7 @@ var getRandom = function (list) {
 
 var responsesDE = [
   'Hey all, you\'ll never guess which country is blocking this video...',
-  'Oh look, another video blocked in Germany (Deutschland)',
+  'Oh look, another video blocked in Germany',
   'Sorry my German Chillout humanoid friends, you won\'t be able to hear this track, it\'s blocked in your country.',
   'This video is blocked in Germany, how ... unusual ... :confused: ',
   'Please sign my petition to allow the German peoples to hear chill music so they can finally hear great tracks like this.  Thank you.'
@@ -69,12 +69,12 @@ function checkStatus(bot, db, media, body) {
   dj = dj === void(0) ? '@'+dj : dj.username;
 
   var yt = JSON.parse(body);
-  if (yt && yt.items && yt.items.length > 0 && yt.items[0].status) {
+  var status = _.get(yt, 'items[0].status');
+  
+  if (status) {
     
-    var status = yt.items[0].status;
-
     // if one these bad uploadStatuses exist then we skip
-    if (status.uploadStatus && badStatus.indexOf(yt.items[0].status.uploadStatus) > -1) {
+    if (badStatuses.indexOf(status.uploadStatus) > -1) {
       var reason = yt.items[0].status.uploadStatus;
 
       // log issues to console and to firebase
@@ -88,7 +88,7 @@ function checkStatus(bot, db, media, body) {
     }
 
     // if video is private then we skip
-    if (status.privacyStatus && status.privacyStatus === 'private') {
+    if (_.get(status, 'privacyStatus') === 'private') {
       // log to console and firebase
       bot.log('info', 'BOT', `[SKIP] video with id ${media.fkid} was private`);
       trackIssue(db, yt, media, 'private');
@@ -103,31 +103,29 @@ function checkStatus(bot, db, media, body) {
 
   // check if a video has region restrictions. For now just put that info in the chat
   // and log it, but do nothing else
-  if (yt && yt.items && yt.items.length > 0 && yt.items[0].contentDetails) {
-    if (yt.items[0].contentDetails.regionRestriction) {
-        var _region = yt.items[0].contentDetails.regionRestriction;
-        
-        // yes we get THAT many blocked youtube videos in Germany that we might
-        // as well make fun of it
-        if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
-          trackIssue(db, yt, media, 'region restrictions');
-          bot.sendChat(`${media.name}`);
-          return bot.sendChat( getRandom(responsesDE) );
-        }
+  var _region = _.get(yt, 'items[0].contentDetails.regionRestriction');
+  if (_region) {
 
-        bot.sendChat(`*FYI, this Youtube video has region restrictions:*`);
-        bot.sendChat(`${media.name}`);
-        
-        if (_region.allowed && _region.allowed.length > 0) {
-          var _a = Array.isArray(_region.allowed) ? _region.allowed.join(',') : _region.allowed; 
-          bot.sendChat('*allowed in:* ' + _a);
-        }
-        if (_region.blocked && _region.blocked.length > 0) {
-          var _b = Array.isArray(_region.blocked) ? _region.blocked.join(',') : _region.blocked;
-          bot.sendChat('*blocked in:* ' + _b);
-        }
-        trackIssue(db, yt, media, 'region restrictions');
+    // yes we get THAT many blocked youtube videos in Germany that we might
+    // as well make fun of it
+    if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
+      trackIssue(db, yt, media, 'region restrictions');
+      bot.sendChat(`${media.name}`);
+      return bot.sendChat( getRandom(responsesDE) );
     }
+
+    bot.sendChat(`*FYI, this Youtube video has region restrictions:*`);
+    bot.sendChat(`${media.name}`);
+    
+    if (_region.allowed && _region.allowed.length > 0) {
+      var _a = Array.isArray(_region.allowed) ? _region.allowed.join(',') : _region.allowed; 
+      bot.sendChat('*allowed in:* ' + _a);
+    }
+    if (_region.blocked && _region.blocked.length > 0) {
+      var _b = Array.isArray(_region.blocked) ? _region.blocked.join(',') : _region.blocked;
+      bot.sendChat('*blocked in:* ' + _b);
+    }
+    trackIssue(db, yt, media, 'region restrictions');
   }
 
   if (yt && yt.items && yt.items.length === 0){

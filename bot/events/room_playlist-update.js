@@ -3,7 +3,7 @@ var mediaInfo = require(process.cwd()+'/bot/utilities/media');
 var usersInfo = require(process.cwd()+'/bot/utilities/users');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
 // var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
-var checkPath = require(process.cwd()+'/bot/utilities/checkPath');
+var _ = require('lodash');
 
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
@@ -71,8 +71,9 @@ module.exports = function(bot, db) {
       bot.sendChat('Just a friendly warning that this song is 10 minutes or greater');
     }
 
-    var songID = checkPath(data, 'data.media.fkid') || null;
-    var type = checkPath(data, 'data.media.type') || null;
+    var songID = _.get(data, 'media.fkid');
+    var type = _.get(data, 'media.type');
+
     if (!type || !songID) { return; }
     type = type.toUpperCase();
     
