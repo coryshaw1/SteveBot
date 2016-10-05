@@ -2,10 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.1] - 2016-10-XX
+The Commands of the bot are its API so here's how it will adhere to Semantic Versioning:    
+**MAJOR** - Changing/removing existing bot commands breaking how they previously functioned (incompatible API changes)     
+**MINOR** - Adding new commands that won't affect existing ones (add functionality in a backwards-compatible manner)    
+**PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
+
+## [1.1.0] - 2016-10-05
+note:  The previous release (0.1.0) should have been a 1.0.0 release because it had MAJOR changes that broke previous functionality so I'm going to jump this relase to 1.1.0.
+
 ### Changed
-- changing how firebase is accessed
+- create separate gh-pages for commands
 - code improvements
+- added !admin reconnect command
 
 ## [0.1.0] - 2016-09-30
 ### Added
