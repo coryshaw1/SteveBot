@@ -32,6 +32,13 @@ module.exports = function(bot, db, data) {
       bot.sendChat(':recycle: brb! :recycle:');
       setTimeout(process.exit, 1500);
       break;
+    case 'reconnect':
+      bot.sendChat(':recycle: brb! :recycle:');
+      bot.disconnect();
+      setTimeout(function(){
+         bot.connect(settings.ROOMNAME);
+      }, 5000);
+      break;
     // more commands to come
     default:
     break;

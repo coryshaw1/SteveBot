@@ -34,10 +34,9 @@ function reviewPoints(bot, currentSong) {
 
 function songWarning(bot, db, data){ 
   // set your minutes time limit here
-  var minToMs = 10/*min*/ * 60/*sec*/ * 1000 /*ms*/;
 
   var songLength = _.get(data, 'media.songLength');
-  if (songLength && songLength >= minToMs) {
+  if (songLength && songLength >= bot.myconfig.maxSongLength) {
     bot.sendChat('Just a friendly warning that this song is 10 minutes or greater');
   }
 

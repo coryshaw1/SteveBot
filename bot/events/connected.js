@@ -10,7 +10,7 @@ module.exports = function(bot, db) {
     var users = bot.getUsers();
 
     for(var i = 0; i < users.length; i++) {
-      repo.logUser(db, users[i], function(data){});
+      repo.logUser(db, users[i], function(){});
     }
 
     bot.updub();

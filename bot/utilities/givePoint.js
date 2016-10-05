@@ -1,6 +1,5 @@
 'use strict';
 var repo = require(process.cwd()+'/repo');
-var _ = require('underscore');
 var userStore = require(process.cwd()+ '/bot/store/users.js');
 
 /**

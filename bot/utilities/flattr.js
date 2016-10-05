@@ -1,9 +1,7 @@
 'use strict';
 // var repo = require(process.cwd()+'/repo');
 var settings = require(process.cwd() + '/private/settings.js');
-// var usersInfo = require(process.cwd()+'/bot/utilities/users');
 var request = require('request');
-// var _ = require('underscore');
 var log = require('jethro');
 log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
 

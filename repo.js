@@ -67,30 +67,30 @@ var insertUser = function(db, user, callback) {
 var logUser = function(db, user, callback) {
   findUserById(db, user.id, function(foundUser) {
     
+    var userLogInfo = {
+      'dubs': user.dubs || null,
+      'LastConnected': Date.now(),
+      'flow' : user.flow || 0,
+      'props' : user.props || 0,
+      'username' : user.username
+    };
+
     if(!foundUser){
       
-      insertUser(db, user, function(error){
+      insertUser(db, userLogInfo, function(error){
         if (error) {
           return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
         }
-
         user.logType = 'inserted';
         return callback(user);
       });
       
     } else {
-      var newdata = {
-        'dubs': user.dubs || null,
-        'LastConnected': Date.now(),
-        'flow' : user.flow || 0,
-        'props' : user.props || 0
-      };
 
-      updateUser(db, user.id, newdata, function(error){
+      updateUser(db, user.id, userLogInfo, function(error){
         if (error) {
           return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
         }
-
         user.logType = 'updated';
         return callback(user);
       });

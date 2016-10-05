@@ -1,32 +1,29 @@
 'use strict';
-var DubAPI = require('dubapi'),
-    log = require('jethro'),
-    firebase = require('firebase'),
-    settings = require(process.cwd() + '/private/settings.js');
+var DubAPI = require('dubapi');
+var settings = require(process.cwd() + '/private/settings.js');
+var Database = require(process.cwd() + '/bot/db.js');
+var config = require(process.cwd() + '/bot/config.js');
 
-
-//make logger timestamp more readable
-log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
-
-firebase.initializeApp({
-  serviceAccount: process.cwd() + '/private/serviceAccountCredentials.json',
-  databaseURL: settings.FIREBASE.BASEURL
-});
-
-var db = firebase.database();
-
+var svcAcct = process.cwd() + '/private/serviceAccountCredentials.json';
+var BASEURL = settings.FIREBASE.BASEURL;
+var db = new Database(svcAcct, BASEURL);
 
 new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, function(err, bot) {
         
     if (err) {
-        log('error', 'BOT', err);
+        console.error(err);
         process.exit(1); // exit so pm2 can restart
         return;
     }
 
-    //to find out how to use jethro visit: https://github.com/JethroLogger/Jethro
-    bot.log = require('jethro');
-    bot.log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
+    bot.myconfig = config;
+
+    if (bot.myconfig.verboseLogging) {
+      bot.log = require('jethro');
+      bot.log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
+    } else {
+      bot.log = function(){return;}; // do nothing
+    }
 
     bot.log('info', 'BOT', 'Running DerpyBot with DubAPI v' + bot.version);
 
@@ -49,6 +46,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
 
     bot.on('error', function(err) {
         bot.log('error', 'BOT', err);
+        bot.reconnect();
     });
 
     connect();
