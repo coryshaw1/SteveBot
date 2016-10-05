@@ -47,7 +47,9 @@ var insertUser = function(db, user, callback) {
     props : 0,
     flow : 0,
     DateAdded : new Date(),
-    LastConnected : new Date()
+    LastConnected : new Date(),
+    'username' : user.username,
+    'id' : user.id
   };
   var finalNewUser = Object.assign({}, user, extraStuff);
   Object.keys(finalNewUser).forEach(function(key){
@@ -72,7 +74,8 @@ var logUser = function(db, user, callback) {
       'LastConnected': Date.now(),
       'flow' : user.flow || 0,
       'props' : user.props || 0,
-      'username' : user.username
+      'username' : user.username,
+      'id' : user.id
     };
 
     if(!foundUser){

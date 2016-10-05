@@ -39,6 +39,22 @@ module.exports = function(bot, db, data) {
          bot.connect(settings.ROOMNAME);
       }, 5000);
       break;
+    case 'mute':
+      if (!bot.myconfig.muted) {
+        bot.sendChat('ok I\'ll shut up now');
+        bot.oldSendChat = bot.sendChat;
+        bot.myconfig.muted = true;
+        bot.sendChat = function(x){return;};
+      }
+      
+      break;
+    case 'unmute':
+      if (bot.myconfig.muted) {
+        bot.sendChat = bot.oldSendChat;
+        bot.myconfig.muted = false;
+        bot.sendChat('It\'s good to be back');
+      }
+      break;
     // more commands to come
     default:
     break;

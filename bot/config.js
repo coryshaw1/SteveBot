@@ -10,6 +10,7 @@ function minToMs(x) {
  * @type {Object}
  */
 module.exports = {
+  "muted" : false,
   
   // turn on verbose logging
   'verboseLogging' : true, 
