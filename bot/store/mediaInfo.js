@@ -1,5 +1,7 @@
 'use strict';
 var settings = require(process.cwd() + '/private/settings.js');
+var sc = require(process.cwd() + '/bot/utilities/soundcloud.js');
+var _ = require('lodash');
 var request = require('request');
 
 // TODO: move this to another file
@@ -7,30 +9,16 @@ var getSongLink = function(bot, callback){
   var media = bot.getMedia();
 
   if(!media) {
-    return callback();
+    return callback(null);
   }
 
-  if(media.type === 'soundcloud') {
-    var options = {
-      url: 'https://api.soundcloud.com/tracks/' + media.fkid + '.json?client_id=' + settings.SOUNDCLOUDID
-    };
-
-    var responseBack = function(error, response, body) {
-      if(!error){
-        try {
-          var json = JSON.parse(body);
-          return callback(json.permalink_url);
-        } catch(e) {
-          bot.log('error', 'BOT', 'Soundcloud API error fetching song! Could be caused by invalid Soundcloud API key');
-          return callback('https://api.dubtrack.fm/song/' + media.id + '/redirect');
-        }
-      } else {
-        bot.log('error', 'BOT', 'Soundcloud Error: ' + error);
+  if(media.type.toUpperCase() === 'SOUNDCLOUD') {
+    sc(bot, media, function(error, result){
+      if (error) {
         return callback('https://api.dubtrack.fm/song/' + media.id + '/redirect');
       }
-    };
-
-    request(options, responseBack);
+      return callback(_.get(result, 'permalink_url', null));
+    });
   } else {
     return callback('http://www.youtube.com/watch?v=' + media.fkid);
   }
@@ -68,7 +56,7 @@ var mediaStore = {
   setLast : function(x) {
     if (typeof x === 'object') {
       for (var key in x) {
-        if (x.hasOwnProperty(key) ) {
+        if (this.last.hasOwnProperty(key) ) {
           this.last[key] = x[key];
         }
       }
@@ -78,10 +66,16 @@ var mediaStore = {
   setCurrent : function(x) {
     if (typeof x === 'object') {
       for (var key in x) {
-        if (x.hasOwnProperty(key) && this.current.hasOwnProperty(key) ) {
+        if (this.current.hasOwnProperty(key) ) {
           this.current[key] = x[key];
         }
       }
+    }
+  },
+
+  setCurrentKey: function(key, value){
+    if (this.current.hasOwnProperty(key) ) {
+      this.current[key] = value;
     }
   },
 

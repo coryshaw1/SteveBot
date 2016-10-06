@@ -7,6 +7,9 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands that won't affect existing ones (add functionality in a backwards-compatible manner)    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.2.1] - 2016-10-06
+### Changed
+- bug fixes
 
 ## [1.2.0] - 2016-10-05
 ### Added

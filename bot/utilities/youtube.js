@@ -61,6 +61,29 @@ function trackIssue(db, ytResponse, media, reason){
   repo.trackSongIssues(db, ytResponse, media, reason);
 }
 
+function regionBlock(bot, db, _region, yt, media){
+  // yes we get THAT many blocked youtube videos in Germany that we might
+  // as well make fun of it
+  if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
+    trackIssue(db, yt, media, 'region restrictions');
+    bot.sendChat(`${media.name}`);
+    return bot.sendChat( getRandom(responsesDE) );
+  }
+
+  bot.sendChat(`*FYI, this Youtube video has region restrictions:*`);
+  bot.sendChat(`${media.name}`);
+  
+  if (_region.allowed && _region.allowed.length > 0) {
+    var _a = Array.isArray(_region.allowed) ? _region.allowed.join(',') : _region.allowed; 
+    bot.sendChat('*allowed in:* ' + _a);
+  }
+  if (_region.blocked && _region.blocked.length > 0) {
+    var _b = Array.isArray(_region.blocked) ? _region.blocked.join(',') : _region.blocked;
+    bot.sendChat('*blocked in:* ' + _b);
+  }
+  trackIssue(db, yt, media, 'region restrictions');
+}
+
 function checkStatus(bot, db, media, body) {
   if (!body) { return; }
 
@@ -105,27 +128,7 @@ function checkStatus(bot, db, media, body) {
   // and log it, but do nothing else
   var _region = _.get(yt, 'items[0].contentDetails.regionRestriction');
   if (_region) {
-
-    // yes we get THAT many blocked youtube videos in Germany that we might
-    // as well make fun of it
-    if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
-      trackIssue(db, yt, media, 'region restrictions');
-      bot.sendChat(`${media.name}`);
-      return bot.sendChat( getRandom(responsesDE) );
-    }
-
-    bot.sendChat(`*FYI, this Youtube video has region restrictions:*`);
-    bot.sendChat(`${media.name}`);
-    
-    if (_region.allowed && _region.allowed.length > 0) {
-      var _a = Array.isArray(_region.allowed) ? _region.allowed.join(',') : _region.allowed; 
-      bot.sendChat('*allowed in:* ' + _a);
-    }
-    if (_region.blocked && _region.blocked.length > 0) {
-      var _b = Array.isArray(_region.blocked) ? _region.blocked.join(',') : _region.blocked;
-      bot.sendChat('*blocked in:* ' + _b);
-    }
-    trackIssue(db, yt, media, 'region restrictions');
+    regionBlock(bot, db, _region, yt, media);
   }
 
   if (yt && yt.items && yt.items.length === 0){

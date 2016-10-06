@@ -27,12 +27,17 @@ module.exports = {
   // coming soon
   'cleverBot' : false,
   
-  // set max song length so you can warn and/or auto skip
-  'maxSongLength' : minToMs(10), 
-
   'autoskip' : {
-    'enabled' : true, // needs to be true for the following autoskip to be honored
-    'skipStuck' : true, // auto skip stuck/unplayable songs
-    'skipLong' : false // skips songs that exceed the maxSongLength
+    'enabled' : true, // needs to be true for the following autoskips to be honored
+    'stuck' : true, // auto skip stuck/unplayable songs
+  },
+
+  'longSongs' : {
+    // should we warn the room that a song exceeds the max length?
+    'warn' : false,
+    // set max song length so you can warn and/or auto skip
+    'max' : minToMs(10),
+    'skip' : false,
+    'message' : 'Just a friendly warning that this song is 10 minutes or longer'
   }
 };

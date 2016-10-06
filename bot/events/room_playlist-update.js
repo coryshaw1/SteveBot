@@ -2,9 +2,11 @@
 var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 var userStore = require(process.cwd()+ '/bot/store/users.js');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
-// var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
-var checkPath = require(process.cwd()+'/bot/utilities/checkPath');
 var _ = require('lodash');
+
+// var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
+
+
 
 function reviewPoints(bot, currentSong) {
   var propped = userStore.getProps();
@@ -17,7 +19,7 @@ function reviewPoints(bot, currentSong) {
  
   if (propped.length > 0) {
     plural = propped.length > 1 ? 's' : '';
-    messageToSend.push(`${propped.length} prop${plural} props :fist: :heart: :musical_note:`);
+    messageToSend.push(`${propped.length} prop${plural} :fist: :heart: :musical_note:`);
   }
 
   if (flowed.length > 0) {
@@ -36,8 +38,11 @@ function songWarning(bot, db, data){
   // set your minutes time limit here
 
   var songLength = _.get(data, 'media.songLength');
-  if (songLength && songLength >= bot.myconfig.maxSongLength) {
-    bot.sendChat('Just a friendly warning that this song is 10 minutes or greater');
+  if (songLength &&
+      bot.myconfig.longSongs.warn && 
+      songLength >= bot.myconfig.longSongs.max) 
+  {
+    bot.sendChat(bot.myconfig.longSongs.message);
   }
 
   var songID = _.get(data, 'media.fkid');
@@ -56,7 +61,7 @@ function songWarning(bot, db, data){
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
-    
+  
     // console.log(data.media);
     /************************************************************
      *  song info and trackinng
@@ -89,7 +94,8 @@ module.exports = function(bot, db) {
 
     // get current song link
     mediaStore.getLink(bot, function(link){
-        newSong.link = !link ? '' : link;
+        var val = !link ? '' : link;
+        mediaStore.setCurrentKey('link', val);
     });
 
     // if no data.media from the api then stop now
