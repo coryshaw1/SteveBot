@@ -41,7 +41,7 @@ module.exports = function(bot, db, data) {
       break;
     case 'mute':
       if (!bot.myconfig.muted) {
-        bot.sendChat('ok I\'ll shut up now');
+        bot.sendChat('I shut up now :speak_no_evil:');
         bot.oldSendChat = bot.sendChat;
         bot.myconfig.muted = true;
         bot.sendChat = function(x){return;};
@@ -52,7 +52,7 @@ module.exports = function(bot, db, data) {
       if (bot.myconfig.muted) {
         bot.sendChat = bot.oldSendChat;
         bot.myconfig.muted = false;
-        bot.sendChat('It\'s good to be back');
+        bot.sendChat('It\'s good to be back :loudspeaker:');
       }
       break;
     // more commands to come

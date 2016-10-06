@@ -13,7 +13,7 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 - added more !admin commands
 
 ### Changed
-- bug fix
+- bug fixes
 
 ## [1.1.0] - 2016-10-05
 note:  The previous release (0.1.0) should have been a 1.0.0 release because it had MAJOR changes that broke previous functionality so I'm going to jump this relase to 1.1.0.

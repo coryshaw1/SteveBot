@@ -4,7 +4,7 @@ var settings = require(process.cwd() + '/private/settings.js');
 var repo = require(process.cwd()+'/repo');
 var YOUR_API_KEY = settings.YT_API;
 var request = require('request');
-// https://developers.google.com/youtube/v3/docs/videos#status
+
 
 var Youtube = {
   'base' : 'https://www.googleapis.com/youtube/v3/videos?',
@@ -35,7 +35,7 @@ function makeYTurl(id) {
      }
 
     status.privacyStatus
-  
+  https://developers.google.com/youtube/v3/docs/videos#status
   https://developers.google.com/youtube/v3/docs/videos#status.uploadStatus
   https://developers.google.com/youtube/v3/docs/videos#contentDetails.regionRestriction
  */
@@ -52,9 +52,9 @@ var getRandom = function (list) {
 var responsesDE = [
   'Hey all, you\'ll never guess which country is blocking this video...',
   'Oh look, another video blocked in Germany',
-  'Sorry my German Chillout humanoid friends, you won\'t be able to hear this track, it\'s blocked in your country.',
+  'Sucks to be :DE: right now',
   'This video is blocked in Germany, how ... unusual ... :confused: ',
-  'Please sign my petition to allow the German peoples to hear chill music so they can finally hear great tracks like this.  Thank you.'
+  ':DE: :hear_no_evil: :mute: :-('
 ];
 
 function trackIssue(db, ytResponse, media, reason){
@@ -141,12 +141,30 @@ function checkStatus(bot, db, media, body) {
 
 }
 
-module.exports = function(bot, db, media) {
-  if (!settings || !YOUR_API_KEY || !media || !bot) { return; }
-
+var start = function(bot, db, media){
   request(makeYTurl(media.fkid), function (error, response, body) {
     if (!error && response.statusCode === 200) {
       return checkStatus(bot, db, media, body);
     }
   });
+};
+
+module.exports = function(bot, db, media) {
+  if (!settings || !YOUR_API_KEY || !media || !bot) { return; }
+
+  var savedIssue = null;
+  var now = Date.now();
+
+  repo.getSongIssue(db, media.fkid)
+    .then(function(snapshot){
+      savedIssue = snapshot.val();
+      
+      // if the song issue doesn't exist (so it's a new issue)
+      // OR it was tracked more than 15min ago
+      if (!savedIssue || now - savedIssue.timestamp > 900000) {
+        start(bot, db, media);
+      }
+
+    })
+    .catch(function(err){});
 };
