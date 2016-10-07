@@ -2,6 +2,12 @@
 var settings = require(process.cwd() + '/private/settings.js');
 var _ = require('lodash');
 
+settings.APPROVED_USERS.push(settings.OWNER);
+var approved = settings.APPROVED_USERS.map(function(u){return u.toLowerCase(); });
+function checkCreds(user){
+  return approved.indexOf(user.toLowerCase()) >= 0;
+}
+
 module.exports = function(bot, db, data) {
   if (typeof bot !== 'object' || typeof data !== 'object') {
     return;
@@ -11,7 +17,7 @@ module.exports = function(bot, db, data) {
   if (!userName) { return; }
 
   // check if person sending chat is the owner
-  if (userName !== settings.OWNER) {
+  if (!checkCreds(userName)) {
     return bot.sendChat('Sorry I only take admin commands from my master');
   }
 
@@ -33,7 +39,7 @@ module.exports = function(bot, db, data) {
       setTimeout(process.exit, 1500);
       break;
     case 'reconnect':
-      bot.sendChat(':recycle: brb! :recycle:');
+      bot.sendChat(':phone: Redialing Dubtrack, brb! :computer:');
       bot.disconnect();
       setTimeout(function(){
          bot.connect(settings.ROOMNAME);
