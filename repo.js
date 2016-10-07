@@ -61,6 +61,17 @@ var insertUser = function(db, user, callback) {
   usersRef.child(user.id).set(finalNewUser, callback);
 };
 
+function userModel(data){
+  return {
+    'dubs': data.dubs || null,
+    'LastConnected': Date.now(),
+    'flow' : data.flow || 0,
+    'props' : data.props || 0,
+    'username' : data.username,
+    'id' : data.id
+  };
+}
+
 /**
  * Logs a user to the db
  * @param  {Object}   db       Firebase object
@@ -69,18 +80,11 @@ var insertUser = function(db, user, callback) {
  */
 var logUser = function(db, user, callback) {
   findUserById(db, user.id, function(foundUser) {
-    
-    var userLogInfo = {
-      'dubs': user.dubs || null,
-      'LastConnected': Date.now(),
-      'flow' : user.flow || 0,
-      'props' : user.props || 0,
-      'username' : user.username,
-      'id' : user.id
-    };
 
+    var userLogInfo;
+    
     if(!foundUser){
-      
+      userLogInfo = userModel(user);
       insertUser(db, userLogInfo, function(error){
         if (error) {
           return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
@@ -90,7 +94,7 @@ var logUser = function(db, user, callback) {
       });
       
     } else {
-
+      userLogInfo = userModel(foundUser);
       updateUser(db, user.id, userLogInfo, function(error){
         if (error) {
           return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');

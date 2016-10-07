@@ -1,8 +1,6 @@
 'use strict';
-var settings = require(process.cwd() + '/private/settings.js');
 var sc = require(process.cwd() + '/bot/utilities/soundcloud.js');
 var _ = require('lodash');
-var request = require('request');
 
 // TODO: move this to another file
 var getSongLink = function(bot, callback){
