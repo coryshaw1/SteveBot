@@ -73,13 +73,18 @@ function regionBlock(bot, db, _region, yt, media){
   bot.sendChat(`*FYI, this Youtube video has region restrictions:*`);
   bot.sendChat(`${media.name}`);
   
+  var flags;
   if (_region.allowed && _region.allowed.length > 0) {
-    var _a = Array.isArray(_region.allowed) ? _region.allowed.join(',') : _region.allowed; 
-    bot.sendChat('*allowed in:* ' + _a);
+    flags = _region.allowed.map( function(country){
+      return ':flag_' + country.toLowerCase() + ':'; 
+    });
+    bot.sendChat('*allowed in:* ' + flags.join(','));
   }
   if (_region.blocked && _region.blocked.length > 0) {
-    var _b = Array.isArray(_region.blocked) ? _region.blocked.join(',') : _region.blocked;
-    bot.sendChat('*blocked in:* ' + _b);
+    flags = _region.blocked.map( function(country){
+      return ':flag_' + country.toLowerCase() + ':'; 
+    });
+    bot.sendChat('*blocked in:* ' + flags.join(','));
   }
   trackIssue(db, yt, media, 'region restrictions');
 }

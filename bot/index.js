@@ -17,6 +17,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
     }
 
     bot.myconfig = config;
+    bot.maxChatMessageSplits = 5;
 
     if (bot.myconfig.verboseLogging) {
       bot.log = require('jethro');
