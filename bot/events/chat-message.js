@@ -1,10 +1,12 @@
 'use strict';
-
 var fs = require('fs');
 var path = require('path');
 var triggers = require( process.cwd() + '/bot/utilities/triggers.js');
+var cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
+
 var commands = {};
 var localCommands = process.cwd() + '/bot/commands';
+
 
 var walk = function(dir) {
   //cache all the commands here by auto requiring them and passing the bot
@@ -81,6 +83,11 @@ module.exports = function(bot, db) {
       bot.sendChat('That being said, I\'m the new bot in town!');
       bot.sendChat('Use "!" instead of "$", all the old triggers should be available.');
       return;
+    }
+
+    if (tokens[0].toLowerCase() === '@derpybot') {
+      data.params = tokens.slice(1);
+      return cleverbot(bot, db, data);
     }
 
   });

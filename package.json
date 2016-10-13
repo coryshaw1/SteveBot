@@ -9,6 +9,7 @@
     "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "dependencies": {
+    "cleverbot-node": "git+ssh://git@github.com/fojas/cleverbot-node.git",
     "dubapi": "^1.6.3",
     "firebase": "^3.4.0",
     "fs": "0.0.2",
