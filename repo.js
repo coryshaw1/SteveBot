@@ -95,6 +95,7 @@ var logUser = function(db, user, callback) {
       
     } else {
       userLogInfo = userModel(foundUser);
+      userLogInfo.username = user.username;
       updateUser(db, user.id, userLogInfo, function(error){
         if (error) {
           return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
