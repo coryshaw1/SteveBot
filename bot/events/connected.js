@@ -1,11 +1,13 @@
 'use strict';
 var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
+var historyStore = require(process.cwd()+ '/bot/store/history.js');
 var repo = require(process.cwd()+'/repo');
+
 
 module.exports = function(bot, db) {
   bot.on('connected', function(data) {
   bot.log('info', 'BOT', 'Connected to ' + data);
-    
+
   setTimeout(function(){
     var users = bot.getUsers();
 
@@ -27,6 +29,10 @@ module.exports = function(bot, db) {
       };
       mediaStore.setCurrent(currentSong);
     }
+
+    historyStore.init(bot, function(result){
+      console.log(result);
+    });
   }, 5000);
   });
 };

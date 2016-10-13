@@ -40,6 +40,7 @@
 * **!steve** - To honor the origin of this bot's code
 * **!todayfact** - A random inciteful fact about today
 * **!giphy [search text]** - Return a random giphy image (rating: P-13 or below)
+* **@DerpyBot [message]** - Chat with the bot (uses Cleverbot API)
 
 ### Info
 * **!commands** - Basic list of commands

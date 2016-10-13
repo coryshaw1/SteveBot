@@ -15,7 +15,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
         process.exit(1); // exit so pm2 can restart
         return;
     }
-
+    
     bot.myconfig = config;
     bot.maxChatMessageSplits = 5;
 
