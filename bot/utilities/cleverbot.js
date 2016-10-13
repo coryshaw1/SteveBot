@@ -14,7 +14,6 @@ module.exports = function(bot, db, data) {
   var cleverbot = new Cleverbot();
   Cleverbot.prepare(function(){
     cleverbot.write(data.params.join(" "), function (response) {
-      console.log(response);
       if (response) {
         bot.sendChat(response.message);
       }
