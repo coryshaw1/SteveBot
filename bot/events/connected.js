@@ -30,9 +30,7 @@ module.exports = function(bot, db) {
       mediaStore.setCurrent(currentSong);
     }
 
-    historyStore.init(bot, function(result){
-      console.log(result);
-    });
+    historyStore.init(bot);
   }, 5000);
   });
 };

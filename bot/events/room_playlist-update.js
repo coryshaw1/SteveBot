@@ -2,6 +2,7 @@
 var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 var userStore = require(process.cwd()+ '/bot/store/users.js');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
+var historyStore = require(process.cwd()+ '/bot/store/history.js');
 var _ = require('lodash');
 
 // var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
@@ -58,11 +59,23 @@ function songWarning(bot, db, data){
   }
 }
 
+function checkHistory(bot, data){
+  if (!historyStore.ready) {
+    return;
+  }
+  var dj = _.get(data, 'user.username', 'dj');
+  var check = historyStore.getSong(data.media.id);
+  if (check.length > 0) {
+    var time = historyStore.convertTime(check[0].lastplayed);
+    bot.sendChat(`@${dj}, this song was played ${time} ago`);
+  }
+  historyStore.save(data);
+}
+
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
-  
-    // console.log(data.media);
+    
     /************************************************************
      *  song info and trackinng
      */
@@ -114,6 +127,12 @@ module.exports = function(bot, db) {
      */
     
     songWarning(bot, db, data);
+
+    /************************************************************
+     * Check if song has been played recently
+     */
+    
+    checkHistory(bot, data);
 
   });
 };
