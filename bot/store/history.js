@@ -1,6 +1,7 @@
 'use strict';
-var request = require('request');
-var _ = require('lodash');
+const request = require('request');
+const _ = require('lodash');
+const util = require('util');
 
 /**
  * Allows you to run a callback function on each item in an array at whatever
@@ -45,7 +46,7 @@ function makeRequestArray(roomID, pages) {
 
 
 var historyStore = {
-  songs : [],
+  songStore : [],
 
   ready : false,
 
@@ -87,12 +88,12 @@ var historyStore = {
     var result = [];
     
     // todo: figure out this bug
-    if (!Array.isArray(this.songs)) {
-      bot.log('error', 'HISTORY', this.songs);
+    if (!Array.isArray(this.songStore)) {
+      bot.log('error', 'HISTORY', util.inspect(this.songStore, false, null));
       return result;
     }
     
-    this.songs.forEach(function(song){
+    this.songStore.forEach(function(song){
       if (song.songid === songid) {
         result.push(song);
       }
@@ -104,23 +105,23 @@ var historyStore = {
     if (!song) { return; }
     if (!this.ready) {return;}
     // todo: figure out this bug
-    if (!Array.isArray(this.songs)) {
-      bot.log('error', 'HISTORY', this.songs);
+    if (!Array.isArray(this.songStore)) {
+      bot.log('error', 'HISTORY', util.inspect(this.songStore, false, null));
       return;
     }
 
     var convert = this.fromUpdate(song);
     // add song to the beginning of the array
-    this.songs.unshift(convert);
+    this.songStore.unshift(convert);
 
     // keep array at a max length of 140
-    if (this.songs.length > 140) {
-      this.songs = this.songs.pop();
+    if (this.songStore.length > 140) {
+      this.songStore.pop();
     }
   },
 
   clear : function(){
-    this.songs = [];
+    this.songStore = [];
     this.ready = false;
   },
 
@@ -143,7 +144,7 @@ var historyStore = {
             var songs = info.data.map(function(song){
               return self.fromHistory(song);
             });
-            self.songs = self.songs.concat(songs);
+            self.songStore = self.songStore.concat(songs);
           }
 
           updateHistory.next();
@@ -153,7 +154,7 @@ var historyStore = {
 
       updateHistory.done(function(){
         self.ready = true;
-        cb(self.songs);
+        cb(self.songStore);
       });
       
     }
