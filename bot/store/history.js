@@ -81,13 +81,16 @@ var historyStore = {
     };
   },
 
-  getSong : function(songid){
+  getSong : function(bot, songid){
     if (!songid) { return; }
     if (!this.ready) {return;}
     var result = [];
     
     // todo: figure out this bug
-    if (!Array.isArray(this.songs)) {return result;}
+    if (!Array.isArray(this.songs)) {
+      bot.log('error', 'HISTORY', this.songs);
+      return result;
+    }
     
     this.songs.forEach(function(song){
       if (song.songid === songid) {
@@ -97,7 +100,15 @@ var historyStore = {
     return result;
   },
 
-  save : function(song){
+  save : function(bot, song){
+    if (!song) { return; }
+    if (!this.ready) {return;}
+    // todo: figure out this bug
+    if (!Array.isArray(this.songs)) {
+      bot.log('error', 'HISTORY', this.songs);
+      return;
+    }
+
     var convert = this.fromUpdate(song);
     // add song to the beginning of the array
     this.songs.unshift(convert);

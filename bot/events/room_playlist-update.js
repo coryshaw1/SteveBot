@@ -64,12 +64,12 @@ function checkHistory(bot, data){
     return;
   }
   var dj = _.get(data, 'user.username', 'dj');
-  var check = historyStore.getSong(data.media.id);
+  var check = historyStore.getSong(bot, data.media.id);
   if (check.length > 0) {
     var time = historyStore.convertTime(check[0].lastplayed);
     bot.sendChat(`@${dj}, this song was played ${time} ago`);
   }
-  historyStore.save(data);
+  historyStore.save(bot, data);
 }
 
 module.exports = function(bot, db) {
