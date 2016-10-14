@@ -10,6 +10,7 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 ## [1.3.0] - 2016-10-13
 ### Added
 - Added Cleverbot integration. Chat with cleverbot by using `@derpybot [your message]`
+- Added Recently played warning
 
 ### Changed
 - update usernames on logUser
