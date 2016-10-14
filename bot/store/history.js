@@ -77,8 +77,8 @@ var historyStore = {
     return {
       songid : song.media.id,
       lastplayed : song.raw.song.played,
-      user : song.user.username,
-      name : song.media.name
+      user : _.get(song, 'user.username', '404usernamenotfound'),
+      name : _.get(song, 'media.name', '404songnamenotfound')
     };
   },
 
@@ -86,13 +86,7 @@ var historyStore = {
     if (!songid) { return; }
     if (!this.ready) {return;}
     var result = [];
-    
-    // todo: figure out this bug
-    if (!Array.isArray(this.songStore)) {
-      bot.log('error', 'HISTORY', util.inspect(this.songStore, false, null));
-      return result;
-    }
-    
+
     this.songStore.forEach(function(song){
       if (song.songid === songid) {
         result.push(song);
@@ -104,11 +98,10 @@ var historyStore = {
   save : function(bot, song){
     if (!song) { return; }
     if (!this.ready) {return;}
-    // todo: figure out this bug
-    if (!Array.isArray(this.songStore)) {
-      bot.log('error', 'HISTORY', util.inspect(this.songStore, false, null));
-      return;
-    }
+
+    var songId = _.get(song, 'media.id');
+    var lastplayed = _.get(song, 'raw.song.played');
+    if (!lastplayed || !songId) {return;}
 
     var convert = this.fromUpdate(song);
     // add song to the beginning of the array
