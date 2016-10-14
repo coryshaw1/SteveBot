@@ -87,7 +87,7 @@ var historyStore = {
     var result = [];
     
     // todo: figure out this bug
-    if (!Array.isArray(this.songs)) {return;}
+    if (!Array.isArray(this.songs)) {return result;}
     
     this.songs.forEach(function(song){
       if (song.songid === songid) {
