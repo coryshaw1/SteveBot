@@ -1,49 +1,5 @@
 'use strict';
-const request = require('request');
 const _ = require('lodash');
-const util = require('util');
-
-/**
- * Allows you to run a callback function on each item in an array at whatever
- * pace you want.  It wraps it in a object where you can just call .next() to
- * run the callback on the next item in the array. 
- * @param {[type]}   arr [description]
- * @param {Function} cb  [description]
- */
-function SlowIterator(arr, cb){
-  var pos = 0;
-  var doneCB = function(){};
-
-  var next = function(){
-    if (pos < arr.length) {
-      cb(arr[pos], pos);
-      pos++;
-    } else {
-      doneCB();
-    }
-  };
-
-  var done = function(cb){
-    doneCB = cb;
-  };
-
-  next();
-
-  return {
-    next: next,
-    done: done
-  };
-}
-
-function makeRequestArray(roomID, pages) {
-  var url = `https://api.dubtrack.fm/room/${roomID}/playlist/history?page=`;
-  var result = [];
-  for (var i=1; i <= pages; i++){
-    result.push(url + i);
-  }
-  return result;
-}
-
 
 var historyStore = {
   songStore : [],
@@ -126,30 +82,15 @@ var historyStore = {
       this.clear();
 
       var self = this;
-      var reqs = makeRequestArray(roomid, 7);
 
-      var updateHistory = new SlowIterator(reqs, function(current, pos){
-        request.get(current, function(err, resp, body){
-          if (err) {
-            bot.log('error', 'BOT', err);
-          } else {
-            var info = JSON.parse(body);
-            var songs = info.data.map(function(song){
-              return self.fromHistory(song);
-            });
-            self.songStore = self.songStore.concat(songs);
-          }
-
-          updateHistory.next();
-          
-        });
+      bot.getRoomHistory(7, function(history){
+        if (history && history.length > 0) {
+          self.songStore = history.map(function(song){
+            return self.fromHistory(song);
+          });
+          self.ready = true;
+        }
       });
-
-      updateHistory.done(function(){
-        self.ready = true;
-        cb(self.songStore);
-      });
-      
     }
     
   }

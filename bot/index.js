@@ -8,6 +8,12 @@ var svcAcct = process.cwd() + '/private/serviceAccountCredentials.json';
 var BASEURL = settings.FIREBASE.BASEURL;
 var db = new Database(svcAcct, BASEURL);
 
+/**
+ * Add my own extensions
+ */
+var getHistoryExtension = require(process.cwd() + '/bot/extend/getRoomHistory.js');
+DubAPI.prototype.getRoomHistory = getHistoryExtension;
+
 new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, function(err, bot) {
         
     if (err) {
