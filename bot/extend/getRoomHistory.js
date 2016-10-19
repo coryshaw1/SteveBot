@@ -2,6 +2,13 @@
 const _ = require('lodash');
 
 /***********************************************************************
+ * This module grabs the playlist history from a room
+ * It uses JS Generators so make sure your Node version supports it
+ * http://node.green/#generators
+ * node >= 4.3.2 
+ **/
+
+/***********************************************************************
  * Stubs for parts of DubAPI
  **/
 
@@ -17,40 +24,22 @@ function DubAPIRequestError(code, endpoint) {
 
 DubAPIRequestError.prototype = Object.create(Error.prototype);
 
+function DubAPIError(message) {
+    Error.captureStackTrace(this);
+    this.name = 'DubAPIError';
+    this.message = message || '';
+}
+
+DubAPIError.prototype = Object.create(Error.prototype);
+
 /************************************************************************/
 
 /**
- * Allows you to run a callback function on each item in an array at whatever
- * pace you want.  It wraps it in a object where you can just call .next() to
- * run the callback on the next item in the array. 
- * @param {[type]}   arr [description]
- * @param {Function} cb  [description]
+ * return array sequential history endpoints
+ * @param  {string} roomID  the RoomID (might be an int, I'm not sure. doesnt matter)
+ * @param  {integer} pages  total number of history pages desired
+ * @return {array}          Array of url strings
  */
-function StepIterator(arr, cb){
-  var pos = 0;
-  var doneCB = function(){};
-
-  var next = function(){
-    if (pos < arr.length) {
-      cb(arr[pos], pos);
-      pos++;
-    } else {
-      doneCB();
-    }
-  };
-
-  var done = function(cb){
-    doneCB = cb;
-  };
-
-  next();
-
-  return {
-    next: next,
-    done: done
-  };
-}
-
 function makeRequestArray(roomID, pages) {
   var url = endpoints.roomPlaylistHistory.replace('%RID%', roomID);
   var result = [];
@@ -60,43 +49,65 @@ function makeRequestArray(roomID, pages) {
   return result;
 }
 
+// store our module-scoped generator
+var hist;
 
+/**
+ * Make requests to url and return results to yield
+ * @param  {Object} context "this" of DubAPI
+ * @param  {String} url     The url to make GET request to
+ */
+function requestWrapper(context, url) {
+  context._.reqHandler.queue({method: 'GET', url: url}, function(code, body) {
+    if (code !== 200) {
+        context.emit('error', new DubAPIRequestError(code, url));
+        hist.next( null );
+      } else {
+        hist.next( body.data );
+      }
+  } );
+}
+
+/**
+ * Main Generator function to iterate over array at our own pace
+ * @param {Object} context       the "this" of the DubAPI 
+ * @param {Array} reqArray       the array of history urls that we will be calling
+ * @param {Function} doneCB      on complete, this will be exec passing history[] to it
+ */
+function *History(context, reqArray, doneCB) {
+  var history = [];
+
+  for (var i = 0; i < reqArray.length; i++){
+    var result = yield requestWrapper( context, reqArray[i] );
+    if (result) {
+      history = history.concat(result);
+    }
+  }
+  if (typeof doneCB === 'function') {
+    doneCB(history);
+  }
+}
+
+
+/**
+ * API for module. This is what you will be calling externally
+ * @param  {int}   pages       number of pages of history to retrieve
+ * @param  {Function} callback when all history pages are retrieved, this funciton will be run
+ */
 function getRoomHistory(pages, callback){
-  if (!this._.connected) return false;
+  /* jshint validthis:true */
+  if (!this._.connected){ return false; }
 
-  // get room id
+  // make sure we can get roomid
   var roomid = _.get(this, '_.room.id');
-
-  if (!roomid) return false;
+  if (!roomid) { return false; }
 
   // make an array of urls to iterate requests
   var reqs = makeRequestArray(roomid, pages);
 
-  // store the history to be returned at the end
-  var history = [];
-
-  var that = this;
-
-  // begin our requests and build our playlist history array
-  var getHistory = new StepIterator(reqs, function(current, pos){
-    
-    that._.reqHandler.queue({method: 'GET', url: current}, function(code, body) {
-      if (code !== 200) {
-        that.emit('error', new DubAPIRequestError(code, current));
-      } else {
-        history = history.concat(body.data);
-      }
-      getHistory.next();
-    });
-
-  });
-
-  getHistory.done(function(){
-    if (typeof callback === 'function') {
-      callback(history);
-    }
-  });
-  
+  // start History generator function
+  hist = new History(this, reqs, callback);
+  hist.next();
 }
 
 
