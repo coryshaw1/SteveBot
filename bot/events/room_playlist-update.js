@@ -67,7 +67,7 @@ function checkHistory(bot, data){
   var check = historyStore.getSong(bot, data.media.id);
   if (check.length > 0) {
     var time = historyStore.convertTime(check[0].lastplayed);
-    bot.sendChat(`@${dj}, this song was played ${time} ago`);
+    bot.sendChat(`@${dj}, this song was played ${time}`);
   }
   historyStore.save(bot, data);
 }

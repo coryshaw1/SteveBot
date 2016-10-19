@@ -10,6 +10,7 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 ## [1.4.3] - 2016-10-19
 ### Changed
 - fixing history bug
+- added moment.js
 
 ## [1.4.2] - 2016-10-14
 ### Changed

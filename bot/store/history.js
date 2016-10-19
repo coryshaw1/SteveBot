@@ -1,5 +1,6 @@
 'use strict';
 const _ = require('lodash');
+var moment = require('moment');
 
 var historyStore = {
   songStore : [],
@@ -7,17 +8,7 @@ var historyStore = {
   ready : false,
 
   convertTime : function (timestamp){
-    var diff = Date.now() - timestamp;
-    var mins = Math.floor( (diff / 1000) / 60 );
-    var hrs;
-    if (mins > 60) {
-      hrs = Math.floor(mins / 60);
-      var plural = hrs > 1 ? 's' : '';
-      return `about ${hrs} hour${plural}`;
-    } else {
-      return `${mins} minutes`;
-    }
-
+    return moment(timestamp).fromNow();
   },
 
   fromHistory : function(song) {
