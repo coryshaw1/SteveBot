@@ -78,13 +78,13 @@ function regionBlock(bot, db, _region, yt, media){
     flags = _region.allowed.map( function(country){
       return ':flag_' + country.toLowerCase() + ':'; 
     });
-    bot.sendChat('*allowed in:* ' + flags.join(','));
+    bot.sendChat('*allowed in:* ' + flags.join(' '));
   }
   if (_region.blocked && _region.blocked.length > 0) {
     flags = _region.blocked.map( function(country){
       return ':flag_' + country.toLowerCase() + ':'; 
     });
-    bot.sendChat('*blocked in:* ' + flags.join(','));
+    bot.sendChat('*blocked in:* ' + flags.join(' '));
   }
   trackIssue(db, yt, media, 'region restrictions');
 }

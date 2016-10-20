@@ -85,7 +85,7 @@ module.exports = function(bot, db) {
       return;
     }
 
-    if (tokens[0].toLowerCase() === '@derpybot') {
+    if (tokens[0].toLowerCase() === '@'+bot.myconfig.botName) {
       data.params = tokens.slice(1);
       return cleverbot(bot, db, data);
     }

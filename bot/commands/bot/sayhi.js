@@ -15,7 +15,7 @@ module.exports = function(bot, db, data) {
   }
 
   if (data.params.length === 1 && data.params[0].substr(0, 1) === '@') {
-    return bot.sendChat(`hi ${data.params[0]}, I'm DerpyBot!`);
+    return bot.sendChat(`hi ${data.params[0]}, I'm ${bot.myconfig.botName}!`);
   }
 
 };

@@ -32,7 +32,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
       bot.log = function(){return;}; // do nothing
     }
 
-    bot.log('info', 'BOT', 'Running DerpyBot with DubAPI v' + bot.version);
+    bot.log('info', 'BOT', `Running ${config.botName} with DubAPI v${bot.version}`);
 
     function connect() {
         bot.connect(settings.ROOMNAME);

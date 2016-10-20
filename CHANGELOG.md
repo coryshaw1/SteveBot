@@ -7,6 +7,12 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands that won't affect existing ones (add functionality in a backwards-compatible manner)    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.4.4] - 2016-10-20
+### Changed
+- removing steve command (no one cares about this so I'm treating like patch lol)
+- moved bot name to a config setting
+- removed commas from youtube country flags
+
 ## [1.4.3] - 2016-10-19
 ### Changed
 - fixing history bug
