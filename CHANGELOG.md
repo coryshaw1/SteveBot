@@ -4,8 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The Commands of the bot are its API so here's how it will adhere to Semantic Versioning:    
 **MAJOR** - Changing/removing existing bot commands breaking how they previously functioned (incompatible API changes)     
-**MINOR** - Adding new commands that won't affect existing ones (add functionality in a backwards-compatible manner)    
+**MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
+
+## [1.5.0] - 2016-10-21
+### Added
+- recently played songs are now checked when anyone joins the queue instead of just when current song is playing
 
 ## [1.4.4] - 2016-10-20
 ### Changed

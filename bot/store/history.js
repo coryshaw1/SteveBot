@@ -4,6 +4,7 @@ var moment = require('moment');
 
 var historyStore = {
   songStore : [],
+  warnedStore : [],
 
   ready : false,
 
@@ -16,7 +17,8 @@ var historyStore = {
       songid : song.songid,
       lastplayed : song.played,
       user : song._user.username,
-      name : song._song.name
+      name : song._song.name,
+      modIgnore : false
     };
   },
 
@@ -25,20 +27,61 @@ var historyStore = {
       songid : song.media.id,
       lastplayed : song.raw.song.played,
       user : _.get(song, 'user.username', '404usernamenotfound'),
-      name : _.get(song, 'media.name', '404songnamenotfound')
+      name : _.get(song, 'media.name', '404songnamenotfound'),
+      modIgnore : false
     };
+  },
+
+  /**
+   * checks to see if a user was already warned about a song within the last minute
+   * @param  {[type]} warnSong [description]
+   * @return {[type]}          [description]
+   */
+  recentlyWarned : function(warnSong){
+    var result = false;
+
+    this.warnedStore.forEach(function(song){
+      if (song.songid !== warnSong.songid && song.user !== warnSong.user) {
+        return;
+      }
+
+      // if we warned dj within the last minute, return true
+      if (Date.now() - warnSong.warned < 60000) {
+        result = true;
+      }
+    });
+
+    // make sure this array stays small
+    if (this.warnedStore.length > 20) {
+      this.warnedStore.pop();
+    }
+
+    return result;
   },
 
   getSong : function(bot, songid){
     if (!songid) { return; }
     if (!this.ready) {return;}
     var result = [];
+    var self = this;
 
     this.songStore.forEach(function(song){
-      if (song.songid === songid) {
-        result.push(song);
+      if (song.songid !== songid) {
+        return; // continue to next song in the list
       }
+
+      // giving DJs a 1 minute grace period between warnings
+      if (self.recentlyWarned(song)) {
+         bot.log('info', 'BOT', `Already warned: ${song.user} about ${song.name}`);
+        return;
+      }
+
+      result.push(song);
+      song.warned = Date.now();
+      self.warnedStore.push(song);
+      
     });
+
     return result;
   },
 
@@ -74,7 +117,7 @@ var historyStore = {
 
       var self = this;
 
-      bot.getRoomHistory(7, function(history){
+      bot.getRoomHistory(5, function(history){
         if (history && history.length > 0) {
           self.songStore = history.map(function(song){
             return self.fromHistory(song);
