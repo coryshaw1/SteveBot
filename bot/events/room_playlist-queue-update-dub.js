@@ -28,7 +28,7 @@ function checkHistory(bot, data){
 
     bot.sendChat(msg);
     dj = dj || 'dj';
-    bot.log('info', 'BOT', `Warned: [${dj}] - [${songName}] - [${time}]`);
+    bot.log('info', 'BOT', `Warned: [${dj} - ${songName} - ${time}]`);
   }
 
   historyStore.save(bot, data);

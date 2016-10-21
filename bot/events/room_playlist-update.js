@@ -65,7 +65,7 @@ function checkHistory(bot, data){
   }
   
   var dj = _.get(data, 'user.username', 'dj');
-  var songName = _.get(data, 'media.name');
+  var songName = _.get(data, 'media.name', '404songnamenotfound');
   var songID = _.get(data, 'media.id');
 
   if (!songID) { return; }
