@@ -1,5 +1,7 @@
 'use strict';
 var repo = require(process.cwd()+'/repo');
+var roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
+const _ = require('lodash');
 
 function displayHelp(bot){
   bot.sendChat('*usage:* !trigger <trigger_name> <trigger_text>');
@@ -7,6 +9,8 @@ function displayHelp(bot){
 }
 
 module.exports = function(bot, db, data) {
+  const userName = _.get(data, 'user.username');
+  
   if (!data || !data.user || !data.user.username) {
     bot.log('error', 'BOT', '[TRIG] ERROR [Missing data or username]');
     return bot.sendChat('An error occured, try again');
@@ -16,9 +20,10 @@ module.exports = function(bot, db, data) {
     return displayHelp(bot);
   }
 
-  // if not a MOD, GTFO!
-  if ( !bot.hasPermission(bot.getUserByName(data.user.username), 'skip') ) {
-    return bot.sendChat('Ah ah ah, not without the magic word! (only mods can do this)');
+  // if not at least a MOD, GTFO!
+  if ( !roleChecker(bot, data.user, 'mod') ) {
+    bot.sendChat('Ah ah ah, only mods can do this');
+    return bot.sendChat('https://media.giphy.com/media/uOAXDA7ZeJJzW/giphy.gif');
   }
 
   if (data.params[0].charAt(0) === '!') {
