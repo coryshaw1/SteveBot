@@ -1,6 +1,8 @@
 'use strict';
 var firebase = require('firebase');
 var settings = require(process.cwd() + '/private/settings.js');
+var config = require(process.cwd() + '/bot/config.js');
+
 firebase.initializeApp({
   serviceAccount: process.cwd() + '/private/serviceAccountCredentials.json',
   databaseURL: settings.FIREBASE.BASEURL
@@ -31,7 +33,8 @@ var bot = {
   },
   log : function(x,y,z) {
     console.log('TEST',x,y,z);
-  }
+  },
+  myconfig : config
 };
 
 // when you require this you need to run the function in order

@@ -70,6 +70,11 @@ var historyStore = {
         return; // continue to next song in the list
       }
 
+      // if a mod wants to play a song again then why not
+      if (song.modIgnore) {
+        return; 
+      }
+
       // giving DJs a 1 minute grace period between warnings
       if (self.recentlyWarned(song)) {
          bot.log('info', 'BOT', `Already warned: ${song.user} about ${song.name}`);
@@ -105,6 +110,7 @@ var historyStore = {
 
   clear : function(){
     this.songStore = [];
+    this. warnedStore = [];
     this.ready = false;
   },
 

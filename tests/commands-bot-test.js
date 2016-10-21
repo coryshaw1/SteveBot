@@ -44,7 +44,7 @@ describe('Bot Commands test', function(){
   it('!version - should return version number', function(done){
     var pkg = require(process.cwd() + '/package.json');
     var test = require('../bot/commands/bot/version.js')(stubs.bot);
-    expect(test).to.equal('DerpyBot version: ' + pkg.version);
+    expect(test).to.equal('derpybot version: ' + pkg.version);
     done();
   });
 
@@ -57,7 +57,7 @@ describe('Bot Commands test', function(){
 
     // positive
     var x = currentTest(stubs.bot, null, data);
-    expect(x).to.equal(`hi ${data.params[0]}, I'm DerpyBot!`);
+    expect(x).to.equal(`hi ${data.params[0]}, I'm derpybot!`);
 
     // improper format
     data.params = ['noAtSign'];
