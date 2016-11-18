@@ -53,7 +53,7 @@ var historyStore = {
 
     // make sure this array stays small
     if (this.warnedStore.length > 20) {
-      this.warnedStore.pop();
+      this.warnedStore.shift();
     }
 
     return result;
@@ -124,6 +124,7 @@ var historyStore = {
       var self = this;
 
       bot.getRoomHistory(5, function(history){
+        console.log(history[0]);
         if (history && history.length > 0) {
           self.songStore = history.map(function(song){
             return self.fromHistory(song);

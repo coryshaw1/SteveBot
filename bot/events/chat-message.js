@@ -2,6 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 var triggers = require( process.cwd() + '/bot/utilities/triggers.js');
+var triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
 var cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
 
 var commands = {};
@@ -43,7 +44,7 @@ var handleCommands = function(bot, db, data) {
     
     // disbaling raffles for now, might do this via some kind of global config later
     if (data.trigger === 'raffle' || data.trigger === 'join') {
-      return bot.sendChat('Raffles have been disabled, gambling is a serious problem');
+      return bot.sendChat('Raffles have been disabled, gambling is a serious problem!');
     }
     return commands[data.trigger](bot, db, data);
   }
@@ -52,8 +53,16 @@ var handleCommands = function(bot, db, data) {
     // if it's not an existing command caught by the code above
     // lets check if it's one of the many existing triggers
     triggers(bot, db, data, function(trig){
-      if (trig !== null) { 
-        bot.sendChat(trig); 
+      if (trig !== null) {
+        var trigSplit  = trig.split(" ");
+
+        if (trigSplit[trigSplit.length - 1] === "+prop") {
+          triggerPoint(bot, db, data, trig, "props");
+        } else if (trigSplit[trigSplit.length - 1] === "+flow")  {
+          triggerPoint(bot, db, data, trig, "flow");
+        } else {
+          bot.sendChat(trig);
+        }
       }
     });
   } 
