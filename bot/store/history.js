@@ -124,7 +124,6 @@ var historyStore = {
       var self = this;
 
       bot.getRoomHistory(5, function(history){
-        console.log(history[0]);
         if (history && history.length > 0) {
           self.songStore = history.map(function(song){
             return self.fromHistory(song);
