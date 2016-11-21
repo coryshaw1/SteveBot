@@ -55,10 +55,11 @@ var handleCommands = function(bot, db, data) {
     triggers(bot, db, data, function(trig){
       if (trig !== null) {
         var trigSplit  = trig.split(" ");
+        var last = trigSplit[trigSplit.length - 1];
 
-        if (trigSplit[trigSplit.length - 1] === "+prop") {
+        if (last === "+prop") {
           triggerPoint(bot, db, data, trig, "props");
-        } else if (trigSplit[trigSplit.length - 1] === "+flow")  {
+        } else if (last === "+flow")  {
           triggerPoint(bot, db, data, trig, "flow");
         } else {
           bot.sendChat(trig);

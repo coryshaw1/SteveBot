@@ -51,7 +51,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
     process.on('SIGINT', disconnect); //ctrl+c close
     process.on('uncaughtException', disconnect);
     process.on('message', function(msg) {  
-      bot.log('info','BOT', msg);
+      bot.log('info','BOT', 'message: ' + msg);
       if (msg === 'shutdown') {
         disconnect();
       }
