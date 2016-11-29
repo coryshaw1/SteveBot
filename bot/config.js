@@ -29,8 +29,8 @@ module.exports = {
   // skip song if region blocked song is not allowed in this list
   'mainCountries' : ['US'], 
   
-  // coming soon
-  'cleverBot' : false,
+  // enable cleverbot API to respond whenever someone @ the bot 
+  'cleverbot' : true,
   
   'autoskip' : {
     'enabled' : true, // needs to be true for the following autoskips to be honored

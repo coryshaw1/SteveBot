@@ -95,7 +95,7 @@ module.exports = function(bot, db) {
       return;
     }
 
-    if (tokens[0].toLowerCase() === '@'+bot.myconfig.botName.toLowerCase()) {
+    if (tokens[0].toLowerCase() === '@'+bot.myconfig.botName.toLowerCase() && bot.myconfig.cleverbot) {
       data.params = tokens.slice(1);
       return cleverbot(bot, db, data);
     }

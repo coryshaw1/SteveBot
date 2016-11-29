@@ -7,6 +7,11 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.6.1] - 2016-10-21
+### Changed
+- updated Cleverbot
+- update Firebase to use their new admin module
+
 ## [1.6.0] - 2016-10-21
 ### Added
 - "+prop" at the very end of any trigger and it will add a prop point along with the trigger text (for current DJ only)

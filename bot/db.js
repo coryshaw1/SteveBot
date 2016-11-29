@@ -1,15 +1,15 @@
 'use strict';
-var firebase = require('firebase');
+var admin = require("firebase-admin");
 
 module.exports = function Database(serviceAccount, BASEURL) {
   if (!serviceAccount || !BASEURL) {
     throw new Error("Missing databse credentials for Database");
   }
-  
-  firebase.initializeApp({
-    serviceAccount: serviceAccount,
+
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: BASEURL
   });
 
-  return firebase.database();
+  return admin.database();
 };

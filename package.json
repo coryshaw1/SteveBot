@@ -1,6 +1,6 @@
 {
   "name": "DerpyBot",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "cleverbot-node": "latest",
     "dubapi": "^1.6.3",
-    "firebase": "^3.4.0",
+    "firebase-admin": "^4.0.3",
     "fs": "0.0.2",
     "jethro": "^2.6.6",
     "kerberos": "0.0.18",

@@ -1,12 +1,9 @@
 'use strict';
-var firebase = require('firebase');
 var settings = require(process.cwd() + '/private/settings.js');
 var config = require(process.cwd() + '/bot/config.js');
-
-firebase.initializeApp({
-  serviceAccount: process.cwd() + '/private/serviceAccountCredentials.json',
-  databaseURL: settings.FIREBASE.BASEURL
-});
+var Database = require(process.cwd() + '/bot/db.js');
+var svcAcct = process.cwd() + '/private/serviceAccountCredentials.json';
+var BASEURL = settings.FIREBASE.BASEURL;
 
 /**
  * [bot description]
@@ -42,7 +39,7 @@ var bot = {
 // var stubs = require('../path/to/stubs.js');
 // var db = stubs.db();
 var connectDB = function(){
-  return firebase.database();
+  return new Database(svcAcct, BASEURL);
 };
 
 // need different kind of data responses
