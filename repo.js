@@ -204,7 +204,9 @@ var updateTrigger = function(db, data, triggerKey){
   var updateObj = {
     Author: data.user.username,
     Returns: data.triggerText,
-    Trigger: data.triggerName + ':'
+    Trigger: data.triggerName + ':',
+    status: 'updated',
+    lastUpdated : Date.now()
   };
   return db.ref('triggers/'+triggerKey).set(updateObj);
 };
@@ -216,15 +218,18 @@ var updateTrigger = function(db, data, triggerKey){
  * @return {Firebase.Promise}
  */
 var insertTrigger  = function(db, data) {
-  if (!data) {return;}
-  else if (!data.triggerName) {return;}
-  else if (!data.triggerText) {return;}
+  if (!data || !data.triggerName || !data.triggerText) { return; }
+  
+  var author = _.get(data, 'user.username', 'unknown');
 
-  if (!data || !data.triggerText || !data.triggerText) { return; }
   return db.ref(triggEnv + 'triggers').push().set({
-    Author: _.get(data, 'user.username', ''),
+    Author: author,
     Returns: data.triggerText,
-    Trigger: data.triggerName + ':'
+    Trigger: data.triggerName + ':',
+    status: 'created',
+    lastUpdated : null,
+    createdOn : Date.now(),
+    createdBy : author
   });
 };
 

@@ -7,12 +7,17 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-## [1.6.1] - 2016-10-21
+## [1.7.0] - 2016-11-29
+### Added
+- added new "!source" command that shows you who created or updated a trigger
+- added more metadata to when a trigger is created or updated
+
+## [1.6.1] - 2016-11-29
 ### Changed
 - updated Cleverbot
 - update Firebase to use their new admin module
 
-## [1.6.0] - 2016-10-21
+## [1.6.0] - 2016-11-23
 ### Added
 - "+prop" at the very end of any trigger and it will add a prop point along with the trigger text (for current DJ only)
 - "+flow" at the very end of any trigger will add a flowpoint to the current DJ only

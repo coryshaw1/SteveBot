@@ -1,6 +1,6 @@
 {
   "name": "DerpyBot",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {
@@ -12,12 +12,10 @@
     "cleverbot-node": "latest",
     "dubapi": "^1.6.3",
     "firebase-admin": "^4.0.3",
-    "fs": "0.0.2",
     "jethro": "^2.6.6",
     "kerberos": "0.0.18",
     "lodash": "^4.16.3",
     "moment": "^2.15.1",
-    "path": "^0.12.7",
     "request": "^2.69.0",
     "simple-lastfm": "git+https://github.com/atomjack/simple-lastfm.git",
     "underscore": "^1.8.3"
