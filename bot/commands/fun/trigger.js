@@ -58,7 +58,7 @@ module.exports = function(bot, db, data) {
     if (val !== null && data.params.length > 1) {
       // updating an existing trigger
       keys = Object.keys(val);
-      return repo.updateTrigger(db, data, keys[0])
+      return repo.updateTrigger(db, data, keys[0], val[keys[0]])
         .then(function(){
           var info = `[TRIG] CHANGED [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
           bot.log('info', 'BOT', info);

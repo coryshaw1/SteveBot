@@ -114,9 +114,8 @@ var historyStore = {
     this.ready = false;
   },
 
-  init: function(bot, cb){
+  init: function(bot){
     var roomid = _.get(bot, '_.room.id');
-    if (typeof cb !== 'function') { cb = function(){}; }
 
     if (roomid) {
       this.clear();
@@ -124,12 +123,14 @@ var historyStore = {
       var self = this;
 
       bot.getRoomHistory(5, function(history){
+        
         if (history && history.length > 0) {
           self.songStore = history.map(function(song){
             return self.fromHistory(song);
           });
           self.ready = true;
         }
+
       });
     }
     

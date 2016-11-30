@@ -11,26 +11,17 @@ const _ = require('lodash');
 /***********************************************************************
  * Stubs for parts of DubAPI
  **/
+ 
+// location of the dubapi package
+let loc = process.cwd() + '/node_modules/dubapi';
 
-var endpoints = {
-  roomPlaylistHistory : 'room/%RID%/playlist/history?page=%PAGENUM%'
-};
+// include some necessary parts
+const DubAPIError = require(loc + '/lib/errors/error.js');
+const DubAPIRequestError = require(loc + '/lib/errors/requestError.js');
+const endpoints = require(loc + '/lib/data/endpoints.js');
 
-function DubAPIRequestError(code, endpoint) {
-    Error.captureStackTrace(this);
-    this.name = 'DubAPIRequestError';
-    this.message = 'Response ' + code + ' from ' + endpoint;
-}
+endpoints.roomPlaylistHistory = 'room/%RID%/playlist/history?page=%PAGENUM%';
 
-DubAPIRequestError.prototype = Object.create(Error.prototype);
-
-function DubAPIError(message) {
-    Error.captureStackTrace(this);
-    this.name = 'DubAPIError';
-    this.message = message || '';
-}
-
-DubAPIError.prototype = Object.create(Error.prototype);
 
 /************************************************************************/
 

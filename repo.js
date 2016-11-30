@@ -68,7 +68,8 @@ function userModel(data){
     'flow' : data.flow || 0,
     'props' : data.props || 0,
     'username' : data.username,
-    'id' : data.id
+    'id' : data.id,
+    'DateAdded' : data.DateAdded || new Date()
   };
 }
 
@@ -199,14 +200,17 @@ var getTrigger = function (bot, db, triggerName, callback) {
  * @param  {Object} data Trigger data, see function for details, needs {Author, Returns, Trigger}
  * @return {Firebase.Promise}
  */
-var updateTrigger = function(db, data, triggerKey){
+var updateTrigger = function(db, data, triggerKey, val){
   if (!triggerKey || !data || !data.triggerText || !data.triggerText) { return; }
+  if (!val) { val = {}; }
   var updateObj = {
     Author: data.user.username,
     Returns: data.triggerText,
     Trigger: data.triggerName + ':',
     status: 'updated',
-    lastUpdated : Date.now()
+    lastUpdated : Date.now(),
+    createdOn : val.createdOn || null,
+    createdBy : val.createdBy || null
   };
   return db.ref('triggers/'+triggerKey).set(updateObj);
 };

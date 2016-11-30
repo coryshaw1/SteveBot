@@ -31,7 +31,14 @@ module.exports = {
   
   // enable cleverbot API to respond whenever someone @ the bot 
   'cleverbot' : true,
-  
+
+  // play music when the queue is empty
+  'playOnEmpty' : true,
+  // id of the playlist to use when queue is empty
+  'playlistID' : '583f312e6193c3a2003182da',
+  // name of the playlist (althernative to playlist id, can find id using getPlaylists)
+  'playlistName' : 'main',
+
   'autoskip' : {
     'enabled' : true, // needs to be true for the following autoskips to be honored
     'stuck' : true, // auto skip stuck/unplayable songs

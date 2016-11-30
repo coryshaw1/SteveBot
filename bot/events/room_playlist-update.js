@@ -1,13 +1,16 @@
+/***************************************************************
+ * This event is fired when a new song begins to play
+ */
+
 'use strict';
 var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 var userStore = require(process.cwd()+ '/bot/store/users.js');
 var youtube = require(process.cwd()+'/bot/utilities/youtube');
 var historyStore = require(process.cwd()+ '/bot/store/history.js');
 var _ = require('lodash');
+var moment = require('moment');
 
 // var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
-
-
 
 function reviewPoints(bot, currentSong) {
   var propped = userStore.getProps();
@@ -80,6 +83,36 @@ function checkHistory(bot, data){
   historyStore.save(bot, data);
 }
 
+function saveLastSong(bot) {
+
+  // skip saving songs on Funky Friday
+  if (moment().format('dddd') === 'Friday') { return; }
+
+  bot.getRoomHistory(1, function(history){
+    
+    if (history && history.length > 0) {
+
+      // we don't want to save a skipped song
+      if (history[0].skipped) {return;}
+
+      let song = history[0]._song;
+
+      bot.addToPlaylist(
+        bot.myconfig.playlistID, song.fkid, song.type, 
+        function(code, _data){
+          if (code === 200) {
+            bot.log('info','BOT', `${song.name} saved to playlist`);
+          }
+          if (code === 400) {
+            bot.log('info','BOT', `${song.name} - ${_data.data.details.message}`);
+          }
+        }
+      );
+    }
+
+  });
+}
+
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
@@ -141,6 +174,11 @@ module.exports = function(bot, db) {
      */
     
     checkHistory(bot, data);
+
+    /************************************************************
+     * Save song to playlist
+     */
+    saveLastSong(bot);
 
   });
 };

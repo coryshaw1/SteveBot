@@ -7,6 +7,14 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.8.0] - 2016-11-30
+### Added
+- extend dubapi to add abiliy to add song to a playlist
+- extend dubapi to add abiliy to get a list of all its own playlists
+- Added new configurations:  playlistID, playlistName, playOnEmpty
+- bot now saves the previously played song to a playlist if it wasn't skipped
+- updated !source to include the new metada for triggers if they exist
+
 ## [1.7.0] - 2016-11-29
 ### Added
 - added new "!source" command that shows you who created or updated a trigger

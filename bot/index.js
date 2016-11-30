@@ -11,8 +11,9 @@ var db = new Database(svcAcct, BASEURL);
 /**
  * Add my own extensions
  */
-var getHistoryExtension = require(process.cwd() + '/bot/extend/getRoomHistory.js');
-DubAPI.prototype.getRoomHistory = getHistoryExtension;
+DubAPI.prototype.getRoomHistory = require(process.cwd() + '/bot/extend/getRoomHistory.js');
+DubAPI.prototype.addToPlaylist = require(process.cwd() + '/bot/extend/addToPlaylist.js');
+DubAPI.prototype.getPlaylists = require(process.cwd() + '/bot/extend/getPlaylists.js');
 
 new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, function(err, bot) {
         
