@@ -7,6 +7,10 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.8.1] - 2016-12-01
+### Changed
+- "+prop" & "+flow" now still show the trigger even if already gave a point
+
 ## [1.8.0] - 2016-11-30
 ### Added
 - extend dubapi to add abiliy to add song to a playlist

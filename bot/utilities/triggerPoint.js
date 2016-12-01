@@ -25,12 +25,10 @@ var noRepeatPointMsg = function(username){
  * @param {Object} data      user info
  * @param {Object} recipient target user info
  */
-function addPoint(bot, db, data, recipient, trig, pointType, repeatCheck) {
+function addPoint(bot, db, data, recipient, pointType, repeatCheck) {
   repo.incrementUser(db, recipient, pointType, function(user){
     if (!user) {return;}
     userStore.addPoint( repeatCheck, data.user.id);
-    var re = new RegExp("\\+"+pointType.replace(/s$/i,"")+"s?", "i");
-    bot.sendChat(trig.replace(re,""));
     bot.sendChat( successMsg(user, pointType) );
   });
 }
@@ -44,6 +42,10 @@ module.exports = function(bot, db, data, trig, type) {
     pointType = 'flow'; // this must match the name in the db
     repeatCheck = 'usersThatFlowed';
   }
+
+  // send the trigger no matter what
+  var re = new RegExp("\\+"+pointType.replace(/s$/i,"")+"s?", "i");
+  bot.sendChat(trig.replace(re,""));
 
   if(!bot.getDJ()) {
     return bot.sendChat('There is no DJ playing!');
@@ -61,6 +63,6 @@ module.exports = function(bot, db, data, trig, type) {
     return bot.sendChat( noSelfAwardingMsg(data.user.username) );
   }
 
-  return addPoint(bot, db, data, dj, trig, pointType, repeatCheck);
+  return addPoint(bot, db, data, dj, pointType, repeatCheck);
 
 };
