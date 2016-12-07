@@ -9,6 +9,7 @@ var youtube = require(process.cwd()+'/bot/utilities/youtube');
 var historyStore = require(process.cwd()+ '/bot/store/history.js');
 var _ = require('lodash');
 var moment = require('moment');
+var repo = require(process.cwd()+'/repo');
 
 // var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
 
@@ -83,8 +84,48 @@ function checkHistory(bot, data){
   historyStore.save(bot, data);
 }
 
-function saveLastSong(bot) {
+function lastPlayModel(currentSong, storedData) {
+  var obj = {
+    id : currentSong.id,
+    type : currentSong.type,
+    name : currentSong.name,
+    firstplay : { 
+      user : _.get(storedData , 'firstplay.user', currentSong.dj),
+      when : _.get(storedData , 'firstplay.when', Date.now())
+    }
+  };
 
+  var total = 1;
+  var lastWhen = Date.now();
+
+  if (storedData) {
+    lastWhen = storedData.lastplay.when;
+    total = storedData.plays;
+
+    // don't want to incrememt time and plays if the bot reboot for some reason
+    var songTime = storedData.lastplay.when + currentSong.length;
+    if ( Date.now() - songTime > 0  ) {
+      total = storedData.plays + 1;
+      lastWhen = Date.now();
+    }
+
+  }
+
+  obj.plays = total;
+  obj.lastplay =  {
+    user : currentSong.dj,
+    when : lastWhen
+  };
+  return obj;
+}
+
+function saveSong(db, bot, song) {
+  // save every song for lastplay/firstplay functionality
+  repo.getSong(db, song.id).then(function(data){
+    repo.saveSong(db, song.id, lastPlayModel(song, data.val()) );
+  });
+
+  // then save songs to bot's playlist for later use
   // skip saving songs on Funky Friday
   if (moment().format('dddd') === 'Friday') { return; }
 
@@ -158,6 +199,7 @@ module.exports = function(bot, db) {
     newSong.name = data.media.name;
     newSong.id = data.media.fkid;
     newSong.type = data.media.type;
+    newSong.length = data.media.songLength;
     newSong.dj = _.get(data, 'user.username', '404usernamenotfound');
 
     // store new song data reseting current in the store
@@ -176,9 +218,9 @@ module.exports = function(bot, db) {
     checkHistory(bot, data);
 
     /************************************************************
-     * Save song to playlist
+     * Save song to playlist and for last/first-play func
      */
-    saveLastSong(bot);
+    saveSong(db, bot, newSong);
 
   });
 };

@@ -278,6 +278,23 @@ var getSongIssue = function(db, fkid){
     .once('value');
 };
 
+
+
+var saveSong = function(db, fkid, saveObj) {
+  var song_stats = db.ref('song_stats');
+  song_stats.child(fkid).set(saveObj, function(err){
+    if (err) { 
+      log('error', 'REPO', 'song_stats: Error saving for id ' + fkid);
+    }
+  });
+};
+
+var getSong = function(db, fkid) {
+  return db.ref('song_stats')
+    .child(fkid)
+    .once('value');
+};
+
 module.exports = {
   logUser  : logUser,
   findUserById  : findUserById,
@@ -293,5 +310,7 @@ module.exports = {
   insertTrigger : insertTrigger,
   deleteTrigger : deleteTrigger,
   trackSongIssues : trackSongIssues,
-  getSongIssue : getSongIssue
+  getSongIssue : getSongIssue,
+  saveSong : saveSong,
+  getSong : getSong
 };

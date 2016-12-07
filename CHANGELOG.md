@@ -7,6 +7,13 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.9.0] - 2016-12-07
+### Added
+- now tracking song stats for all songs
+- new command: "!lastplay" shows who was the last person to play current song
+- new command: "!firstplay" shows who was the first person to play current song
+- new command: "!plays" shows total number of plays for the current song
+
 ## [1.8.1] - 2016-12-01
 ### Changed
 - "+prop" & "+flow" now still show the trigger even if already gave a point

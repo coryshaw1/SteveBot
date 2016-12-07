@@ -29,6 +29,7 @@ var mediaStore = {
     id : null,
     type : null,
     dj : null,
+    length : 0,
     usersThatPropped : 0,
     usersThatFlowed : 0
   },
@@ -39,6 +40,7 @@ var mediaStore = {
     id : null,
     type : null,
     dj : null,
+    length : 0,
     usersThatPropped : 0,
     usersThatFlowed : 0
   },
