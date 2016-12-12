@@ -15,6 +15,7 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 - changed lastplay messaging for tracks that haven't been played before
 ### Added
 - Announce new users under 20 dubs that join the queue
+- Added monthly leaderboard tracking
 
 ## [1.9.0] - 2016-12-07
 ### Added

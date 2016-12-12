@@ -33,7 +33,9 @@ function updateLeaderboard(bot, db) {
     month: month,
     year: year,
     props : '',
+    propsObj : {},
     flow : '',
+    flowObj : {},
   };
   
   var propsArr = [];
@@ -41,6 +43,7 @@ function updateLeaderboard(bot, db) {
   props.forEach(function(user){
     if (user.props > 0) {
       propsArr.push(user.username + ' (' + user.props + ')');
+      leaderObj.propsObj[user.username] = user.props;
     }
   });
   if (propsArr.length === 0){
@@ -55,6 +58,7 @@ function updateLeaderboard(bot, db) {
   flow.forEach(function(user){
     if (user.flow > 0) {
       flowArr.push(user.username + ' (' + user.flow + ')');
+      leaderObj.flowObj[user.username] = user.props;
     }
   });
   if (flowArr.length === 0){
