@@ -7,6 +7,13 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.10.0] - 2016-12-12
+### Changed
+- updating internals to use firebase more effeciently
+- fixed the order of !leaders
+### Added
+- Announce new users under 20 dubs that join the queue
+
 ## [1.9.0] - 2016-12-07
 ### Added
 - now tracking song stats for all songs

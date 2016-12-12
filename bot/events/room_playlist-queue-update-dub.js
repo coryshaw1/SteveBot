@@ -5,8 +5,9 @@
  */
 
 'use strict';
-var historyStore = require(process.cwd()+ '/bot/store/history.js');
-var _ = require('lodash');
+const historyStore = require(process.cwd()+ '/bot/store/history.js');
+const _ = require('lodash');
+const repo = require(process.cwd()+'/repo');
 
 function checkHistory(bot, data){
   if (!historyStore.ready) {
@@ -40,8 +41,27 @@ function checkHistory(bot, data){
   historyStore.save(bot, data);
 }
 
-function checkNewUser(bot, user) {
-  console.log(user.username, user.dubs);
+function searchUsersObj(bot, username) {
+  for (let key in bot.allUsers) {
+    if (bot.allUsers[key].username === username) {
+      return [key, bot.allUsers[key]];
+    }
+  }
+}
+
+function checkNewUser(bot, db, user) {
+  let cachedUser = searchUsersObj(bot, user.username);
+  if (cachedUser && user.dubs <= 20 && !cachedUser[1].introduced) {
+    // console.log(user.username, user.dubs, cachedUser[1].introduced);
+
+    bot.sendChat(`${user.username} is new to the mixer, and just joined the queue. Let's all be supportive!`);
+    cachedUser[1].introduced = true;
+    repo.updateUser(db, cachedUser[0], cachedUser[1], function(err){
+      if (err) {
+        bot.log('error', 'REPO', `Error updating introduced for user ${user.username}`);
+      }
+    });
+  }
 }
 
 module.exports = function(bot, db) {
@@ -53,7 +73,7 @@ module.exports = function(bot, db) {
     if (Array.isArray(data.queue) && data.queue.length > 0) {
       data.queue.forEach(function(q){
         checkHistory(bot, q);
-        checkNewUser(bot, q.user);
+        checkNewUser(bot, db, q.user);
       });
     }
   });
