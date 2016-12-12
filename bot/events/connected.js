@@ -1,7 +1,8 @@
 'use strict';
-var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
-var historyStore = require(process.cwd()+ '/bot/store/history.js');
-var repo = require(process.cwd()+'/repo');
+const mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
+const historyStore = require(process.cwd()+ '/bot/store/history.js');
+const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
+const repo = require(process.cwd()+'/repo');
 
 var _env = process.env.ENV;
 if (_env === null || typeof _env === 'undefined' || _env === '') {
@@ -41,17 +42,28 @@ module.exports = function(bot, db) {
       user.on('value', function(snapshot){
           var val = snapshot.val();
           bot.allUsers = val;
+          // update leaderboard everytime someone gives a point
+          leaderUtils.updateLeaderboard(bot, db);
         }, function(error){
           bot.log('error', 'BOT', 'error getting users from firebase');
       });
 
-      // store user info locally
+      // store trigger info locally
       var triggers = db.ref('triggers');
       triggers.on('value', function(snapshot){
           var val = snapshot.val();
           bot.allTriggers = val;
         }, function(error){
           bot.log('error', 'BOT', 'error getting triggers from firebase');
+      });
+
+      // store leaderboard info locally
+      var leaderboard = db.ref('leaderboard');
+      leaderboard.on('value', function(snapshot){
+          var val = snapshot.val();
+          bot.leaderboard = val;
+        }, function(error){
+          bot.log('error', 'BOT', 'error getting leaderboard from firebase');
       });
 
     }, 5000);
