@@ -45,6 +45,15 @@ module.exports = function(bot, db) {
           bot.log('error', 'BOT', 'error getting users from firebase');
       });
 
+      // store user info locally
+      var triggers = db.ref('triggers');
+      triggers.on('value', function(snapshot){
+          var val = snapshot.val();
+          bot.allTriggers = val;
+        }, function(error){
+          bot.log('error', 'BOT', 'error getting triggers from firebase');
+      });
+
     }, 5000);
   });
 };
