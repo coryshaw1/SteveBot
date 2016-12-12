@@ -1,3 +1,7 @@
+/***************************************************************
+ * This is fired when someone updubs or downdubs a song
+ */
+
 'use strict';
 
 module.exports = function(bot, db) {

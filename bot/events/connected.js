@@ -40,7 +40,7 @@ module.exports = function(bot, db) {
       var user = db.ref(_env + '/users');
       user.on('value', function(snapshot){
           var val = snapshot.val();
-          bot.chilloutUsers = val;
+          bot.allUsers = val;
         }, function(error){
           bot.log('error', 'BOT', 'error getting users from firebase');
       });

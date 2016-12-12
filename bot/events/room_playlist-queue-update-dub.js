@@ -1,3 +1,9 @@
+/***************************************************************
+ * This event is fired when the queue is updated either by
+ * someone joining it, someone leaving it, someone reordering it,
+ * someone changing one of their own queued songs, etc, etc
+ */
+
 'use strict';
 var historyStore = require(process.cwd()+ '/bot/store/history.js');
 var _ = require('lodash');
@@ -34,11 +40,20 @@ function checkHistory(bot, data){
   historyStore.save(bot, data);
 }
 
+function checkNewUser(bot, user) {
+  console.log(user.username, user.dubs);
+}
+
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistQueueUpdate, function(data) {
-    if (data && Array.isArray(data.queue) && data.queue.length > 0) {
+    if (!data) {
+      return bot.log('error', 'BOT', 'roomPlaylistQueueUpdate: data object missing');
+    }
+
+    if (Array.isArray(data.queue) && data.queue.length > 0) {
       data.queue.forEach(function(q){
         checkHistory(bot, q);
+        checkNewUser(bot, q.user);
       });
     }
   });

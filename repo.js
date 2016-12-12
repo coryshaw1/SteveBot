@@ -37,6 +37,24 @@ var updateUser = function(db, userid, data, callback) {
 };
 
 /**
+ * Takes in a data object provided by DT and only returns an object
+ * of the items we need in order to keep our DB small
+ */
+function refineUser(data){
+  return {
+    'props' : data.props || 0,
+    'flow' : data.flow || 0,
+    'DateAdded' : data.DateAdded || new Date(),
+    'LastConnected': data.LastConnected || Date.now(),
+    'username' : data.username,
+    'id' : data.id,
+    'introduced' : data.introduced || false,
+    'dubs': data.dubs || 0,
+    'logType' : data.logType || 'inserted'
+  };
+}
+
+/**
  * Pretty self explanatory
  * @param  {Object}   db       Firebase Object
  * @param  {Object}   user     DT user object
@@ -44,15 +62,9 @@ var updateUser = function(db, userid, data, callback) {
  */
 var insertUser = function(db, user, callback) {
   var usersRef = db.ref(_env + '/users');
-  var extraStuff = {
-    props : 0,
-    flow : 0,
-    DateAdded : new Date(),
-    LastConnected : new Date(),
-    'username' : user.username,
-    'id' : user.id
-  };
+  var extraStuff = refineUser(user);
   var finalNewUser = Object.assign({}, user, extraStuff);
+
   Object.keys(finalNewUser).forEach(function(key){
     if ( finalNewUser[key] === void(0)/* aka undefined */ ){ 
       finalNewUser[key] = null; 
@@ -61,17 +73,6 @@ var insertUser = function(db, user, callback) {
   usersRef.child(user.id).set(finalNewUser, callback);
 };
 
-function userModel(data){
-  return {
-    'dubs': data.dubs || null,
-    'LastConnected': Date.now(),
-    'flow' : data.flow || 0,
-    'props' : data.props || 0,
-    'username' : data.username,
-    'id' : data.id,
-    'DateAdded' : data.DateAdded || new Date()
-  };
-}
 
 /**
  * Logs a user to the db
@@ -85,7 +86,7 @@ var logUser = function(db, user, callback) {
     var userLogInfo;
     
     if(!foundUser){
-      userLogInfo = userModel(user);
+      userLogInfo = refineUser(user);
       insertUser(db, userLogInfo, function(error){
         if (error) {
           return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
@@ -95,7 +96,7 @@ var logUser = function(db, user, callback) {
       });
       
     } else {
-      userLogInfo = userModel(foundUser);
+      userLogInfo = refineUser(foundUser);
       userLogInfo.username = user.username;
       updateUser(db, user.id, userLogInfo, function(error){
         if (error) {
