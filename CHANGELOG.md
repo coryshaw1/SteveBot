@@ -11,6 +11,8 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 ### Changed
 - updating internals to use firebase more effeciently
 - fixed the order of !leaders
+- improved how YouTube region restrictions are announced.  Now it just adds a link
+- changed lastplay messaging for tracks that haven't been played before
 ### Added
 - Announce new users under 20 dubs that join the queue
 

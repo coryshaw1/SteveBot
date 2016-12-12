@@ -17,7 +17,11 @@ module.exports = function(bot, db, data) {
       let val = data.val();
       if (val) {
         var when = moment(val.lastplay.when).fromNow();
-        bot.sendChat(`${val.name} was last played ${when} by ${val.lastplay.user}`);
+        if (val.plays === 1){
+          bot.sendChat(`This is the first time *${val.name}* has been played (well, since Dec 2016 at least)`);
+        } else {
+          bot.sendChat(`${val.name} was last played ${when} by ${val.lastplay.user}`);
+        }
       }
     }).catch(function(err){
       // maybe do something ¯\_(ツ)_/¯
