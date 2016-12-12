@@ -4,6 +4,7 @@ var settings = require(process.cwd() + '/private/settings.js');
 var repo = require(process.cwd()+'/repo');
 var YOUR_API_KEY = settings.YT_API;
 var request = require('request');
+var countryCodes = require(process.cwd() + '/bot/utilities/countries.js');
 
 
 var Youtube = {
@@ -73,18 +74,21 @@ function regionBlock(bot, db, _region, yt, media){
   bot.sendChat(`*FYI, this Youtube video has region restrictions:*`);
   bot.sendChat(`${media.name}`);
   
-  var flags;
+  
   if (_region.allowed && _region.allowed.length > 0) {
-    flags = _region.allowed.map( function(country){
-      return ':flag_' + country.toLowerCase() + ':'; 
+    let countries = _region.allowed.map( function(country){
+      let c = country.toUpperCase();
+      return countryCodes[c] || c; 
     });
-    bot.sendChat('*allowed in:* ' + flags.join(' '));
+    bot.sendChat('*allowed in:* ' + countries.join(','));
   }
+
   if (_region.blocked && _region.blocked.length > 0) {
-    flags = _region.blocked.map( function(country){
-      return ':flag_' + country.toLowerCase() + ':'; 
+    let countries = _region.blocked.map( function(country){
+      let c = country.toUpperCase();
+      return countryCodes[c] || c; 
     });
-    bot.sendChat('*blocked in:* ' + flags.join(' '));
+    bot.sendChat('*blocked in:* ' + countries.join(','));
   }
   trackIssue(db, yt, media, 'region restrictions');
 }
