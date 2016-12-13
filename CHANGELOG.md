@@ -7,12 +7,19 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.11.0] - 2016-12-13
+### Added
+- `!dj [stop]` command which makes the bot join or leave the queue
+- bot extention to shuffle playlist
+- `!shuffleplaylist` or `!sp` to shuffle bot's playlist
+
 ## [1.10.0] - 2016-12-12
 ### Changed
 - updating internals to use firebase more effeciently
 - fixed the order of !leaders
 - improved how YouTube region restrictions are announced.  Now it just adds a link
 - changed lastplay messaging for tracks that haven't been played before
+
 ### Added
 - Announce new users under 20 dubs that join the queue
 - Added monthly leaderboard tracking
