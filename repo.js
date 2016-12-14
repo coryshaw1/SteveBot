@@ -78,7 +78,7 @@ var insertUser = function(db, user, callback) {
  * Logs a user to the db
  * @param  {Object}   db       Firebase object
  * @param  {Object}   user     DT user object
- * @param  {Function} callback [description]
+ * @param  {Function} callback the Firebase User object
  */
 var logUser = function(db, user, callback) {
   findUserById(db, user.id, function(foundUser) {
@@ -227,7 +227,7 @@ var insertTrigger  = function(db, data) {
   
   var author = _.get(data, 'user.username', 'unknown');
 
-  return db.ref(triggEnv + 'triggers').push().set({
+  return db.ref('triggers').push().set({
     Author: author,
     Returns: data.triggerText,
     Trigger: data.triggerName + ':',

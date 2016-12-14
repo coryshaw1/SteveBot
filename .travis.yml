@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-- 5.6.0
-- 4.0.0
+- 4.6.0
 env:
 - CXX=g++-4.8
 addons:
@@ -11,6 +10,5 @@ addons:
     packages:
     - g++-4.8
 before_install:
-  - openssl aes-256-cbc -K $encrypted_dae008b4772b_key -iv $encrypted_dae008b4772b_iv
-    -in secrets.tar.enc -out secrets.tar -d
+  - openssl aes-256-cbc -K $encrypted_dae008b4772b_key -iv $encrypted_dae008b4772b_iv -in secrets.tar.enc -out secrets.tar -d
   - tar xvf secrets.tar

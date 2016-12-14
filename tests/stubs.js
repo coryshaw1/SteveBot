@@ -1,8 +1,8 @@
 'use strict';
-var settings = require(process.cwd() + '/private/settings.js');
+var settings = require(process.cwd() + '/private/test-settings.js');
 var config = require(process.cwd() + '/bot/config.js');
 var Database = require(process.cwd() + '/bot/db.js');
-var svcAcct = process.cwd() + '/private/serviceAccountCredentials.json';
+var svcAcct = process.cwd() + '/private/TESTserviceAccountCredentials.json';
 var BASEURL = settings.FIREBASE.BASEURL;
 
 /**
@@ -31,15 +31,9 @@ var bot = {
   log : function(x,y,z) {
     console.log('TEST',x,y,z);
   },
-  myconfig : config
-};
-
-// when you require this you need to run the function in order
-// to get the db instance started.
-// var stubs = require('../path/to/stubs.js');
-// var db = stubs.db();
-var connectDB = function(){
-  return new Database(svcAcct, BASEURL);
+  myconfig : config,
+  commandedToDJ : false,
+  isDJing : false
 };
 
 // need different kind of data responses
@@ -51,6 +45,6 @@ var dataResponse = {};
 
 module.exports = {
   bot : bot,
-  db : connectDB,
+  db : new Database(svcAcct, BASEURL),
   data : dataResponse
 };

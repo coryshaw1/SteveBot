@@ -12,6 +12,7 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 - `!dj [stop]` command which makes the bot join or leave the queue
 - bot extention to shuffle playlist
 - `!shuffleplaylist` or `!sp` to shuffle bot's playlist
+- bot jumps into the queue when there are 0 DJs
 
 ## [1.10.0] - 2016-12-12
 ### Changed

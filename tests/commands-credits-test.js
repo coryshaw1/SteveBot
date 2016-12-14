@@ -4,7 +4,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 var stubs = require('./stubs.js');
-var db = stubs.db();
+var db = stubs.db;
 
 /* global describe, it */
 describe('Credit Commands test', function(){

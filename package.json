@@ -6,9 +6,11 @@
   "scripts": {
     "start": "env ENV=dev nodemon index.js",
     "test": "env ENV=test mocha -c -t 8000 --reporter=spec tests",
-    "lint": "./node_modules/eslint/bin/eslint.js ."
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "secrets" : "tar cvf secrets.tar private && travis encrypt-file secrets.tar && rm secrets.tar"
   },
   "dependencies": {
+    "bluebird": "^3.4.6",
     "cleverbot-node": "latest",
     "dubapi": "^1.6.3",
     "firebase-admin": "^4.0.3",
