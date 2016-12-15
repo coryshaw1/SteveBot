@@ -58,12 +58,14 @@ var handleCommands = function(bot, db, data) {
         var last = trigSplit[trigSplit.length - 1];
 
         if (last === "+prop") {
-          triggerPoint(bot, db, data, trig, "props");
+          return triggerPoint(bot, db, data, trig, "props");
         } else if (last === "+flow")  {
-          triggerPoint(bot, db, data, trig, "flow");
+          return triggerPoint(bot, db, data, trig, "flow");
         } else {
-          bot.sendChat(trig);
+          return bot.sendChat(trig);
         }
+      } else {
+        return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
       }
     });
   } 

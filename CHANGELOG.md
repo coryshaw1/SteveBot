@@ -7,6 +7,10 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.11.1] - 2016-12-15
+### Added
+- added "unrecognized command" response
+
 ## [1.11.0] - 2016-12-13
 ### Added
 - `!dj [stop]` command which makes the bot join or leave the queue
