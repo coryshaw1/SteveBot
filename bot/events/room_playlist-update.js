@@ -179,7 +179,7 @@ module.exports = function(bot, db) {
     //Save previous song for !lastplayed
     currentSong.usersThatFlowed = flowed.length;
     currentSong.usersThatPropped = propped.length;
-    mediaStore.setLast(currentSong);
+    mediaStore.setLast(db, currentSong);
 
     //Reset user props/tunes stuff
     userStore.clear();
@@ -201,6 +201,7 @@ module.exports = function(bot, db) {
     newSong.type = data.media.type;
     newSong.length = data.media.songLength;
     newSong.dj = _.get(data, 'user.username', '404usernamenotfound');
+    newSong.when = Date.now();
 
     // store new song data reseting current in the store
     mediaStore.setCurrent(newSong);

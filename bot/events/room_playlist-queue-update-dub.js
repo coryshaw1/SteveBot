@@ -51,6 +51,8 @@ function searchUsersObj(bot, username) {
 }
 
 function checkNewUser(bot, db, user) {
+  if (!bot || !db || !user) { return; }
+
   let cachedUser = searchUsersObj(bot, user.username);
   if (cachedUser && user.dubs <= 20 && !cachedUser[1].introduced) {
     // console.log(user.username, user.dubs, cachedUser[1].introduced);
