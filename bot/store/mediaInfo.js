@@ -57,11 +57,12 @@ var mediaStore = {
   },
 
   lastPlayModel: function(currentSong, storedData) {
-    var obj = {
+    console.log(_.get(storedData , 'plays'));
+    let obj = {
       id : currentSong.id,
       type : currentSong.type,
       name : currentSong.name,
-      plays : _.get(storedData , 'plays', 1),
+      plays : 1,
       firstplay : { 
         user : _.get(storedData , 'firstplay.user', currentSong.dj),
         when : _.get(storedData , 'firstplay.when', Date.now())
@@ -72,14 +73,15 @@ var mediaStore = {
       }
     };
 
-    if (storedData) {
+    if (storedData && storedData.plays) {
        obj.plays = storedData.plays + 1;
     }
     return obj;
   },
 
   setLast : function(db, song) {
-    var that = this;
+    let that = this;
+    console.log(song);
 
     if (typeof song === 'object' && song) {
       for (var key in song) {
@@ -92,6 +94,7 @@ var mediaStore = {
       // look for the song in the db
       repo.getSong(db, song.id).then(function(data){
         // then save song in the db
+        console.log(data.val());
         repo.saveSong(db, song.id, that.lastPlayModel(song, data.val()) );
       });
     }

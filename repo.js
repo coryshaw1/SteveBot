@@ -213,6 +213,7 @@ var updateTrigger = function(db, data, triggerKey, val){
     createdOn : val.createdOn || null,
     createdBy : val.createdBy || null
   };
+  db.ref('lastTrigger').set(updateObj);
   return db.ref('triggers/'+triggerKey).set(updateObj);
 };
 
@@ -227,7 +228,7 @@ var insertTrigger  = function(db, data) {
   
   var author = _.get(data, 'user.username', 'unknown');
 
-  return db.ref('triggers').push().set({
+  let newTrigger = {
     Author: author,
     Returns: data.triggerText,
     Trigger: data.triggerName + ':',
@@ -235,7 +236,10 @@ var insertTrigger  = function(db, data) {
     lastUpdated : null,
     createdOn : Date.now(),
     createdBy : author
-  });
+  };
+
+  db.ref('lastTrigger').set(newTrigger);
+  return db.ref('triggers').push().set(newTrigger);
 };
 
 /**
@@ -247,6 +251,29 @@ var insertTrigger  = function(db, data) {
 var deleteTrigger = function(db, triggerKey) {
   if (!triggerKey) { return; }
   return db.ref('triggers/' + triggerKey).set(null);
+};
+
+/**
+ * Inserts to trigger history
+ * @param  {Object} db   Firebase instance
+ * @param  {Object} data Trigger data returned from Firebase
+ * @return {Firebase.Promise}
+ */
+var logTriggerHistory  = function(db, msg, data) {
+  if (!data || !data.triggerName || !data.triggerText) { return; }
+  
+  var author = _.get(data, 'user.username', 'unknown');
+
+  return db.ref('triggerHistory').push().set({
+    Author: data.Author,
+    Returns: data.Returns,
+    Trigger: data.Trigger,
+    status: data.status,
+    lastUpdated : data.lastUpdated,
+    createdOn : data.createdOn,
+    createdBy : data.createdBy,
+    msg : msg
+  });
 };
 
 /**

@@ -120,11 +120,6 @@ function lastPlayModel(currentSong, storedData) {
 }
 
 function saveSong(db, bot, song) {
-  // save every song for lastplay/firstplay functionality
-  repo.getSong(db, song.id).then(function(data){
-    repo.saveSong(db, song.id, lastPlayModel(song, data.val()) );
-  });
-
   // then save songs to bot's playlist for later use
   // skip saving songs on Funky Friday
   if (moment().format('dddd') === 'Friday') { return; }
