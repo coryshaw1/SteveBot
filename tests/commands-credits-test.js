@@ -2,7 +2,9 @@
 
 var chai = require('chai');
 var expect = chai.expect;
+var should = chai.should();
 
+var repo = require(process.cwd()+'/repo');
 var stubs = require('./stubs.js');
 var db = stubs.db;
 

@@ -46,7 +46,7 @@ function refineUser(data){
     'flow' : data.flow || 0,
     'DateAdded' : data.DateAdded || new Date(),
     'LastConnected': data.LastConnected || Date.now(),
-    'username' : data.username,
+    'username' : data.username || '404unknown',
     'id' : data.id,
     'introduced' : data.introduced || false,
     'dubs': data.dubs || 0,
@@ -70,7 +70,7 @@ var insertUser = function(db, user, callback) {
       finalNewUser[key] = null; 
     }
   });
-  usersRef.child(user.id).set(finalNewUser, callback);
+  return usersRef.child(user.id).set(finalNewUser, callback);
 };
 
 
@@ -81,33 +81,37 @@ var insertUser = function(db, user, callback) {
  * @param  {Function} callback the Firebase User object
  */
 var logUser = function(db, user, callback) {
-  findUserById(db, user.id, function(foundUser) {
 
-    var userLogInfo;
-    
-    if(!foundUser){
-      userLogInfo = refineUser(user);
-      insertUser(db, userLogInfo, function(error){
-        if (error) {
-          return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
-        }
-        user.logType = 'inserted';
-        return callback(user);
-      });
-      
-    } else {
-      userLogInfo = refineUser(foundUser);
-      userLogInfo.username = user.username;
-      updateUser(db, user.id, userLogInfo, function(error){
-        if (error) {
-          return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
-        }
-        user.logType = 'updated';
-        return callback(user);
-      });
+  let lookup = db.ref(_env + '/users').child(user.id);
 
-    }
-  });
+  lookup.once('value')
+    .then(function(snapshot){
+      var val = snapshot.val();
+
+      if (!val) {
+        let userLogInfo = refineUser(user);
+        insertUser(db, userLogInfo, function(error){
+          if (error) {
+            return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
+          }
+          user.logType = 'inserted';
+          return callback(user);
+        });
+      } else {
+        let userLogInfo = refineUser(val);
+        userLogInfo.username = user.username;
+        updateUser(db, user.id, userLogInfo, function(error){
+          if (error) {
+            return log('error', 'REPO', 'logUser:' + user.id + ' could not be saved');
+          }
+          user.logType = 'updated';
+          return callback(user);
+        });
+      }
+    })
+    .catch(function(error){
+      log('error', 'REPO', 'logUser findUserById :' + error.code);
+    });
 };
 
 
@@ -199,20 +203,24 @@ var getTrigger = function (bot, db, triggerName, callback) {
  * Updates a trigger in the DB
  * @param  {Object} db   Firebase instance
  * @param  {Object} data Trigger data, see function for details, needs {Author, Returns, Trigger}
+ * @param {Object} orignialValue  original value from firebase of trigger
  * @return {Firebase.Promise}
  */
-var updateTrigger = function(db, data, triggerKey, val){
-  if (!triggerKey || !data || !data.triggerText || !data.triggerText) { return; }
-  if (!val) { val = {}; }
+var updateTrigger = function(db, data, triggerKey, orignialValue){
+  if (!triggerKey || !data || !data.triggerText || !data.triggerName) { return; }
+
+  if (!orignialValue) { orignialValue = {}; }
+  
   var updateObj = {
     Author: data.user.username,
     Returns: data.triggerText,
     Trigger: data.triggerName + ':',
     status: 'updated',
     lastUpdated : Date.now(),
-    createdOn : val.createdOn || null,
-    createdBy : val.createdBy || null
+    createdOn : orignialValue.createdOn || null,
+    createdBy : orignialValue.createdBy || null
   };
+
   db.ref('lastTrigger').set(updateObj);
   return db.ref('triggers/'+triggerKey).set(updateObj);
 };
@@ -351,5 +359,6 @@ module.exports = {
   getSongIssue : getSongIssue,
   saveSong : saveSong,
   getSong : getSong,
-  insertLeaderMonth : insertLeaderMonth
+  insertLeaderMonth : insertLeaderMonth,
+  logTriggerHistory :logTriggerHistory 
 };

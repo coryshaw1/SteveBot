@@ -7,6 +7,7 @@ var should = chai.should;
 var repo = require(process.cwd()+'/repo');
 var stubs = require('./stubs.js');
 var db = stubs.db;
+var bot = stubs.bot;
 
 // create a testData.js and put it in /private
 // take a few users from the db and add them in an object replacing their
@@ -18,16 +19,18 @@ describe('Firebase acccess tests', function(){
   var testUser1  = testData.user1;
 
   before(function(done){
-    var eraseUser = db.ref('dev/users').child(testUser1.id);
+    var eraseUser = db.ref('test/users/'+testUser1.id);
     eraseUser.remove()
       .then(function(){
         done();
+      })
+      .catch(function(error) {
+        console.log("Remove failed: " + error.message);
       });
   });
   
   it('Should log user as a new user', function(done){
     repo.logUser(db, testUser1, function(user){
-      console.log(user);
       expect(user.logType).to.equal("inserted");
       expect(user.props).to.equal(0);
       done();
@@ -72,8 +75,7 @@ describe("Firebase Trigger test", function(){
 
   var testTriggerKey = null;
   it('Should get trigger by triggerName', function(done){
-    repo.getTrigger({}, db, 'test', function(snapshot){
-      var val = snapshot.val();
+    repo.getTrigger(bot, db, 'test', function(val){
       var keys = Object.keys(val);
       testTriggerKey = keys[0];
       var theReturn = val[testTriggerKey].Returns;
@@ -89,23 +91,51 @@ describe("Firebase Trigger test", function(){
     data.user = { username: 'person' };
 
     repo.updateTrigger(db, data, testTriggerKey)
-      .then(function(snapshot){
-        var val = snapshot.val();
-        console.log('update', val);
-        var keys = Object.keys(val);
-        var theReturn = val[keys[0]].Returns;
-        expect(theReturn).to.equal('I am the new thing');
+      .then(function(err){
+        if (err) {
+          should.not.exist(err);
+          console.log("err in update " + err.code );
+          done();
+        }
+
+        db.ref('triggers/' + testTriggerKey).once('value')
+          .then(function(snapshot){
+            var val = snapshot.val();
+            expect(val.Returns).to.equal('I am the new thing');
+            done();
+          })
+          .catch(function(_err){
+            should.not.exist(_err);
+            console.log("err in update->find " + _err.code );
+            done();
+          });
+
+      })
+      .catch(function(err){
+        should.not.exist(err);
+        console.log("err in update " + err.code );
         done();
-    });
+      });
   });
 
   it('Should delete trigger by trigger key', function(done){
     repo.deleteTrigger(db, testTriggerKey)
       .then(function(){
-        db.ref('triggers/' + testTriggerKey).once('value', function(snap){
-          should.not.exist(snap.val());
-          done();
-        });
+        db.ref('triggers/' + testTriggerKey).once('value')
+          .then(function(snap){
+            should.not.exist(snap.val());
+            done();
+          })
+          .catch(function(err){
+            should.not.exist(err);
+            console.log("err in find " + err.code );
+            done();
+          });
+      })
+      .catch(function(err){
+        should.not.exist(err);
+        console.log("err in delete " + err.code );
+        done();
       });
   });
 
@@ -116,12 +146,17 @@ describe("Firebase Trigger test", function(){
     data.user = { username: 'person' };
     repo.insertTrigger(db, data)
       .then(function(){
-        repo.getTrigger({}, db, 'blabla', function(val){
+        repo.getTrigger({}, db, 'test', function(val){
             var keys = Object.keys(val);
             var theReturn = val[keys[0]].Returns;
             expect(theReturn).to.equal('this is a test 2');
             done();
           });
+      })
+      .catch(function(err){
+        should.not.exist(err);
+        console.log("err in create " + err.code );
+        done();
       });
   });
 
