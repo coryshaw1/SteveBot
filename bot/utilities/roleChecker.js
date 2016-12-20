@@ -14,30 +14,38 @@ function capitalize(string) {
   of all are checked
 */
 
+// placing role in order where index 0 is highest role
+// and the larger index is lowest role
 var roleRanks = [
-  'creator',
+  'creator', // [0] <-- highest role
   'owner',
   'manager',
   'mod',
   'vip',
   'residentdj',
-  'staff'
+  'staff' // [6] <-- lowest role
 ];
 
 module.exports = function(bot, user, minRole) {
+  // trying to minimize the amount of bot crashing due to possible missing user data from api
   if (!bot || !user || !minRole) {
     bot.log('error', 'BOT', 'Missing arguments in roleChecker');
     return false; 
   }
 
+  // get the index of the mininum role from our roleRanks
   var rankEnd = roleRanks.indexOf(minRole.toLowerCase());
   
+  // not even a valid role, GTFO ;-)
   if (rankEnd < 0) { 
     return false;
   }
   
+  // create a new array with just the ranks starting at minRole and above
   var ranks = roleRanks.slice(0, rankEnd + 1).reverse();
 
+  // loop through the different "bot.is[RANK]" methods until one of them returns true
+  // examples: bot.isMod, bot.isOwner, etc.
   var hasRole = false;
   for (var i = 0; i < ranks.length; i++) {
     

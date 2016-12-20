@@ -43,7 +43,7 @@ module.exports = function(bot, db, data) {
           var inf = `[TRIG] ADD [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
           bot.log('info', 'BOT', inf);
           bot.sendChat(`trigger for *!${data.triggerName}* created, try it out!`);
-          repo.logTriggerHistory(db, `${data.triggerName} created by ${data.triggerName}`, data);
+          repo.logTriggerHistory(db, `${data.triggerName} created by ${data.user.username}`, data);
         })
         .catch(function(err){
           if (err) { bot.log('error', 'BOT',`[TRIG] DEL ADD: ${err}`);}
@@ -64,7 +64,7 @@ module.exports = function(bot, db, data) {
           var info = `[TRIG] CHANGED [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
           bot.log('info', 'BOT', info);
           bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
-          repo.logTriggerHistory(db, `${data.triggerName} updated by ${data.triggerName}`, data);
+          repo.logTriggerHistory(db, `${data.triggerName} updated by ${data.user.username}`, data);
         })
         .catch(function(err){
           if (err) { bot.log('error', 'BOT',`[TRIG] DEL CHANGED: ${err}`); }
@@ -79,7 +79,7 @@ module.exports = function(bot, db, data) {
           var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
           bot.log('info', 'BOT', info);
           bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
-          repo.logTriggerHistory(db, `${data.triggerName} deleted by ${data.triggerName}`, data);
+          repo.logTriggerHistory(db, `${data.triggerName} deleted by ${data.user.username}`, data);
         })
         .catch(function(err){
           if (err) { bot.log('error', 'BOT', `[TRIG] DEL ERROR: ${err}`); }

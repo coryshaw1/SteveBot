@@ -2,7 +2,7 @@
 var repo = require(process.cwd()+'/repo');
 var moment = require('moment');
 
-function findTrigger(bot, db, data) {
+module.exports = function (bot, db, data) {
   if (data.params === void(0) || data.params.length < 1) {
     return bot.sendChat('*usage:* !source <trigger_name>');
   }
@@ -47,6 +47,4 @@ function findTrigger(bot, db, data) {
 
     }
   });
-}
-
-module.exports = findTrigger;
+};

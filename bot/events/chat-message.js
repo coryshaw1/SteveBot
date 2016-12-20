@@ -52,7 +52,7 @@ var handleCommands = function(bot, db, data) {
   if (data.params.length === 0) {
     // if it's not an existing command caught by the code above
     // lets check if it's one of the many existing triggers
-    triggers(bot, db, data, function(trig){
+    triggers.get(bot, db, data, function(trig){
       if (trig !== null) {
         var trigSplit  = trig.split(" ");
         var last = trigSplit[trigSplit.length - 1];
@@ -68,6 +68,19 @@ var handleCommands = function(bot, db, data) {
         return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
       }
     });
+  }
+
+  // allow the updating of a trigger using the "+=" operater which appends text to the end
+  // example:
+  // !test 
+  // ^ returns "this is a test"
+  // !test += bla bla bla 
+  // ^ update it to "this is a test bla bla bla"
+  let plusEqTest = data.params.length > 1 && data.params[0] === "+=";
+  if (plusEqTest) {
+    data.params.shift();
+    data.triggerAppend = data.params.join(' ');
+    triggers.append(bot, db, data);
   } 
 };
 
