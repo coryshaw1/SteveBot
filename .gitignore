@@ -8,3 +8,4 @@ tool/*.json
 tool/temp.js
 npm-debug.log
 *.tar
+.vscode
