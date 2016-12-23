@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "dubapi": "^1.6.3",
+    "dubapi": "^1.6.5",
     "fs": "0.0.2",
     "jethro": "^2.6.6",
     "kerberos": "0.0.18",
