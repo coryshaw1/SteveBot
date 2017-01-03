@@ -12,7 +12,7 @@
   "dependencies": {
     "bluebird": "^3.4.6",
     "cleverbot-node": "latest",
-    "dubapi": "^1.6.4",
+    "dubapi": "^1.6.5",
     "firebase-admin": "^4.0.3",
     "jethro": "^2.6.6",
     "kerberos": "0.0.18",

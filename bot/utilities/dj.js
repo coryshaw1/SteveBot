@@ -1,5 +1,5 @@
 'use strict';
-// const _ = require('lodash');
+const _ = require('lodash');
 const settings = require(process.cwd() + '/private/settings.js');
 
 module.exports = {
@@ -20,7 +20,8 @@ module.exports = {
           bot.pauseQueue(false, callback);
 
         } else {
-           bot.log('error','BOT', `Could not queue playlist - ${_data.data.details.message}`);
+           let msg = _.get(_data, 'data.details.message', 'error');
+           bot.log('error','BOT', `Could not queue playlist - ${code} ${msg}`);
            callback(code, _data, "queue playlist");
         }
       }
