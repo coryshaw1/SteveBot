@@ -5,6 +5,9 @@ const settings = require(process.cwd() + '/private/settings.js');
 
 
 module.exports = function(bot, db, data) {
+
+  return bot.sendChat("The !dj command is disabled for now until an issue with dubapi (third party lib that powers this bot) is resolved");
+
   // if not at least a MOD, GTFO!
   if ( !roleChecker(bot, data.user, 'mod') ) {
     bot.sendChat('sorry, !dj can only be used by mods');

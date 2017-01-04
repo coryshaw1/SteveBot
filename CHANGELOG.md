@@ -7,6 +7,11 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.12.1] - 2017-01-04
+### Changed
+- fixed the queuePlaylist issue error (disabled really)
+- updated dubapi to 1.6.5
+
 ## [1.12.0] - 2016-12-16
 ### Added
 - new command `!urban` to search urban dictionary

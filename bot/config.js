@@ -25,17 +25,16 @@ module.exports = {
   
   // auto upvote every song
   'autoUpvote' : true, 
-  
-  // skip song if region blocked song is not allowed in this list
-  'mainCountries' : ['US'], 
-  
+
   // enable cleverbot API to respond whenever someone @ the bot 
   'cleverbot' : true,
 
   // play music when the queue is empty
-  'playOnEmpty' : true,
+  'playOnEmpty' : false,
+
   // id of the playlist to use when queue is empty
   'playlistID' : '583f312e6193c3a2003182da',
+
   // name of the playlist (althernative to playlist id, can find id using getPlaylists)
   'playlistName' : 'main',
 
@@ -49,7 +48,9 @@ module.exports = {
     'warn' : false,
     // set max song length so you can warn and/or auto skip
     'max' : minToMs(10),
+    // auto skip a song that's long
     'skip' : false,
+    // chat message to show when a song is skipped
     'message' : 'Just a friendly warning that this song is 10 minutes or longer'
   }
 };

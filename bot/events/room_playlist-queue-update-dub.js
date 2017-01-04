@@ -67,6 +67,35 @@ function checkNewUser(bot, db, user) {
   }
 }
 
+function shouldBotDJ(bot, data) {
+  // join the queue when no one is in it
+  if (data.queue.length === 0) {
+    bot.sendChat("Looks like no one is in the queue, guess I'll take over for a while");
+    queue.join(bot, function(code, _data, extra){
+      if (code === 200) {
+        bot.log('info', 'BOT', 'Successfully joined the queue when no one was in it');
+        bot.isDJing = true;
+        bot.commandedToDJ = false;
+      } else {
+        bot.log('error','BOT', 'Could not un-pause my queue');
+      }
+    });
+    return;
+  }
+
+  // leave the queue when when a new person joins it
+  if (data.queue.length > 1 && bot.isDJing && !bot.commandedToDJ) {
+    bot.sendChat("Leaving the queue now that other DJs are in it");
+    queue.leave(bot, function(code, _data, extra){
+      if (code === 200) {
+        bot.log('info', 'BOT', 'Successfully cleared my queue');
+      } else {
+        bot.log('error','BOT', `Could not clear the queue - ${code} ${_data}`);
+      }
+    });
+  }
+}
+
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistQueueUpdate, function(data) {
     if (!data) {
@@ -84,31 +113,8 @@ module.exports = function(bot, db) {
       });
     }
 
-    // join the queue when no one is in it
-    if (data.queue.length === 0) {
-      bot.sendChat("Looks like no one is in the queue, guess I'll take over for a while");
-      queue.join(bot, function(code,_data, extra){
-        if (code === 200) {
-          bot.log('info', 'BOT', 'Successfully joined the queue when no one was in it');
-          bot.isDJing = true;
-          bot.commandedToDJ = false;
-        } else {
-          bot.log('error','BOT', 'Could not un-pause my queue');
-        }
-      });
-      return;
-    }
-
-    // leave the queue when when a new person joins it
-    if (data.queue.length > 1 && bot.isDJing && !bot.commandedToDJ) {
-      bot.sendChat("Leaving the queue now that other DJs are in it");
-      queue.leave(bot, function(code, _data, extra){
-        if (code === 200) {
-          bot.log('info', 'BOT', 'Successfully cleared my queue');
-        } else {
-          bot.log('error','BOT', `Could not clear the queue - ${code} ${_data}`);
-        }
-      });
+    if (bot.myconfig.playOnEmpty) {
+      shouldBotDJ(bot, data);
     }
 
   });
