@@ -45,41 +45,40 @@ module.exports = {
 
     // first we search for the existing trigger
     repo.getTrigger(bot, db, data.trigger, function(val){
-        // if it exists then we can update it
-        if (val !== null) {
-          // get first key and its value
-          let keys = Object.keys(val);
-          let triggerKey = keys[0];
-          // append our extra text for this trigger
-          let triggerObj = val[keys[0]];
-          triggerObj.Returns = triggerObj.Returns + " " + data.triggerAppend;
+      // if it exists then we can update it
+      if (val !== null) {
+        // get first key and its value
+        let keys = Object.keys(val);
+        let triggerKey = keys[0];
+        // append our extra text for this trigger
+        let triggerObj = val[keys[0]];
+        triggerObj.Returns = triggerObj.Returns + " " + data.triggerAppend;
 
-          return repo.updateTrigger(db, data, triggerKey, triggerObj)
-            .then(function(){
-              bot.log('info', 'BOT', `[TRIG] APPEND [${data.trigger} | ${data.user.username} | ${data.triggerAppend}]`);
-              bot.sendChat(`trigger for *!${data.trigger}* appended!`);
-              repo.logTriggerHistory(db, `${data.trigger} appended by ${data.user.username}`, data);
+        return repo.updateTrigger(db, data, triggerKey, triggerObj)
+          .then(function(){
+            bot.log('info', 'BOT', `[TRIG] APPEND [${data.trigger} | ${data.user.username} | ${data.triggerAppend}]`);
+            bot.sendChat(`trigger for *!${data.trigger}* appended!`);
+            repo.logTriggerHistory(db, `${data.trigger} appended by ${data.user.username}`, data);
+            if (typeof callback === 'function') {
+              callback();
+            }
+          })
+          .catch(function(err){
+            if (err) { 
+              bot.log('error', 'BOT',`[TRIG] ${data.trigger} - Error appending - ${err.code}`);
+              bot.sendChat(`internal error updating trigger *!${data.trigger}*, try again or contact IT support.`);
               if (typeof callback === 'function') {
-                callback();
+                callback(err);
               }
-            })
-            .catch(function(err){
-              if (err) { 
-                bot.log('error', 'BOT',`[TRIG] ${data.trigger} - Error appending - ${err.code}`);
-                bot.sendChat(`internal error updating trigger *!${data.trigger}*, try again or contact IT support.`);
-                if (typeof callback === 'function') {
-                  callback(err);
-                }
-              }
-            });
-        } else {
-          bot.sendChat(`You can not append a trigger that does not exist`);
-          if (typeof callback === 'function') {
-            callback("trigger not found");
-          }
+            }
+          });
+      } else {
+        bot.sendChat(`You can not append a trigger that does not exist`);
+        if (typeof callback === 'function') {
+          callback("trigger not found");
         }
-
-      });
+      }
+    });
   }
 };
 

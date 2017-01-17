@@ -1,6 +1,6 @@
 {
   "name": "DerpyBot",
-  "version": "1.12.1",
+  "version": "1.13.0",
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {

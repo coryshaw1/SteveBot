@@ -38,6 +38,9 @@ module.exports = {
   // name of the playlist (althernative to playlist id, can find id using getPlaylists)
   'playlistName' : 'main',
 
+  // make the bot save any song played (not skipped) to a playlist
+  'saveSongs' : false, 
+
   'autoskip' : {
     'enabled' : true, // needs to be true for the following autoskips to be honored
     'stuck' : true, // auto skip stuck/unplayable songs

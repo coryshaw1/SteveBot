@@ -216,7 +216,9 @@ module.exports = function(bot, db) {
     /************************************************************
      * Save song to playlist and for last/first-play func
      */
-    saveSong(db, bot, newSong);
+    if (bot.myconfig.saveSongs) {
+      saveSong(db, bot, newSong);
+    }
 
   });
 };
