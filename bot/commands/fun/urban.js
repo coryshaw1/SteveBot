@@ -23,7 +23,7 @@ function showResult(bot, json){
   if (!bot) { return; }
 
   if (!json) {
-    bot.sendChat('Sorry no results for that');
+    return bot.sendChat('Sorry no results for that');
   }
 
   let def = json.definition;

@@ -15,6 +15,7 @@ DubAPI.prototype.getRoomHistory = require(process.cwd() + '/bot/extend/getRoomHi
 DubAPI.prototype.addToPlaylist = require(process.cwd() + '/bot/extend/addToPlaylist.js');
 DubAPI.prototype.getPlaylists = require(process.cwd() + '/bot/extend/getPlaylists.js');
 DubAPI.prototype.shufflePlaylist = require(process.cwd() + '/bot/extend/shufflePlaylist.js');
+DubAPI.prototype.getUserQueue = require(process.cwd() + '/bot/extend/getUserQueue.js');
 
 new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, function(err, bot) {
         

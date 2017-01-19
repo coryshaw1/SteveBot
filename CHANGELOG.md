@@ -7,9 +7,14 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-## [1.13.0] - 2017-01-17
+## [1.13.0] - 2017-01-19
 ### Added
 - created a config setting to turn on/off saving songs to a playlist
+- add new dubapi extension to get user queue
+### Changed
+- fixed !urban no results bug
+- updated third party cleverbot lib
+- updating trigger internals
 
 ## [1.12.1] - 2017-01-04
 ### Changed

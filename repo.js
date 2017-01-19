@@ -210,10 +210,12 @@ var updateTrigger = function(db, data, triggerKey, orignialValue){
   if (!triggerKey || !data || !data.triggerText || !data.triggerName) { return; }
 
   if (!orignialValue) { orignialValue = {}; }
-  
+
+  var dbTrig = db.ref('triggers/'+triggerKey);
+
   var updateObj = {
     Author: data.user.username,
-    Returns: data.triggerText,
+    Returns: data.triggerText || orignialValue.Returns,
     Trigger: data.triggerName + ':',
     status: 'updated',
     lastUpdated : Date.now(),
@@ -221,8 +223,12 @@ var updateTrigger = function(db, data, triggerKey, orignialValue){
     createdBy : orignialValue.createdBy || null
   };
 
-  db.ref('lastTrigger').set(updateObj);
-  return db.ref('triggers/'+triggerKey).set(updateObj);
+  // console.log(updateObj);
+
+  db.ref('lastTrigger').set(updateObj).then(function(err)  {
+    if (err) { console.log('repo.lastTrigger.set', err); }
+  });
+  return dbTrig.set(updateObj);
 };
 
 /**

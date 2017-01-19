@@ -1,9 +1,9 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
-var triggers = require( process.cwd() + '/bot/utilities/triggers.js');
-var triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
-var cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
+const fs = require('fs');
+const path = require('path');
+const triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
+const cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
+const triggerStore = require(process.cwd()+ '/bot/store/triggers.js');
 
 var commands = {};
 var localCommands = process.cwd() + '/bot/commands';
@@ -52,7 +52,7 @@ var handleCommands = function(bot, db, data) {
   if (data.params.length === 0) {
     // if it's not an existing command caught by the code above
     // lets check if it's one of the many existing triggers
-    triggers.get(bot, db, data, function(trig){
+    triggerStore.get(bot, db, data, function(trig){
       if (trig !== null) {
         var trigSplit  = trig.split(" ");
         var last = trigSplit[trigSplit.length - 1];
@@ -70,17 +70,18 @@ var handleCommands = function(bot, db, data) {
     });
   }
 
+  return;
   // allow the updating of a trigger using the "+=" operater which appends text to the end
   // example:
-  // !test 
-  // ^ returns "this is a test"
-  // !test += bla bla bla 
-  // ^ update it to "this is a test bla bla bla"
+  // !test --->  returns "this is a test"
+  // !test += bla bla bla ----> it will update it to "this is a test bla bla bla"
   let plusEqTest = data.params.length > 1 && data.params[0] === "+=";
   if (plusEqTest) {
+    // remove the "+=" from the array
     data.params.shift();
+    // create a new string with the rest of the items in the array
     data.triggerAppend = data.params.join(' ');
-    triggers.append(bot, db, data);
+    triggerStore.append(bot, db, data);
   } 
 };
 

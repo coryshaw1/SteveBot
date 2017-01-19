@@ -5,8 +5,7 @@ const settings = require(process.cwd() + '/private/settings.js');
 
 
 module.exports = function(bot, db, data) {
-
-  return bot.sendChat("The !dj command is disabled for now until an issue with dubapi (third party lib that powers this bot) is resolved");
+  return bot.sendChat("The !dj command is disabled for now until some issues are resolved");
 
   // if not at least a MOD, GTFO!
   if ( !roleChecker(bot, data.user, 'mod') ) {
@@ -49,6 +48,10 @@ module.exports = function(bot, db, data) {
       console.log("queuePlaylist", code, _data);
       if (code === 200) {
         bot.log('info', 'BOT', 'Successfully queued playlist');
+
+        bot.getUserQueue(bot._.self.id, function(err, response){
+          console.log(err, response);
+        });
 
         // then in the success we join the queue by unpausing it
         bot.pauseQueue(false, function(code, _data){

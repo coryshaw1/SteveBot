@@ -1,6 +1,7 @@
 'use strict';
 const mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 const historyStore = require(process.cwd()+ '/bot/store/history.js');
+const triggerStore = require(process.cwd()+ '/bot/store/triggers.js');
 const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
 const repo = require(process.cwd()+'/repo');
 
@@ -49,13 +50,7 @@ module.exports = function(bot, db) {
       });
 
       // store trigger info locally
-      var triggers = db.ref('triggers');
-      triggers.on('value', function(snapshot){
-          var val = snapshot.val();
-          bot.allTriggers = val;
-        }, function(error){
-          bot.log('error', 'BOT', 'error getting triggers from firebase');
-      });
+      triggerStore.init(bot,db);
 
       // store leaderboard info locally
       var leaderboard = db.ref('leaderboard');

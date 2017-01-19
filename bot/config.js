@@ -33,10 +33,10 @@ module.exports = {
   'playOnEmpty' : false,
 
   // id of the playlist to use when queue is empty
-  'playlistID' : '583f312e6193c3a2003182da',
+  'playlistID' : '58810d14c3d427420056f6c2',
 
   // name of the playlist (althernative to playlist id, can find id using getPlaylists)
-  'playlistName' : 'main',
+  'playlistName' : 'main (1)',
 
   // make the bot save any song played (not skipped) to a playlist
   'saveSongs' : false, 
