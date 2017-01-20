@@ -7,6 +7,10 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.13.1] - 2017-01-20
+### Changed
+- fixed issue with updub event file causing issue during event
+
 ## [1.13.0] - 2017-01-19
 ### Added
 - created a config setting to turn on/off saving songs to a playlist
