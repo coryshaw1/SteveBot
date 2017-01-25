@@ -2,6 +2,7 @@
 const mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 const historyStore = require(process.cwd()+ '/bot/store/history.js');
 const triggerStore = require(process.cwd()+ '/bot/store/triggers.js');
+const dmStore = require(process.cwd()+ '/bot/store/messages.js');
 const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
 const repo = require(process.cwd()+'/repo');
 
@@ -35,6 +36,8 @@ module.exports = function(bot, db) {
         };
         mediaStore.setCurrent(currentSong);
       }
+
+      dmStore.init(bot);
 
       historyStore.init(bot);
 
