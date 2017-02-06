@@ -3,11 +3,6 @@ var log = require('jethro');
 log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
 var _ = require('lodash');
 
-var _env = process.env.ENV;
-if (_env === null || typeof _env === 'undefined' || _env === '') {
-  _env = 'dev';
-}
-
 /**
  * Find a user by user.id
  * @param  {Object}   db       Firebase object
@@ -15,7 +10,7 @@ if (_env === null || typeof _env === 'undefined' || _env === '') {
  * @param  {Function} callback
  */
 var findUserById = function(db, userid, callback) { 
-  var user = db.ref(_env + '/users').child(userid);
+  var user = db.ref('users').child(userid);
   user.once('value', function(snapshot){
       var val = snapshot.val();
       callback(val);
@@ -32,7 +27,7 @@ var findUserById = function(db, userid, callback) {
  * @param  {Function} callback
  */
 var updateUser = function(db, userid, data, callback) {
-  var updateRef = db.ref(_env + '/users').child(userid);
+  var updateRef = db.ref('users').child(userid);
   updateRef.update(data, callback);
 };
 
@@ -61,7 +56,7 @@ function refineUser(data){
  * @param  {Function} callback 
  */
 var insertUser = function(db, user, callback) {
-  var usersRef = db.ref(_env + '/users');
+  var usersRef = db.ref('users');
   var extraStuff = refineUser(user);
   var finalNewUser = Object.assign({}, user, extraStuff);
 
@@ -82,7 +77,7 @@ var insertUser = function(db, user, callback) {
  */
 var logUser = function(db, user, callback) {
 
-  let lookup = db.ref(_env + '/users').child(user.id);
+  let lookup = db.ref('users').child(user.id);
 
   lookup.once('value')
     .then(function(snapshot){
@@ -123,7 +118,7 @@ var logUser = function(db, user, callback) {
  * @param  {Function} callback [description]
  */
 var incrementUser = function(db, user, thing, callback) {
-  var incUser = db.ref(_env + '/users/' + user.id + '/' + thing);
+  var incUser = db.ref('users/' + user.id + '/' + thing);
   incUser.transaction(
     // increment prop by 1
     function (currentValue) {
@@ -172,7 +167,7 @@ var flowUser = function(db, user, callback) {
  * @param  {Function} callback 
  */
 var getLeaders = function(db, prop, limit, callback) {
-  return db.ref(_env + '/users')
+  return db.ref('users')
     .orderByChild(prop)
     .limitToLast(limit)
     .once('value', function(snapshot) {
@@ -190,7 +185,7 @@ var getLeaders = function(db, prop, limit, callback) {
 var getTrigger = function (bot, db, triggerName, callback) {
   db.ref('triggers')
     .orderByChild('Trigger')
-    .equalTo(triggerName + ':')
+    .equalTo(triggerName.toLowerCase() + ':')
     .once('value', function(snapshot) {
       var val = snapshot.val();
       if (typeof callback === 'function') {
@@ -216,7 +211,7 @@ var updateTrigger = function(db, data, triggerKey, orignialValue){
   var updateObj = {
     Author: data.user.username,
     Returns: data.triggerText || orignialValue.Returns,
-    Trigger: data.triggerName + ':',
+    Trigger: data.triggerName.toLowerCase() + ':',
     status: 'updated',
     lastUpdated : Date.now(),
     createdOn : orignialValue.createdOn || null,
@@ -245,7 +240,7 @@ var insertTrigger  = function(db, data) {
   let newTrigger = {
     Author: author,
     Returns: data.triggerText,
-    Trigger: data.triggerName + ':',
+    Trigger: data.triggerName.toLowerCase() + ':',
     status: 'created',
     lastUpdated : null,
     createdOn : Date.now(),
@@ -279,7 +274,7 @@ var logTriggerHistory  = function(db, msg, data) {
   var author = _.get(data, 'user.username', 'unknown');
 
   return db.ref('triggerHistory').push().set({
-    Author: data.Author,
+    Author: author,
     Returns: data.Returns,
     Trigger: data.Trigger,
     status: data.status,

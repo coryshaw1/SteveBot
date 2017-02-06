@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
 const cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
-const triggerStore = require(process.cwd()+ '/bot/store/triggers.js');
+const triggerStore = require(process.cwd()+ '/bot/store/triggerStore.js');
 
 var commands = {};
 var localCommands = process.cwd() + '/bot/commands';

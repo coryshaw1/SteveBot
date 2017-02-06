@@ -1,15 +1,10 @@
 'use strict';
 const mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 const historyStore = require(process.cwd()+ '/bot/store/history.js');
-const triggerStore = require(process.cwd()+ '/bot/store/triggers.js');
+const triggerStore = require(process.cwd()+ '/bot/store/triggerStore.js');
 const dmStore = require(process.cwd()+ '/bot/store/messages.js');
 const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
 const repo = require(process.cwd()+'/repo');
-
-var _env = process.env.ENV;
-if (_env === null || typeof _env === 'undefined' || _env === '') {
-  _env = 'dev';
-}
 
 module.exports = function(bot, db) {
   bot.on('connected', function(data) {
@@ -42,7 +37,7 @@ module.exports = function(bot, db) {
       historyStore.init(bot);
 
       // store user info locally
-      var user = db.ref(_env + '/users');
+      var user = db.ref('users');
       user.on('value', function(snapshot){
           var val = snapshot.val();
           bot.allUsers = val;

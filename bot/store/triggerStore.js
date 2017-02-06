@@ -8,7 +8,7 @@ var TriggerStore = {
 
   get: function(bot, db, data, callback) {
     var theReturn = null;
-    if (this.triggers[data.trigger + ":"]) {
+    if (this.triggers[data.trigger.toLowerCase() + ":"]) {
       theReturn = this.triggers[data.trigger + ":"].Returns;
     }
 
@@ -47,17 +47,16 @@ var TriggerStore = {
 
     repo.updateTrigger(db, data, fbkey, triggerObj)
       .then(function(){
-        bot.log('info', 'BOT', `[TRIG] APPEND [${data.trigger} | ${data.user.username} | ${data.triggerAppend}]`);
+        bot.log('info', 'BOT', `[TRIG] APPEND by ${data.user.username} -> !${data.trigger} -> ${data.triggerAppend}`);
         bot.sendChat(`trigger for *!${data.trigger}* appended!`);
-        repo.logTriggerHistory(db, `${data.trigger} appended by ${data.user.username}`, data);
         if (typeof callback === 'function') {
           callback();
         }
       })
       .catch(function(err){
         if (err) { 
-          bot.log('error', 'BOT',`[TRIG] ${data.trigger} - Error appending - ${err.code}`);
-          bot.sendChat(`internal error updating trigger *!${data.trigger}*, try again or contact IT support.`);
+          bot.log('error', 'BOT',`[TRIG] APPEND ERROR: !${data.trigger} - ${err.code}`);
+          bot.sendChat(`internal error updating trigger *!${data.trigger}*, try again or contact "IT" support.`);
           if (typeof callback === 'function') {
             callback(err);
           }
@@ -72,11 +71,7 @@ var TriggerStore = {
         var val = snapshot.val();
         bot.log('info', 'BOT', 'Trigger cache updated');
         // reorganize the triggers in memory to remove the keys that Firebase makes
-        Object.keys(val).forEach((key)=>{
-          var thisTrig = val[key];
-          thisTrig.fbkey = key;
-          self.triggers[thisTrig.Trigger] = thisTrig;
-        });
+        self.triggers = val;
       }, function(error){
         bot.log('error', 'BOT', 'error getting triggers from firebase');
     });

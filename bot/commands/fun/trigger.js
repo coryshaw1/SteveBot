@@ -10,9 +10,10 @@ function displayHelp(bot){
 
 module.exports = function(bot, db, data) {
   const userName = _.get(data, 'user.username');
+  const chatID = data.id;
   
   if (!data || !data.user || !data.user.username) {
-    bot.log('error', 'BOT', '[TRIG] ERROR [Missing data or username]');
+    bot.log('error', 'BOT', '[TRIG] ERROR: Missing data or username');
     return bot.sendChat('An error occured, try again');
   }
 
@@ -40,13 +41,14 @@ module.exports = function(bot, db, data) {
       // creating a new trigger
       return repo.insertTrigger(db, data)
         .then(function(){
-          var inf = `[TRIG] ADD [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
+          var inf = `[TRIG] ADDED by ${data.user.username} -> !${data.triggerName} -> ${data.triggerText}`;
           bot.log('info', 'BOT', inf);
+          setTimeout(function(){}, 1000);
+          bot.moderateDeleteChat(chatID, function(){});
           bot.sendChat(`trigger for *!${data.triggerName}* created, try it out!`);
-          repo.logTriggerHistory(db, `${data.triggerName} created by ${data.user.username}`, data);
         })
         .catch(function(err){
-          if (err) { bot.log('error', 'BOT',`[TRIG] DEL ADD: ${err}`);}
+          if (err) { bot.log('error', 'BOT',`[TRIG] ADD: ${err}`);}
         });
     }
 
@@ -61,13 +63,13 @@ module.exports = function(bot, db, data) {
       keys = Object.keys(val);
       return repo.updateTrigger(db, data, keys[0], val[keys[0]])
         .then(function(){
-          var info = `[TRIG] CHANGED [${data.triggerName} | ${data.user.username} | ${data.triggerText}]`;
+          var info = `[TRIG] UPDATED by ${data.user.username} -> !${data.triggerName} -> ${data.triggerText}`;
           bot.log('info', 'BOT', info);
+          bot.moderateDeleteChat(chatID, function(){});
           bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
-          repo.logTriggerHistory(db, `${data.triggerName} updated by ${data.user.username}`, data);
         })
         .catch(function(err){
-          if (err) { bot.log('error', 'BOT',`[TRIG] DEL CHANGED: ${err}`); }
+          if (err) { bot.log('error', 'BOT',`[TRIG] UPDATE ERROR: ${err}`); }
         });
     }
 
@@ -76,10 +78,9 @@ module.exports = function(bot, db, data) {
       keys = Object.keys(val);
       return repo.deleteTrigger(db, keys[0])
         .then(function(){
-          var info = `[TRIG] DEL [${data.triggerName} | ${data.user.username}]`;
+          var info = `[TRIG] DEL by ${data.user.username} -> !${data.triggerName}`;
           bot.log('info', 'BOT', info);
           bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
-          repo.logTriggerHistory(db, `${data.triggerName} deleted by ${data.user.username}`, data);
         })
         .catch(function(err){
           if (err) { bot.log('error', 'BOT', `[TRIG] DEL ERROR: ${err}`); }

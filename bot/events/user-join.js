@@ -16,7 +16,7 @@ module.exports = function(bot, db) {
 
     repo.logUser(db, data.user, function(user){
     
-      var info = `[JOIN] [${user.username} | ${user.id} | ${user.dubs} | ${user.logType}]`;
+      var info = `[JOIN] ${user.username} | ${user.id} | ${user.dubs} | ${user.logType}`;
       bot.log('info', 'BOT', info);
     });
 

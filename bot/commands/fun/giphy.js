@@ -4,7 +4,7 @@ var giphy = require(process.cwd() + '/bot/utilities/giphy.js');
 
 module.exports = function(bot, db, data) {
   if (!data) {
-    bot.log('error', 'BOT', '[GIPHY] ERROR [Missing data]');
+    bot.log('error', 'BOT', '[GIPHY] ERROR Missing data');
     return bot.sendChat('An error occured, try again');
   }
 

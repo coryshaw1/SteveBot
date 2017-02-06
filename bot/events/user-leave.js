@@ -8,7 +8,7 @@
 module.exports = function(bot) {
   bot.on(bot.events.userLeave, function(data) {
     var user = data.user;
-    var info = `[LEAVE] [${user.username} | ${user.id} | ${user.dubs}]`;
+    var info = `[LEAVE] ${user.username}`;
     bot.log('info', 'BOT', info);
   });
 };

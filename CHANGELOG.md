@@ -7,6 +7,13 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.13.2] - 2017-02-06
+### Changed
+- Minor internal changes to logging
+- trigger add or update now deletes the chat messages used to create it
+- restructured how triggers are stored in firebase
+- removed unessecary environment variable
+
 ## [1.13.1] - 2017-01-20
 ### Changed
 - fixed issue with updub event file causing issue during event

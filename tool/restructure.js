@@ -13,7 +13,7 @@ make sure you update the dataFile location and name
 
 ************************************************************************/
 
-var dataFile = fs.readFileSync(process.cwd() + '/backup-1484674753727.json');
+var dataFile = fs.readFileSync(process.cwd() + '/backup-1486398812650.json');
 var data = JSON.parse(dataFile);
 var newData = {
   triggers : {}
@@ -29,7 +29,7 @@ newData.song_stats = data.song_stats;
 
 Object.keys(data.triggers).forEach((key)=>{
   var thisTrig = data.triggers[key];
-  newData.triggers[thisTrig.Trigger] = thisTrig;
+  newData.triggers[thisTrig.Trigger.toLowerCase()] = thisTrig;
 });
 
 fs.writeFileSync(process.cwd() + '/restructured-data.json', JSON.stringify( newData ));
