@@ -74,7 +74,7 @@ var handleCommands = function(bot, db, data) {
   // allow the updating of a trigger using the "+=" operater which appends text to the end
   // example:
   // !test --->  returns "this is a test"
-  // !test += bla bla bla ----> it will update it to "this is a test bla bla bla"
+  // !test += bla bla bla ----> will update it to "this is a test bla bla bla"
   let plusEqTest = data.params.length > 1 && data.params[0] === "+=";
   if (plusEqTest) {
     // remove the "+=" from the array

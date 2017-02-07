@@ -29,13 +29,13 @@ var TriggerStore = {
   },
 
   append: function(bot, db, data, callback) {
-    if (!this.triggers[data.trigger + ":"]) {
-      return bot.sendChat(`The trigger !${data.trigger} does not exist, ergo you can not append to it`);
-    }
-
     // if not at least a MOD, GTFO!
     if ( !roleChecker(bot, data.user, 'mod') ) {
       return bot.sendChat('Sorry only mods (or above) can do this');
+    }
+
+    if (!this.triggers[data.trigger + ":"]) {
+      return bot.sendChat(`The trigger !${data.trigger} does not exist, ergo you can not append to it`);
     }
 
     var triggerObj =  _.clone(this.triggers[data.trigger + ":"]);
@@ -71,7 +71,11 @@ var TriggerStore = {
         var val = snapshot.val();
         bot.log('info', 'BOT', 'Trigger cache updated');
         // reorganize the triggers in memory to remove the keys that Firebase makes
-        self.triggers = val;
+        Object.keys(val).forEach((key)=>{
+          var thisTrig = val[key];
+          thisTrig.fbkey = key;
+          self.triggers[thisTrig.Trigger] = thisTrig;
+        });
       }, function(error){
         bot.log('error', 'BOT', 'error getting triggers from firebase');
     });

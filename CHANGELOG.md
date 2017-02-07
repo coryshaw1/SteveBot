@@ -11,7 +11,7 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 ### Changed
 - Minor internal changes to logging
 - trigger add or update now deletes the chat messages used to create it
-- restructured how triggers are stored in firebase
+- made all triggers lowercase
 - removed unessecary environment variable
 
 ## [1.13.1] - 2017-01-20

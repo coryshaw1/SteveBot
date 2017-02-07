@@ -1,7 +1,6 @@
 'use strict';
 var repo = require(process.cwd()+'/repo');
 var roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
-const _ = require('lodash');
 
 function displayHelp(bot){
   bot.sendChat('*usage:* !trigger <trigger_name> <trigger_text>');
@@ -9,7 +8,6 @@ function displayHelp(bot){
 }
 
 module.exports = function(bot, db, data) {
-  const userName = _.get(data, 'user.username');
   const chatID = data.id;
   
   if (!data || !data.user || !data.user.username) {
@@ -58,12 +56,14 @@ module.exports = function(bot, db, data) {
     }
 
     var keys;
+    var foundTrigger;
     if (val !== null && data.params.length > 1) {
       // updating an existing trigger
       keys = Object.keys(val);
-      return repo.updateTrigger(db, data, keys[0], val[keys[0]])
+      foundTrigger = val[keys[0]];
+      return repo.updateTrigger(db, data, keys[0], foundTrigger)
         .then(function(){
-          var info = `[TRIG] UPDATED by ${data.user.username} -> !${data.triggerName} -> ${data.triggerText}`;
+          var info = `[TRIG] UPDATE: ${data.user.username} changed !${data.triggerName} FROM-> ${foundTrigger.Returns} TO-> ${data.triggerText}`;
           bot.log('info', 'BOT', info);
           bot.moderateDeleteChat(chatID, function(){});
           bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
