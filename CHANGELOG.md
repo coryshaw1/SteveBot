@@ -7,6 +7,12 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.14.0] - 2017-02-16
+### Changed
+- disabled cleverbot for now until their api issues are resolved
+- added new cleverbot api key in settings
+- deleted hardcoded !dubx, going to make it a trigger
+
 ## [1.13.2] - 2017-02-06
 ### Changed
 - Minor internal changes to logging
