@@ -4,6 +4,7 @@ const historyStore = require(process.cwd()+ '/bot/store/history.js');
 const triggerStore = require(process.cwd()+ '/bot/store/triggerStore.js');
 const dmStore = require(process.cwd()+ '/bot/store/messages.js');
 const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
+const settings = require(process.cwd() + '/private/settings.js');
 const repo = require(process.cwd()+'/repo');
 
 module.exports = function(bot, db) {
@@ -15,6 +16,9 @@ module.exports = function(bot, db) {
 
       for(var i = 0; i < users.length; i++) {
         repo.logUser(db, users[i], function(){});
+        if (users[i].username === settings.OWNER) {
+          bot.sendChat(`Hi @${settings.OWNER}, I'm here`);
+        }
       }
 
       bot.updub();
@@ -44,7 +48,7 @@ module.exports = function(bot, db) {
           // update leaderboard everytime someone gives a point
           leaderUtils.updateLeaderboard(bot, db);
         }, function(error){
-          bot.log('error', 'BOT', 'error getting users from firebase');
+          bot.log('error', 'BOT', `error getting users from firebase - ${error}`);
       });
 
       // store trigger info locally
@@ -56,7 +60,7 @@ module.exports = function(bot, db) {
           var val = snapshot.val();
           bot.leaderboard = val;
         }, function(error){
-          bot.log('error', 'BOT', 'error getting leaderboard from firebase');
+          bot.log('error', 'BOT', `error getting leaderboard from firebase - ${error}`);
       });
 
     }, 5000);

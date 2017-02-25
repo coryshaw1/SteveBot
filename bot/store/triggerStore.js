@@ -5,6 +5,11 @@ const _ = require('lodash');
 
 var TriggerStore = {
   triggers : {},
+  lastTrigger : {},
+
+  getLast: function(){
+    return this.lastTrigger;
+  },
 
   get: function(bot, db, data, callback) {
     var theReturn = null;
@@ -66,6 +71,7 @@ var TriggerStore = {
 
   init : function(bot, db){
     var self = this;
+    
     var triggers = db.ref('triggers');
     triggers.on('value', function(snapshot){
         var val = snapshot.val();
@@ -79,6 +85,16 @@ var TriggerStore = {
       }, function(error){
         bot.log('error', 'BOT', 'error getting triggers from firebase');
     });
+
+    var lastTrigger = db.ref('lastTrigger');
+    lastTrigger.on('value', function(snapshot){
+      var val = snapshot.val();
+      bot.log('info', 'BOT', 'lastTrigger updated');
+      self.lastTrigger = val;
+    }, function(error){
+        bot.log('error', 'BOT', 'error getting lastTrigger from firebase');
+    });
+
   }
 };
 

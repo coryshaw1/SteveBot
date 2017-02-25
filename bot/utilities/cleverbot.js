@@ -1,5 +1,5 @@
 'use strict';
-// const Cleverbot = require('cleverbot-node');
+const Cleverbot = require('cleverbot-node');
 const settings = require(process.cwd() + '/private/settings.js');
 
 module.exports = function(bot, db, data) {
@@ -12,15 +12,12 @@ module.exports = function(bot, db, data) {
     return;
   }
 
-  return bot.sendChat("Cleverbot is having issues so this functionality is turned off for now.  Sorry!");
-
-  // var cleverbot = new Cleverbot();
-  // cleverbot.configure({botapi: settings.CLEVERBOT_API_KEY});
-  // cleverbot.write(data.params.join(" "), function (response) {
-  //   console.log(response);
-  //   if (!response) {
-  //     return bot.log('error', 'BOT', 'No response from cleverbot');
-  //   }
-  //   bot.sendChat(response.output);
-  // });
+  var cleverbot = new Cleverbot();
+  cleverbot.configure({botapi: settings.CLEVERBOT_API_KEY});
+  cleverbot.write(data.params.join(" "), function (response) {
+    if (!response) {
+      return bot.log('error', 'BOT', 'No response from cleverbot');
+    }
+    bot.sendChat(response.output);
+  });
 };

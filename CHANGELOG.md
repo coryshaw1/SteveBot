@@ -7,6 +7,16 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.15.0] - 2017-02-24
+### Changed
+- fixed cleverbot... until they decide to change things again :-/
+- ResidentDJs can now **only** create triggers.
+
+### Added
+- added !lasttrigger that shows the most recently updated/created trigger
+- bot @metions the owner on reconnect if owner is in the room
+- bot greets the owner when they enter the room
+
 ## [1.14.0] - 2017-02-16
 ### Changed
 - disabled cleverbot for now until their api issues are resolved

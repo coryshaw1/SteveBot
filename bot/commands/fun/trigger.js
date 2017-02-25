@@ -3,10 +3,18 @@ var repo = require(process.cwd()+'/repo');
 var roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
 
 function displayHelp(bot){
-  bot.sendChat('*usage:* !trigger <trigger_name> <trigger_text>');
-  bot.sendChat('Don\'t add the "!" when creating a trigger');
+  bot.sendChat('*create/update:* !trigger trigger_name trigger_text');
+  bot.sendChat('*delete:* !trigger trigger_name');
+  bot.sendChat('Don\'t add the "!" before trigger_name');
 }
 
+function noExc(bot) {
+  bot.sendChat("leave out the \"!\".");
+  bot.sendChat("*Don't* do this: !trigger !stupidface.");
+  bot.sendChat("*Do* this: !trigger stupidface");
+}
+
+module.exports.extraCommands = ['triggers'];
 module.exports = function(bot, db, data) {
   const chatID = data.id;
   
@@ -15,19 +23,9 @@ module.exports = function(bot, db, data) {
     return bot.sendChat('An error occured, try again');
   }
 
+  // if just "!trigger" was used then we show the help info for using it
   if (data.params === void(0) || data.params.length < 1) {
     return displayHelp(bot);
-  }
-
-  // if not at least a MOD, GTFO!
-  if ( !roleChecker(bot, data.user, 'mod') ) {
-    bot.sendChat('Ah ah ah, only mods can do this');
-    return bot.sendChat('https://media.giphy.com/media/uOAXDA7ZeJJzW/giphy.gif');
-  }
-
-  if (data.params[0].charAt(0) === '!') {
-    displayHelp(bot);
-    return;
   }
 
   data.triggerName = data.params[0];
@@ -35,13 +33,26 @@ module.exports = function(bot, db, data) {
 
   repo.getTrigger(bot, db, data.triggerName, function(val){
     
+    /*********************************************************
+     * Create Trigger
+     * min role:  Resident DJs
+     */
     if (val === null && data.params.length > 1) {
-      // creating a new trigger
+
+      if ( !roleChecker(bot, data.user, 'residentdj') ) {
+        bot.sendChat('Sorry only ResidentDJs and above can create triggers');
+        return;
+      }
+
+      // scold user for not doing it right
+      if (data.params[0].charAt(0) === '!') {
+        return  noExc(bot);
+      }
+
       return repo.insertTrigger(db, data)
         .then(function(){
           var inf = `[TRIG] ADDED by ${data.user.username} -> !${data.triggerName} -> ${data.triggerText}`;
           bot.log('info', 'BOT', inf);
-          setTimeout(function(){}, 1000);
           bot.moderateDeleteChat(chatID, function(){});
           bot.sendChat(`trigger for *!${data.triggerName}* created, try it out!`);
         })
@@ -50,15 +61,29 @@ module.exports = function(bot, db, data) {
         });
     }
 
+    // everything below this block is mod only action
+    if ( !roleChecker(bot, data.user, 'mod') ) {
+      bot.sendChat('Sorry only Mods and above can update or delete a triggers');
+      return;
+    }
+
+    // scold user for not doing it right
+    if (data.params[0].charAt(0) === '!') {
+      return  noExc(bot);
+    }
+
     if (val === null && data.params.length === 1) {
       // trying to delete a trigger that doesn't exist
       return bot.sendChat('You can\'t delete a trigger that doesn\'t exist');
     }
 
+    /*********************************************************
+     * Update Trigger
+     * min role:  Mods
+     */
     var keys;
     var foundTrigger;
     if (val !== null && data.params.length > 1) {
-      // updating an existing trigger
       keys = Object.keys(val);
       foundTrigger = val[keys[0]];
       return repo.updateTrigger(db, data, keys[0], foundTrigger)
@@ -73,10 +98,13 @@ module.exports = function(bot, db, data) {
         });
     }
 
+    /*********************************************************
+     * Delete Trigger Section
+     * min role:  Mods
+     */
     if (val !== null && data.params.length === 1) {
-      // deleting a trigger
       keys = Object.keys(val);
-      return repo.deleteTrigger(db, keys[0])
+      return repo.deleteTrigger(db, keys[0], val[keys[0]])
         .then(function(){
           var info = `[TRIG] DEL by ${data.user.username} -> !${data.triggerName}`;
           bot.log('info', 'BOT', info);

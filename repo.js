@@ -257,8 +257,11 @@ var insertTrigger  = function(db, data) {
  * @param  {String} triggerKey The key of the location of the trigger
  * @return {Firebase.Promise}  Returns a promise
  */
-var deleteTrigger = function(db, triggerKey) {
+var deleteTrigger = function(db, triggerKey, oldTrigger) {
   if (!triggerKey) { return; }
+
+  oldTrigger.status = "deleted";
+  db.ref('lastTrigger').set(oldTrigger);
   return db.ref('triggers/' + triggerKey).set(null);
 };
 

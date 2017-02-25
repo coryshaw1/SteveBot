@@ -1,5 +1,6 @@
 'use strict';
-var repo = require(process.cwd()+'/repo');
+const repo = require(process.cwd()+'/repo');
+const settings = require(process.cwd() + '/private/settings.js');
 
 /**
  * When a new user joins the room, we log their info to the db and we begin storing
@@ -12,6 +13,10 @@ module.exports = function(bot, db) {
     
     if (data.user.username === 'mixerbot') {
       bot.sendChat('hey @everyone, Mixerbot\'s back!');
+    }
+
+    if (data.user.username === settings.OWNER) {
+      bot.sendChat(`Hi @${settings.OWNER}, welcome back! All systems are go.`);
     }
 
     repo.logUser(db, data.user, function(user){
