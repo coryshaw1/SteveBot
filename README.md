@@ -63,7 +63,7 @@ Below are the list of commands that have been implemented.
 
 ### Info
 * **!commands** - Basic list of commands
-* **!dubx** - Shameless plug to [sinfulBA/DubX](https://github.com/sinfulBA/DubX-Script)
+* **!dubplus** - Shameless plug to [DubPlus/DubPlus](https://github.com/DubPlus/DubPlus)
 * **!eta** - Gets the user's estimated time in minutes until their song plays
 * **!help** - Basic list of commands
 * **!lastplayed** or **!lastsong** or **!lasttrack** - Name and link of the song that just played
