@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.0.4] - 2017-04-04
+### Added
+- !dub+ and !dubplus for shameless plugs to [DubPlus/DubPlus](https://github.com/DubPlus/DubPlus)
+
+### Changed
+- !dubx now points to the new Dub+ plugin
+
+### Fixed
+- Update DubAPI dependency
+
 ## [0.0.3] - 2016-02-09
 ### Added
 - !front @username to move @username to front of queue
