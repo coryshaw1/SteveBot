@@ -1,7 +1,7 @@
 var settings = {
-	"USERNAME": "yourBotUserName",
-	"PASSWORD": "yourBotPassword",
-	"ROOMNAME": "trapcity",
+	"USERNAME": "LegitBot",
+	"PASSWORD": "Asimov",
+	"ROOMNAME": "xXGaming_MusicXx",
 	"MONGODBURL": "mongodb://localhost:27017/dbname",
 	"SOUNDCLOUDID": "soundcloudApiId"
 };
