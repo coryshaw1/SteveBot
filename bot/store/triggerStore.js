@@ -2,10 +2,24 @@
 var repo = require(process.cwd()+'/repo');
 const roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
 const _ = require('lodash');
+const fuzzy = require('fuzzy');
 
 var TriggerStore = {
   triggers : {},
   lastTrigger : {},
+
+  random : function () {
+    var trigKeys = Object.keys(this.triggers);
+    var randKey = trigKeys[Math.floor((Math.random()*trigKeys.length))];
+    return this.triggers[randKey];
+  },
+
+  search : function(term) {
+    if (!term || term ==='') {return [];}
+    var trigKeys = Object.keys(this.triggers);
+    var finds = fuzzy.filter(term, trigKeys);
+    return finds.map(function(el) { return el.string.replace(/\:$/, ''); });
+  },
 
   getLast: function(){
     return this.lastTrigger;
