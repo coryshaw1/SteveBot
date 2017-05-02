@@ -7,6 +7,10 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.16.1] - 2017-05-02
+### Changed
+- fixed random when it returns triggers with %me% or %dj% to properly swap those out
+
 ## [1.16.0] - 2017-05-02
 ### Added
 - !random - returns a random trigger and its name

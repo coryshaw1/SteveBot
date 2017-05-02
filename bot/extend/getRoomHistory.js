@@ -65,7 +65,7 @@ function requestWrapper(context, url) {
  * @param {Array} reqArray       the array of history urls that we will be calling
  * @param {Function} doneCB      on complete, this will be exec passing history[] to it
  */
-function *History(context, reqArray, doneCB) {
+function *history(context, reqArray, doneCB) {
   var history = [];
 
   for (var i = 0; i < reqArray.length; i++){
@@ -97,7 +97,7 @@ function getRoomHistory(pages, callback){
   var reqs = makeRequestArray(roomid, pages);
 
   // start History generator function
-  hist = new History(this, reqs, callback);
+  hist = history(this, reqs, callback);
   hist.next();
 }
 
