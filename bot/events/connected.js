@@ -10,15 +10,14 @@ const repo = require(process.cwd()+'/repo');
 module.exports = function(bot, db) {
   bot.on('connected', function(data) {
     bot.log('info', 'BOT', 'Connected to ' + data);
+    bot.sendChat("`Initializing...`");
+    var initStart = Date.now();
 
     setTimeout(function(){
       var users = bot.getUsers();
 
       for(var i = 0; i < users.length; i++) {
         repo.logUser(db, users[i], function(){});
-        if (users[i].username === settings.OWNER) {
-          bot.sendChat(`Hi @${settings.OWNER}, I'm here`);
-        }
       }
 
       bot.updub();
@@ -63,6 +62,9 @@ module.exports = function(bot, db) {
           bot.log('error', 'BOT', `error getting leaderboard from firebase - ${error}`);
       });
 
-    }, 5000);
+      var complete = (Date.now() - initStart)/1000;
+      bot.sendChat(`\`Initialization completed in ${complete} seconds\``);
+      
+    }, 3000);
   });
 };

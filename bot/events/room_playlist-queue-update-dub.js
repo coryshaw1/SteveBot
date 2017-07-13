@@ -34,9 +34,13 @@ function checkHistory(bot, data){
       msg = `@${dj}, you have a song in the queue that was played ${time}: *${songName}*`;
     }
 
-    bot.sendChat(msg);
-    dj = dj || 'dj';
-    bot.log('info', 'BOT', `Warned: ${dj} - ${songName} - ${time}`);
+    if (time.toLowerCase().indexOf('seconds') >= 0) {
+      bot.log('info', 'BOT', `Not Warned: ${dj} - ${songName} - ${time}`);
+    } else {
+      bot.sendChat(msg);
+      dj = dj || 'dj';
+      bot.log('info', 'BOT', `Warned: ${dj} - ${songName} - ${time}`);
+    }
   }
 
   historyStore.save(bot, data);

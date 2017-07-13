@@ -78,6 +78,10 @@ function checkHistory(bot, data){
 
   if (check.length > 0) {
     var time = historyStore.convertTime(check[0].lastplayed);
+    if (time.toLowerCase().indexOf('seconds') >= 0) {
+      bot.log('info', 'BOT', `Not Warned: ${dj} - ${songName} - ${time}`);
+      return;
+    }
     bot.sendChat(`@${dj}, this song was played ${time}`);
     bot.log('info', 'BOT', `Warned: ${dj} - ${songName} - ${time}`);
   }

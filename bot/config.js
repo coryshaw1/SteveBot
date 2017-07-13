@@ -43,7 +43,7 @@ module.exports = {
 
   'autoskip' : {
     'enabled' : true, // needs to be true for the following autoskips to be honored
-    'stuck' : true, // auto skip stuck/unplayable songs
+    'stuck' : true // auto skip stuck/unplayable songs
   },
 
   'longSongs' : {
