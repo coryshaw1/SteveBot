@@ -7,6 +7,11 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.17.0] - 2017-07-25
+### Added
+- Added last.fm scrobbling
+- Added last.fm tag retrieving
+
 ## [1.16.2] - 2017-07-13
 ### Changed
 - fixed song warning [issue](https://github.com/FranciscoG/DerpyBot/issues/20)
