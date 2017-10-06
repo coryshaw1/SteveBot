@@ -23,10 +23,10 @@ module.exports = function(bot, db, data) {
                  bot.sendChat('Wow @' + data.user.username + ' ... Love yourself in private weirdo... :confounded:');
             } 
             else {
-                bot.sendChat("@" + user + " you need to @[username] to hearts someone");
+                bot.sendChat("@" + data.user.username + " you need to @[username] to hearts someone");
             }
         } else {
-            bot.sendChat("@" + user + " you can give hearts to one person");
+            bot.sendChat("@" + data.user.username + " you can give hearts to one person");
         }
     }
     else if(data.user.username !== bot.getDJ().username){
