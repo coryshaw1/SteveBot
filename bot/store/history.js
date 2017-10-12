@@ -34,8 +34,8 @@ var historyStore = {
 
   /**
    * checks to see if a user was already warned about a song within the last minute
-   * @param  {[type]} warnSong [description]
-   * @return {[type]}          [description]
+   * @param  {Object} warnSong
+   * @return {Bool}
    */
   recentlyWarned : function(warnSong){
     var result = false;
@@ -59,6 +59,9 @@ var historyStore = {
     return result;
   },
 
+  /**
+   * check history to see if songid is present
+   */
   getSong : function(bot, songid){
     if (!songid) { return; }
     if (!this.ready) {return;}

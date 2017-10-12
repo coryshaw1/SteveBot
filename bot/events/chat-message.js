@@ -1,3 +1,6 @@
+/**
+ * Event fired for every new chat message
+ */
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -71,18 +74,6 @@ var handleCommands = function(bot, db, data) {
   }
 
   return;
-  // allow the updating of a trigger using the "+=" operater which appends text to the end
-  // example:
-  // !test --->  returns "this is a test"
-  // !test += bla bla bla ----> will update it to "this is a test bla bla bla"
-  let plusEqTest = data.params.length > 1 && data.params[0] === "+=";
-  if (plusEqTest) {
-    // remove the "+=" from the array
-    data.params.shift();
-    // create a new string with the rest of the items in the array
-    data.triggerAppend = data.params.join(' ');
-    triggerStore.append(bot, db, data);
-  } 
 };
 
 

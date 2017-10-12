@@ -1,7 +1,6 @@
 /***************************************************************
  * This event is fired when a new song begins to play
  */
-
 'use strict';
 var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 var userStore = require(process.cwd()+ '/bot/store/users.js');
@@ -39,9 +38,17 @@ function reviewPoints(bot, currentSong) {
   }
 }
 
+/**
+ * Send a warning to chat when a song exceeds 
+ * a certaim time length limit set in config
+ * also checks YouTube for song issues and stores it
+ * 
+ * @param {Object} bot instanceOf dubapi
+ * @param {Object} db database object
+ * @param {Object} data dubapi song data
+ * @returns 
+ */
 function songWarning(bot, db, data){ 
-  // set your minutes time limit here
-
   var songLength = _.get(data, 'media.songLength');
   if (songLength &&
       bot.myconfig.longSongs.warn && 
@@ -63,6 +70,15 @@ function songWarning(bot, db, data){
   }
 }
 
+/**
+ * Checks current playing song against room history and
+ * gives a warning if song was played within a specific
+ * time frame
+ * 
+ * @param {Object} bot 
+ * @param {Object} data 
+ * @returns 
+ */
 function checkHistory(bot, data){
   if (!historyStore.ready) {
     return;
@@ -74,6 +90,8 @@ function checkHistory(bot, data){
 
   if (!songID) { return; }
 
+  // compare current song with stored history
+  // returns an array of matches
   var check = historyStore.getSong(bot, songID);
 
   if (check.length > 0) {
@@ -123,6 +141,14 @@ function lastPlayModel(currentSong, storedData) {
   return obj;
 }
 
+/**
+ * Save song to bot's own playlist.
+ * Helpful to build a large playlist so bot can play during off hours
+ * 
+ * @param {Object} db 
+ * @param {Object} bot 
+ * @param {Object} song 
+ */
 function saveSong(db, bot, song) {
   // then save songs to bot's playlist for later use
   // skip saving songs on Funky Friday
@@ -161,14 +187,14 @@ module.exports = function(bot, db) {
      *  song info and trackinng
      */
     
-    var currentSong = mediaStore.getCurrent();
-    var propped = userStore.getProps();
-    var flowed = userStore.getFlows();
+    var currentSong = mediaStore.getCurrent(); // gets last played song
+    var propped = userStore.getProps(); // get props given for last song
+    var flowed = userStore.getFlows(); // get flow points for last song
     
     /************************************************************
      * review points
+     * send chat message if there were any props or flow points given
      */
-    // send chat message if there were any props or flow points given
     reviewPoints(bot, currentSong);
 
     /************************************************************
