@@ -5,7 +5,7 @@ const _ = require('lodash');
  * This module grabs the playlist history from a room
  * It uses JS Generators so make sure your Node version supports it
  * http://node.green/#generators
- * node >= 4.3.2 
+ * node >= 4.0.0
  **/
 
 /***********************************************************************

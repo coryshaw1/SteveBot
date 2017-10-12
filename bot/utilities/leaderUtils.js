@@ -35,7 +35,7 @@ function updateLeaderboard(bot, db) {
     props : '',
     propsObj : {},
     flow : '',
-    flowObj : {},
+    flowObj : {}
   };
   
   var propsArr = [];

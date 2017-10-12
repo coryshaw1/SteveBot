@@ -14,17 +14,16 @@ module.exports = function(bot, db) {
     var initStart = Date.now();
 
     setTimeout(function(){
+      // log current logged in user data
       var users = bot.getUsers();
-
       for(var i = 0; i < users.length; i++) {
         repo.logUser(db, users[i], function(){});
       }
 
+      // handle current playing song
       bot.updub();
-
       var media = bot.getMedia();
       var dj = bot.getDJ();
-
       if(media) {
         var currentSong = {
           name : media.name,

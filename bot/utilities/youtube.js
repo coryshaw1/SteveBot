@@ -11,7 +11,7 @@ var Youtube = {
   'base' : 'https://www.googleapis.com/youtube/v3/videos?',
   options : {
     part : 'status,contentDetails',
-    key : settings.YT_API
+    key : YOUR_API_KEY
   }
 };
 
