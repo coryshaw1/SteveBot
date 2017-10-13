@@ -17,7 +17,7 @@ module.exports = function(bot, db) {
       // log current logged in user data
       var users = bot.getUsers();
       for(var i = 0; i < users.length; i++) {
-        repo.logUser(db, users[i], function(){});
+        repo.logUser(db, users[i]);
       }
 
       // handle current playing song

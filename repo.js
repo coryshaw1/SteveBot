@@ -76,7 +76,8 @@ var insertUser = function(db, user, callback) {
  * @param  {Function} callback the Firebase User object
  */
 var logUser = function(db, user, callback) {
-
+  callback = callback || function(){};
+  
   let lookup = db.ref('users').child(user.id);
 
   lookup.once('value')
