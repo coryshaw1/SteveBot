@@ -10,6 +10,8 @@ var moment = require('moment');
  * @param  {Object} data Room info object
  */
 module.exports = function(bot, db, data) {
+  return bot.sendChat('*plays* has been disabled until further notice.');
+
   var currentSong = mediaStore.getCurrent();
   
   repo.getSong(db, currentSong.id)

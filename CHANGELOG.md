@@ -8,6 +8,13 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
 
+## [1.17.0] - 2017-12-11
+### Added
+- !dog - returns random dog image. [issue 33](https://github.com/FranciscoG/DerpyBot/issues/33)
+
+## Changed
+- lowered the "you have a song in the queue already played" warning time to 8 hours - [issue 35](https://github.com/FranciscoG/DerpyBot/issues/35)    
+- disabled !plays, !firstplay, !lastplay because they were broken - [issue 32](https://github.com/FranciscoG/DerpyBot/issues/32)
 
 ## [1.16.2] - 2017-07-13
 ### Changed

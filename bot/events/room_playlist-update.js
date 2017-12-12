@@ -241,7 +241,7 @@ module.exports = function(bot, db) {
      * Check if song has been played recently
      */
     
-    checkHistory(bot, data);
+    // checkHistory(bot, data);
 
     /************************************************************
      * Save song to playlist and for last/first-play func
