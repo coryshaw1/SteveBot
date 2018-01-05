@@ -7,6 +7,9 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.17.1] - 2018-01-05
+## Fixed
+Fixed [issue 38](https://github.com/FranciscoG/DerpyBot/issues/38) 
 
 ## [1.17.0] - 2017-12-11
 ### Added
