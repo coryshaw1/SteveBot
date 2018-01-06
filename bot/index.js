@@ -3,6 +3,7 @@ var DubAPI = require('dubapi');
 var settings = require(process.cwd() + '/private/settings.js');
 var Database = require(process.cwd() + '/bot/db.js');
 var config = require(process.cwd() + '/bot/config.js');
+var ChatQueue = require(process.cwd() + '/bot/store/chat-queue.js');
 
 var svcAcct = process.cwd() + '/private/serviceAccountCredentials.json';
 var BASEURL = settings.FIREBASE.BASEURL;
@@ -25,11 +26,20 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
         process.exit(1); // exit so pm2 can restart
         return;
     }
+
+    /**
+     * Override sendChat to implement a chat queue so that the bot
+     * can not send more than 1 chat message a second
+     */
+    bot.realSendChat = bot.sendChat;
+    let chatQueue = new ChatQueue(bot, 2, 1000);
+    bot.sendChat = chatQueue.schedule;
     
     bot.myconfig = config;
     bot.maxChatMessageSplits = 5;
     bot.commandedToDJ = false;
     bot.isDJing = false;
+    bot.isConnected = false;
 
     if (bot.myconfig.verboseLogging) {
       bot.log = require('jethro');
@@ -44,28 +54,41 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
         bot.connect(settings.ROOMNAME);
     }
 
-    function disconnect(err) {
-        bot.disconnect();
+    /**
+     * Exit/Error related events
+     */
+    let closing = false;
+    function onExit(err) {
+        if (closing) {
+          return;
+        }
 
-        if(err) bot.log('error', 'BOT', err.stack);
+        if (err) bot.log('error', 'BOT', err.stack);
 
-        process.exit(err ? 1 : 0);
+        closing = true;
+        if (bot.isConnected) {
+          bot.on('disconnected', function(data) {
+            process.exit(1);
+          });
+          bot.disconnect();
+        } else {
+          process.exit(1);
+        }
     }
 
     //Properly disconnect from room and close db connection when program stops
-    process.on('exit', disconnect); //automatic close
-    process.on('SIGINT', disconnect); //ctrl+c close
-    process.on('uncaughtException', disconnect);
+    process.on('exit', onExit); //automatic close
+    process.on('SIGINT', onExit); //ctrl+c close
+    process.on('uncaughtException', onExit);
     process.on('message', function(msg) {  
       bot.log('info','BOT', 'message: ' + msg);
       if (msg === 'shutdown') {
-        disconnect();
+        onExit();
       }
     });
 
     bot.on('error', function(err) {
-        bot.log('error', 'BOT', err);
-        bot.reconnect();
+      bot.log('error', 'BOT', 'bot.on[error]: ' + err);
     });
 
     connect();

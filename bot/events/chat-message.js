@@ -94,14 +94,6 @@ module.exports = function(bot, db) {
       return handleCommands(bot, db, data);
     }
 
-    if (tokens.length === 1 && tokens[0].charAt(0) === '$') {
-      bot.sendChat('RIP @mixerbot, we will never forget you.');
-      bot.sendChat('http://i.imgur.com/xyny6OZ.gif');
-      bot.sendChat('That being said, I\'m the new bot in town!');
-      bot.sendChat('Use "!" instead of "$", all the old triggers should be available.');
-      return;
-    }
-
     if (tokens[0].toLowerCase() === '@'+bot.myconfig.botName.toLowerCase() && bot.myconfig.cleverbot) {
       data.params = tokens.slice(1);
       return cleverbot(bot, db, data);
