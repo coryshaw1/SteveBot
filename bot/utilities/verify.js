@@ -2,8 +2,8 @@
 const setInterval = require('timers').setInterval;
 const clearInterval = require('timers').clearInterval;
 
-const responseTime = 30;
-const countLimit = 3;
+const responseTime = 30; // in seconds
+const countLimit = 3; // how many times within the alotted response time you want to remind the user
 
 module.exports = function Verifier(bot, data, actionText) {
   if (!bot || !data) {

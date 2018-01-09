@@ -95,13 +95,15 @@ var TriggerStore = {
   },
 
   removeTrigger : function(triggerName) {
-    delete this.triggers[triggerName];
+    if (this.triggers[triggerName]) {
+      delete this.triggers[triggerName];
+    }
   },
 
   init : function(bot, db){
     var self = this;
-    
     var triggers = db.ref('triggers');
+
     triggers.on('value', (snapshot)=>{
         let val = snapshot.val();
         this.setTriggers.call(this,bot,val);
@@ -111,7 +113,10 @@ var TriggerStore = {
 
     triggers.on("child_removed", (snapshot)=>{
       let triggerDeleted = snapshot.val();
-      console.log('trigger deleted:', triggerDeleted);
+      if (typeof triggerDeleted !== "object" || !triggerDeleted.Trigger) { 
+        bot.log('error', 'BOT', 'error from triggers child_removed event: ' + triggerDeleted);
+        return; 
+      }
       this.removeTrigger.call(this, triggerDeleted.Trigger);
     });
 
