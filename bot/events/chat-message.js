@@ -7,6 +7,7 @@ const path = require('path');
 const triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
 const cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
 const triggerStore = require(process.cwd()+ '/bot/store/triggerStore.js');
+const repo = require(process.cwd()+'/repo');
 
 var commands = {};
 var localCommands = process.cwd() + '/bot/commands';
@@ -52,6 +53,7 @@ var handleCommands = function(bot, db, data) {
     return commands[data.trigger](bot, db, data);
   }
 
+  // if there are no params, then it might be a trigger
   if (data.params.length === 0) {
     // if it's not an existing command caught by the code above
     // lets check if it's one of the many existing triggers
@@ -71,6 +73,21 @@ var handleCommands = function(bot, db, data) {
         return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
       }
     });
+  }
+
+  /* 
+    handle trigger concatenation like:
+    !myTrigger += something something
+  */
+  if (data.params && data.params.length > 1 && data.params[0] === '+=') {
+    // first find the trigger
+    triggerStore.get(bot, db, data, function(trig){
+      if (trig) {
+        triggerStore.append(bot, db, data, trig);
+      } else {
+        return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
+      }
+    }, true);
   }
 
   return;

@@ -70,7 +70,7 @@ function updateLeaderboard(bot, db) {
 
   repo.insertLeaderMonth(db, month + year, leaderObj)
     .then(function() {
-      bot.log('info', 'BOT', month + year + ': Leaderboard updated');
+      // bot.log('info', 'BOT', month + year + ': Leaderboard updated');
     })
     .catch(function(error) {
       bot.log('error', 'BOT', 'error updating leaderboard');

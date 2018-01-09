@@ -24,14 +24,22 @@ var TriggerStore = {
   getLast: function(){
     return this.lastTrigger;
   },
-
-  get: function(bot, db, data, callback) {
+  
+  /**
+   * bot = dupapi object
+   * db = instance of firebase repo middleman
+   * data = data from dubapi chat
+   * callback = fn
+   * full [bool] = whether to return full trigger object or just the text
+   */
+  get: function(bot, db, data, callback, full) {
     var theReturn = null;
     if (this.triggers[data.trigger.toLowerCase() + ":"]) {
-      theReturn = this.triggers[data.trigger + ":"].Returns;
+      theReturn = this.triggers[data.trigger + ":"];
     }
 
-    if (theReturn){
+    if (theReturn && !full){
+      theReturn = theReturn.Returns;
       if (theReturn.indexOf('%dj%') >= 0){
         // replace with current DJ name
         theReturn = theReturn.replace('%dj%', '@' + bot.getDJ().username);
@@ -47,7 +55,7 @@ var TriggerStore = {
     }
   },
 
-  append: function(bot, db, data, callback) {
+  append: function(bot, db, data, trig) {
     // if not at least a MOD, GTFO!
     if ( !roleChecker(bot, data.user, 'mod') ) {
       return bot.sendChat('Sorry only mods (or above) can do this');
@@ -57,47 +65,54 @@ var TriggerStore = {
       return bot.sendChat(`The trigger !${data.trigger} does not exist, ergo you can not append to it`);
     }
 
-    var triggerObj =  _.clone(this.triggers[data.trigger + ":"]);
-    var fbkey = triggerObj.fbkey;
-    delete triggerObj.fbkey;
+    // first we need to remove the "+=" from the array
+    data.params.shift();
+    // move the trigger name for existing updateTrigger function
+    data.triggerName = data.trigger;
+    // combine old trigger value with new trigger value
+    data.triggerText = trig.Returns + ' ' + data.params.join(' ');
 
-    // append our extra text for this trigger
-    triggerObj.Returns += " " + data.triggerAppend;
+    // updateTrigger = function(db, data, triggerKey, orignialValue){
+    repo.updateTrigger(db, data, data.trigger, trig)
+        .then(function(){
+          var info = `[TRIG] UPDATE: ${data.user.username} changed !${data.triggerName} FROM-> ${trig.Returns} TO-> ${data.triggerText}`;
+          bot.log('info', 'BOT', info);
+          bot.sendChat(`trigger for *!${data.triggerName}* updated!`);
+        })
+        .catch(function(err){
+          if (err) { bot.log('error', 'BOT',`[TRIG] UPDATE ERROR: ${err}`); }
+        });
+  },
 
-    repo.updateTrigger(db, data, fbkey, triggerObj)
-      .then(function(){
-        bot.log('info', 'BOT', `[TRIG] APPEND by ${data.user.username} -> !${data.trigger} -> ${data.triggerAppend}`);
-        bot.sendChat(`trigger for *!${data.trigger}* appended!`);
-        if (typeof callback === 'function') {
-          callback();
-        }
-      })
-      .catch(function(err){
-        if (err) { 
-          bot.log('error', 'BOT',`[TRIG] APPEND ERROR: !${data.trigger} - ${err.code}`);
-          bot.sendChat(`internal error updating trigger *!${data.trigger}*, try again or contact "IT" support.`);
-          if (typeof callback === 'function') {
-            callback(err);
-          }
-        }
-      });
+  setTriggers : function(bot, val) {
+    bot.log('info', 'BOT', 'Trigger cache updated');
+        // reorganize the triggers in memory to remove the keys that Firebase makes
+    Object.keys(val).forEach((key)=>{
+      var thisTrig = val[key];
+      thisTrig.fbkey = key;
+      this.triggers[thisTrig.Trigger] = thisTrig;
+    });
+  },
+
+  removeTrigger : function(triggerName) {
+    delete this.triggers[triggerName];
   },
 
   init : function(bot, db){
     var self = this;
     
     var triggers = db.ref('triggers');
-    triggers.on('value', function(snapshot){
-        var val = snapshot.val();
-        bot.log('info', 'BOT', 'Trigger cache updated');
-        // reorganize the triggers in memory to remove the keys that Firebase makes
-        Object.keys(val).forEach((key)=>{
-          var thisTrig = val[key];
-          thisTrig.fbkey = key;
-          self.triggers[thisTrig.Trigger] = thisTrig;
-        });
-      }, function(error){
+    triggers.on('value', (snapshot)=>{
+        let val = snapshot.val();
+        this.setTriggers.call(this,bot,val);
+      }, (error)=>{
         bot.log('error', 'BOT', 'error getting triggers from firebase');
+    });
+
+    triggers.on("child_removed", (snapshot)=>{
+      let triggerDeleted = snapshot.val();
+      console.log('trigger deleted:', triggerDeleted);
+      this.removeTrigger.call(this, triggerDeleted.Trigger);
     });
 
     var lastTrigger = db.ref('lastTrigger');

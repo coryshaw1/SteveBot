@@ -1,6 +1,7 @@
 'use strict';
 var repo = require(process.cwd()+'/repo');
 var roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
+var Verifier = require(process.cwd()+ '/bot/utilities/verify.js');
 
 function displayHelp(bot){
   bot.sendChat('*create/update:* !trigger trigger_name trigger_text');
@@ -104,14 +105,28 @@ module.exports = function(bot, db, data) {
      */
     if (val !== null && data.params.length === 1) {
       keys = Object.keys(val);
-      return repo.deleteTrigger(db, keys[0], val[keys[0]])
-        .then(function(){
-          var info = `[TRIG] DEL by ${data.user.username} -> !${data.triggerName}`;
-          bot.log('info', 'BOT', info);
-          bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
+
+      let verify = new Verifier(bot, data, 'delete trigger ' + data.triggerName);
+      
+      verify
+        .then((userChoice)=>{
+          if (!userChoice) {
+            bot.sendChat(`ok, \`${data.triggerName}\` trigger delete canceled`);
+            return;
+          }
+
+          repo.deleteTrigger(db, keys[0], val[keys[0]])
+            .then(function(){
+              var info = `[TRIG] DEL by ${data.user.username} -> !${data.triggerName}`;
+              bot.log('info', 'BOT', info);
+              bot.sendChat(`Trigger for *!${data.triggerName}* deleted`);
+            })
+            .catch(function(err){
+              if (err) { bot.log('error', 'BOT', `[TRIG] DEL ERROR: ${err}`); }
+            });
         })
-        .catch(function(err){
-          if (err) { bot.log('error', 'BOT', `[TRIG] DEL ERROR: ${err}`); }
+        .catch(()=>{
+          bot.log('info', 'BOT', `${data.triggerName} - trigger delete cancelled by timeout`);
         });
     }
 

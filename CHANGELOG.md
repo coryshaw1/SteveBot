@@ -7,6 +7,10 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.18.0] - 2018-01-09
+## Added
+- trigger append/concat with `+=` like this `!mytrigger += more trigger text`
+
 ## [1.17.1] - 2018-01-05
 ## Fixed
 Better error detection and implemented a rate limit queueing system for the chats, hopeully fixing [issue 38](https://github.com/FranciscoG/DerpyBot/issues/38). 
