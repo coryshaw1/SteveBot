@@ -100,17 +100,40 @@ var TriggerStore = {
     }
   },
 
+  addUpdate : function(trig) {
+    console.log(trig);
+    // get the key to this child
+    // let key = 0;
+    // trig.fbkey = key;
+    // this.triggers[trig.Trigger] = trig;
+  },
+
   init : function(bot, db){
     var self = this;
     var triggers = db.ref('triggers');
 
-    triggers.on('value', (snapshot)=>{
+    // Get ALL triggers and store them locally
+    // do this only once on init
+    triggers.once('value', (snapshot)=>{
         let val = snapshot.val();
         this.setTriggers.call(this,bot,val);
       }, (error)=>{
         bot.log('error', 'BOT', 'error getting triggers from firebase');
     });
 
+    // save new additions to local store of triggers
+    triggers.on("child_added", (snapshot)=>{
+      let trig = snapshot.val();
+      this.addUpdate.call(this,trig);
+    });
+
+    // update changes to local store of triggers
+    triggers.on("child_changed", (snapshot)=>{
+      let trig = snapshot.val();
+      this.addUpdate.call(this,trig);
+    });
+
+    // remove deleted from local store of triggers
     triggers.on("child_removed", (snapshot)=>{
       let triggerDeleted = snapshot.val();
       if (typeof triggerDeleted !== "object" || !triggerDeleted.Trigger) { 
