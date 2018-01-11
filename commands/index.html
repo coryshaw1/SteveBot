@@ -7,8 +7,35 @@
 </head>
 <body>
   <p><img src="http://i.imgur.com/p999E1u.png" alt="DerpyBot Avatar"></p>
+<h1 id="triggers">Triggers</h1>
+<p>You can create, update, and delete a trigger using the <code>!trigger</code> command</p>
+<h2 id="creating-a-trigger">Creating a trigger</h2>
+<p><strong>!trigger [trigger_name] [trigger_text]</strong><br>access level: ResDJ or higher only</p>
+<p>example</p>
+<pre><code>!trigger funnycow look at this funny cow https://i.imgur.com/rp7zs.gif
+</code></pre><h2 id="editing-a-trigger">Editing a trigger</h2>
+<p>Exactly the same as creating a trigger but just use an existing trigger name<br>access level: Mods only</p>
+<p>Example:<br>This example will change the <code>funnycow</code> trigger we just created</p>
+<pre><code>!trigger funnycow jokes on you, there are no funny cows
+</code></pre><h2 id="deleting-a-trigger">Deleting a trigger</h2>
+<p>Just:  <strong>!trigger [trigger_name]</strong><br>access level: Mods only</p>
+<p>Example:<br>This example will delete the <code>funnycow</code> trigger</p>
+<pre><code>!trigger funnycow
+</code></pre><h2 id="adding-dynamic-content">Adding dynamic content</h2>
+<p><strong>%me%</strong> - will be replaced by your user name<br><strong>%dj%</strong> - will be replaced by the current DJ playing    </p>
+<h3 id="trigger-arguments">Trigger arguments</h3>
+<p>when you call a trigger with extra words, they effectively serve as arguments (i.e. parameters) for your trigger.</p>
+<p>when you call a trigger, every subsequent word will be assigned a number starting at 0 in order</p>
+<pre><code>!mytrigger dude rad awesome    
+^^^^^^^^^^ ^^^^ ^^^ ^^^^^^^    
+trigger     0    1     2
+</code></pre><p>then in your trigger text you place the following anywhere<br><strong>%0%</strong> will be replaced with &quot;dude&quot;<br><strong>%1%</strong> will be replaced with &quot;rad&quot;<br><strong>%2%</strong> will be replaced with &quot;awesome&quot;<br>and so on, in order</p>
+<p><code>hey %0%, you are pretty %1% and %2%</code><br><code>!mytrigger dude rad awesome</code><br>becomes this:  <code>hey dude, you are pretty rad and awesome</code></p>
+<p>you can also place the numbers in text out of order<br><code>hey %0%, you are pretty %2% and %1%</code><br>calling with arguments: <code>!mytrigger dude rad awesome</code><br>becomes this:  <code>hey dude, you are pretty awesome and rad</code></p>
+<p>and you can add defaults to them with the | symbol like this:<br><code>hey %dj%, you are pretty %0|cool%</code><br>no arguments: <code>!mytrigger</code><br>becomes this:  <code>hey currentDJperson, you are pretty cool</code>    </p>
+<p>When using defaults, &quot;me&quot; and &quot;dj&quot; are reserved words act just like %me% and %dj%:</p>
+<p><code>this %0|dj% is cool</code><br>without arguments: <code>this currentDJname is cool</code></p>
 <h1 id="commands">Commands</h1>
-<h2 id="categories">Categories</h2>
 <h3 id="bot">Bot</h3>
 <ul>
 <li><strong>!bot</strong> - Chooses a random a response from <a href="https://github.com/FranciscoG/DerpyBot/blob/master/bot/commands/bot/bot.js#L10">this array</a></li>
@@ -40,12 +67,12 @@
 </ul>
 <h3 id="fun">Fun</h3>
 <ul>
-<li><strong>!trigger [trigger_name] [trigger_text]</strong> - to create a new chat trigger. Trigger won&#39;t work if it matches one of the existing commands. [MODS ONLY]</li>
 <li><strong>!cat</strong> - Show a random cat picture or gif</li>
 <li><strong>!fact</strong> - A random inciteful fact</li>
 <li><strong>!steve</strong> - To honor the origin of this bot&#39;s code</li>
 <li><strong>!todayfact</strong> - A random inciteful fact about today</li>
 <li><strong>!giphy [search text]</strong> - Return a random giphy image (rating: P-13 or below)</li>
+<li><strong>@DerpyBot [message]</strong> - Chat with the bot (uses Cleverbot API)</li>
 </ul>
 <h3 id="info">Info</h3>
 <ul>

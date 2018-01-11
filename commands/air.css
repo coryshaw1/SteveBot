@@ -178,7 +178,20 @@ pre {
   background-color: #fafafa;
   padding: 1rem;
   text-align: left;
+  border: 1px solid #dbdbdb
 }
+
+code {
+  background-color: #fafafa;
+  color: #000;
+  padding: 3px 5px;
+  border: 1px solid #dbdbdb
+}
+pre > code {
+  padding: 0;
+  border: none;
+}
+
 
 blockquote {
   margin: 0;

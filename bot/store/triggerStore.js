@@ -1,6 +1,7 @@
 'use strict';
 var repo = require(process.cwd()+'/repo');
 const roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
+const triggerFormatter = require(process.cwd()+ '/bot/utilities/trigger-formatter.js');
 const _ = require('lodash');
 const fuzzy = require('fuzzy');
 
@@ -39,15 +40,7 @@ var TriggerStore = {
     }
 
     if (theReturn && !full){
-      theReturn = theReturn.Returns;
-      if (theReturn.indexOf('%dj%') >= 0){
-        // replace with current DJ name
-        theReturn = theReturn.replace('%dj%', '@' + bot.getDJ().username);
-      }
-      if (theReturn.indexOf('%me%') >= 0) {
-        // replace with user who entered chat name
-        theReturn = theReturn.replace('%me%', data.user.username);
-      }
+      theReturn = triggerFormatter(theReturn.Returns, bot, data);
     }
 
     if (typeof callback === 'function') {
@@ -100,37 +93,17 @@ var TriggerStore = {
     }
   },
 
-  addUpdate : function(trig) {
-    console.log(trig);
-    // get the key to this child
-    // let key = 0;
-    // trig.fbkey = key;
-    // this.triggers[trig.Trigger] = trig;
-  },
-
   init : function(bot, db){
     var self = this;
     var triggers = db.ref('triggers');
 
     // Get ALL triggers and store them locally
     // do this only once on init
-    triggers.once('value', (snapshot)=>{
+    triggers.on('value', (snapshot)=>{
         let val = snapshot.val();
         this.setTriggers.call(this,bot,val);
       }, (error)=>{
         bot.log('error', 'BOT', 'error getting triggers from firebase');
-    });
-
-    // save new additions to local store of triggers
-    triggers.on("child_added", (snapshot)=>{
-      let trig = snapshot.val();
-      this.addUpdate.call(this,trig);
-    });
-
-    // update changes to local store of triggers
-    triggers.on("child_changed", (snapshot)=>{
-      let trig = snapshot.val();
-      this.addUpdate.call(this,trig);
     });
 
     // remove deleted from local store of triggers

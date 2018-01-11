@@ -7,9 +7,11 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-## [1.18.0] - 2018-01-09
+## [1.18.0] - 2018-01-10
 ## Added
 - trigger append/concat with `+=` like this `!mytrigger += more trigger text`
+- add trigger parameters using %n% (starting at 0) string interpolation
+- added verification system ("are you sure you want to do X? y/n")
 
 ## [1.17.1] - 2018-01-05
 ## Fixed

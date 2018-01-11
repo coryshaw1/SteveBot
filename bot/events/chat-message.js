@@ -53,28 +53,6 @@ var handleCommands = function(bot, db, data) {
     return commands[data.trigger](bot, db, data);
   }
 
-  // if there are no params, then it might be a trigger
-  if (data.params.length === 0) {
-    // if it's not an existing command caught by the code above
-    // lets check if it's one of the many existing triggers
-    triggerStore.get(bot, db, data, function(trig){
-      if (trig !== null) {
-        var trigSplit  = trig.split(" ");
-        var last = trigSplit[trigSplit.length - 1];
-
-        if (last === "+prop") {
-          return triggerPoint(bot, db, data, trig, "props");
-        } else if (last === "+flow")  {
-          return triggerPoint(bot, db, data, trig, "flow");
-        } else {
-          return bot.sendChat(trig);
-        }
-      } else {
-        return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
-      }
-    });
-  }
-
   /* 
     handle trigger concatenation like:
     !myTrigger += something something
@@ -88,9 +66,27 @@ var handleCommands = function(bot, db, data) {
         return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
       }
     }, true);
+    return;
   }
 
-  return;
+  // check if it's an exsiting trigger
+  triggerStore.get(bot, db, data, function(trig){
+    if (trig !== null) {
+      var trigSplit  = trig.split(" ");
+      var last = trigSplit[trigSplit.length - 1];
+
+      if (last === "+prop") {
+        return triggerPoint(bot, db, data, trig, "props");
+      } else if (last === "+flow")  {
+        return triggerPoint(bot, db, data, trig, "flow");
+      } else {
+        return bot.sendChat(trig);
+      }
+    } else {
+      return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
+    }
+  });
+
 };
 
 

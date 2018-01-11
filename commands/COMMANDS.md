@@ -1,9 +1,80 @@
 ![DerpyBot Avatar](http://i.imgur.com/p999E1u.png)
 
+# Triggers
+You can create, update, and delete a trigger using the `!trigger` command
+
+## Creating a trigger 
+**!trigger \[trigger_name\] \[trigger_text\]**    
+access level: ResDJ or higher only
+
+example
+```
+!trigger funnycow look at this funny cow https://i.imgur.com/rp7zs.gif
+```
+
+## Editing a trigger 
+Exactly the same as creating a trigger but just use an existing trigger name    
+access level: Mods only
+
+Example:    
+This example will change the `funnycow` trigger we just created
+```
+!trigger funnycow jokes on you, there are no funny cows
+```
+
+## Deleting a trigger 
+Just:  **!trigger \[trigger_name\]**    
+access level: Mods only
+
+Example:    
+This example will delete the `funnycow` trigger
+```
+!trigger funnycow
+```
+
+## Adding dynamic content
+
+**%me%** - will be replaced by your user name    
+**%dj%** - will be replaced by the current DJ playing    
+
+### Trigger arguments
+when you call a trigger with extra words, they effectively serve as arguments (i.e. parameters) for your trigger.
+
+when you call a trigger, every subsequent word will be assigned a number starting at 0 in order
+
+```
+!mytrigger dude rad awesome    
+^^^^^^^^^^ ^^^^ ^^^ ^^^^^^^    
+trigger     0    1     2
+```
+
+then in your trigger text you place the following anywhere    
+**%0%** will be replaced with "dude"    
+**%1%** will be replaced with "rad"    
+**%2%** will be replaced with "awesome"    
+and so on, in order
+
+`hey %0%, you are pretty %1% and %2%`    
+`!mytrigger dude rad awesome`    
+becomes this:  `hey dude, you are pretty rad and awesome`
+
+you can also place the numbers in text out of order    
+`hey %0%, you are pretty %2% and %1%`    
+calling with arguments: `!mytrigger dude rad awesome`    
+becomes this:  `hey dude, you are pretty awesome and rad`
+
+and you can add defaults to them with the | symbol like this:    
+`hey %dj%, you are pretty %0|cool%`    
+no arguments: `!mytrigger`    
+becomes this:  `hey currentDJperson, you are pretty cool`    
+
+When using defaults, "me" and "dj" are reserved words act just like %me% and %dj%:
+
+`this %0|dj% is cool`    
+without arguments: `this currentDJname is cool`
+
+
 # Commands
-
-
-## Categories
 
 ### Bot
 
@@ -34,7 +105,6 @@
 * **!leaders** - See the leaders of total "hearts", "props", and total "flowpoints" in the database
 
 ### Fun
-* **!trigger \[trigger_name\] \[trigger_text\]** - to create a new chat trigger. Trigger won't work if it matches one of the existing commands. [MODS ONLY]
 * **!cat** - Show a random cat picture or gif
 * **!fact** - A random inciteful fact
 * **!steve** - To honor the origin of this bot's code

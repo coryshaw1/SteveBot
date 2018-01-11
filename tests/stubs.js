@@ -1,9 +1,5 @@
 'use strict';
-var settings = require(process.cwd() + '/private/test-settings.js');
 var config = require(process.cwd() + '/bot/config.js');
-var Database = require(process.cwd() + '/bot/db.js');
-var svcAcct = process.cwd() + '/private/TESTserviceAccountCredentials.json';
-var BASEURL = settings.FIREBASE.BASEURL;
 
 /**
  * [bot description]
@@ -15,6 +11,9 @@ var bot = {
   }, 
   getDJ : function() {
     // return DJ info object
+    return {
+      username : 'testDJname'
+    }
   },
   getMedia : function() {
     // return a media object
@@ -66,6 +65,5 @@ var dataResponse = {};
 
 module.exports = {
   bot : bot,
-  db : new Database(svcAcct, BASEURL),
   data : dataResponse
 };
