@@ -1,3 +1,4 @@
+'use strict';
 module.exports.broken = function(bot, db, data) {
 	var dj = bot.getDJ();
 

@@ -1,3 +1,4 @@
+'use strict';
 var raffle = require(process.cwd()+"/bot/utilities/raffle");
 
 module.exports = function(bot, db, data) {

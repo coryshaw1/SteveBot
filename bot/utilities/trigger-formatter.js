@@ -2,7 +2,7 @@
  * This formats a Trigger text with dynamic replacements 
  */
 
-
+'use strict';
 function getTokens(str) {
   var found = [];
 

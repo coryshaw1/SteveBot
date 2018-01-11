@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   "AF":"Afghanistan",
   "AX":"Aland Islands",
@@ -51,11 +52,11 @@ module.exports = {
   "CC":"Cocos (Keeling) Islands",
   "CO":"Colombia",
   "KM":"Comoros",
-  "CG":"Congo (Brazzaville)",
+  "CG":"Congoï¿½(Brazzaville)",
   "CD":"Democratic Republic of Congo",
   "CK":"Cook Islands",
   "CR":"Costa Rica",
-  "CI":"Côte d'Ivoire",
+  "CI":"Cï¿½te d'Ivoire",
   "HR":"Croatia",
   "CU":"Cuba",
   "CY":"Cyprus",
@@ -179,11 +180,11 @@ module.exports = {
   "PT":"Portugal",
   "PR":"Puerto Rico",
   "QA":"Qatar",
-  "RE":"Réunion",
+  "RE":"Rï¿½union",
   "RO":"Romania",
   "RU":"Russian Federation",
   "RW":"Rwanda",
-  "BL":"Saint-Barthélemy",
+  "BL":"Saint-Barthï¿½lemy",
   "SH":"Saint Helena",
   "KN":"Saint Kitts and Nevis",
   "LC":"Saint Lucia",
@@ -245,5 +246,5 @@ module.exports = {
   "EH":"Western Sahara",
   "YE":"Yemen",
   "ZM":"Zambia",
-  "ZW":"Zimbabwe",
+  "ZW":"Zimbabwe"
 };

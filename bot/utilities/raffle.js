@@ -1,3 +1,4 @@
+'use strict';
 module.exports.raffle = null;
 module.exports.raffleStarted = false;
 module.exports.lockedNumberOne = false;
