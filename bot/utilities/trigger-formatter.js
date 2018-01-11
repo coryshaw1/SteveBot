@@ -67,7 +67,6 @@ function handleNumbered(text, c, bot, data) {
 
 module.exports = function triggerFormatter(text, bot, data){
   var tokens = getTokens(text);
-  console.log(tokens);
 
   tokens.forEach(function(c){
     if (c === '%dj%'){
