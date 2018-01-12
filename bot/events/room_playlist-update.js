@@ -4,7 +4,7 @@
 'use strict';
 var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 var userStore = require(process.cwd()+ '/bot/store/users.js');
-var youtube = require(process.cwd()+'/bot/utilities/youtube');
+var youtube = require(process.cwd()+'/bot/utilities/youtube.js');
 var historyStore = require(process.cwd()+ '/bot/store/history.js');
 var _ = require('lodash');
 var moment = require('moment');

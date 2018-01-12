@@ -59,7 +59,7 @@ var responsesDE = [
 ];
 
 function trackIssue(db, ytResponse, media, reason){
-  repo.trackSongIssues(db, ytResponse, media, reason);
+  // repo.trackSongIssues(db, ytResponse, media, reason);
 }
 
 function makeYTCheckerUrl(yid){
@@ -98,7 +98,7 @@ function checkStatus(bot, db, media, body) {
   
   if (status) {
     
-    // if one these bad uploadStatuses exist then we skip
+    // if one of these bad uploadStatuses exist then we skip
     if (badStatuses.indexOf(status.uploadStatus) > -1) {
       var reason = yt.items[0].status.uploadStatus;
 
@@ -157,19 +157,22 @@ var start = function(bot, db, media){
 module.exports = function(bot, db, media) {
   if (!settings || !YOUR_API_KEY || !media || !bot) { return; }
 
-  var savedIssue = null;
-  var now = Date.now();
+  start(bot, db, media);
+  return;
 
-  repo.getSongIssue(db, media.fkid)
-    .then(function(snapshot){
-      savedIssue = snapshot.val();
+  // var savedIssue = null;
+  // var now = Date.now();
+
+  // repo.getSongIssue(db, media.fkid)
+  //   .then(function(snapshot){
+  //     savedIssue = snapshot.val();
       
-      // if the song issue doesn't exist (so it's a new issue)
-      // OR it was tracked more than 15min ago
-      if (!savedIssue || now - savedIssue.timestamp > 900000) {
-        start(bot, db, media);
-      }
+  //     // if the song issue doesn't exist (so it's a new issue)
+  //     // OR it was tracked more than 15min ago
+  //     if (!savedIssue || now - savedIssue.timestamp > 900000) {
+  //       start(bot, db, media);
+  //     }
 
-    })
-    .catch(function(err){});
+  //   })
+  //   .catch(function(err){});
 };

@@ -7,6 +7,14 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.19.0] - 2018-01-1X
+## Added
+- reset points at the beginning of the month
+- hourly prop leaders chat message
+
+## Changed
+- stopped tracking song issues
+
 ## [1.18.0] - 2018-01-10
 ## Added
 - trigger append/concat with `+=` like this `!mytrigger += more trigger text`
