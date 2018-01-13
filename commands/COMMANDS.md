@@ -1,5 +1,7 @@
 ![DerpyBot Avatar](http://i.imgur.com/p999E1u.png)
 
+Please add an [issue](https://github.com/franciscog/DerpyBot/issues) for any suggestions, request, or bugs!
+
 # Triggers
 You can create, update, and delete a trigger using the `!trigger` command
 
@@ -79,7 +81,6 @@ without arguments: `this currentDJname is cool`
 ### Bot
 
 * **!bot** - Chooses a random a response from [this array](https://github.com/FranciscoG/DerpyBot/blob/master/bot/commands/bot/bot.js#L10)
-* **!sayhi @username** - introduce the bot to a user
 * **!ping** - Bot responds with "Pong!"
 * **!pong** - Bot responds with "Ping!"
 * **!thanks** - Bot responds with "You're welcome!"
@@ -140,4 +141,23 @@ without arguments: `this currentDJname is cool`
 * **!skip troll** - Skip the current song giving a reason that the song/video is trolling, *this also then kicks the DJ*
 
 
-Much more to come, and suggestions are welcome! Please add an [issue](https://github.com/franciscog/DerpyBot/issues) for any requests or bugs!
+# Config
+
+Here are a list of configuration items that can be toggled on/off with the `!toggle` command.
+
+Example usage:
+```
+!toggle allow_multi_prop
+```
+
+All of these config items below will be reset if the bot happens to reboot, that's why the default state is listed. At some point I might try and make the changes persist. 
+
+* **muted** -  (default: false) - Whether the bot is allowed to send chats or not    
+* **allow_multi_prop** -  (default: false) - allow people to give multiple props for the same song    
+* **welcomeUsers** -  (default: false) - display a welcome message to new users (default: false)    
+* **autoUpvote** - (default: true) - allow bot to auto upvote every song    
+* **playOnEmpty** - (default: false) - play music when the queue is empty    
+* **autoskip_stuck** - (default: true) - skip a song that is stuck because it has issues    
+* **recently\_played\_warning** - (default: true) - warn the room that a song in the queue was played within X amount of hours    
+* **reset_points** :  (default: true) - reset all user points back to 0 at the beginning of each month    
+* **hourly_leader** :  (default: true) - whether the bot should announce to the room every hour who the currently monthly leaders are

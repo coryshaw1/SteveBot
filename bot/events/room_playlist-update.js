@@ -1,4 +1,6 @@
 /***************************************************************
+ * Event: room_playlist-update
+ * 
  * This event is fired when a new song begins to play
  */
 'use strict';
@@ -68,42 +70,6 @@ function songWarning(bot, db, data){
   if (type === 'SOUNDCLOUD'){
     // return soundcloud(bot, songID);
   }
-}
-
-/**
- * Checks current playing song against room history and
- * gives a warning if song was played within a specific
- * time frame
- * 
- * @param {Object} bot 
- * @param {Object} data 
- * @returns 
- */
-function checkHistory(bot, data){
-  if (!historyStore.ready) {
-    return;
-  }
-  
-  var dj = _.get(data, 'user.username', 'dj');
-  var songName = _.get(data, 'media.name', '404songnamenotfound');
-  var songID = _.get(data, 'media.id');
-
-  if (!songID) { return; }
-
-  // compare current song with stored history
-  // returns an array of matches
-  var check = historyStore.getSong(bot, songID);
-
-  if (check.length > 0) {
-    var time = historyStore.convertTime(check[0].lastplayed);
-    if (time.toLowerCase().indexOf('seconds') >= 0) {
-      bot.log('info', 'BOT', `Not Warned: ${dj} - ${songName} - ${time}`);
-      return;
-    }
-    bot.sendChat(`@${dj}, this song was played ${time}`);
-    bot.log('info', 'BOT', `Warned: ${dj} - ${songName} - ${time}`);
-  }
-  historyStore.save(bot, data);
 }
 
 function lastPlayModel(currentSong, storedData) {
@@ -236,12 +202,6 @@ module.exports = function(bot, db) {
      */
     
     songWarning(bot, db, data);
-
-    /************************************************************
-     * Check if song has been played recently
-     */
-    
-    // checkHistory(bot, data);
 
     /************************************************************
      * Save song to playlist and for last/first-play func

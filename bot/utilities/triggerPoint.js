@@ -51,9 +51,11 @@ module.exports = function(bot, db, data, trig, type) {
     return bot.sendChat('There is no DJ playing!');
   }
 
-  // no repeat giving
-  if(userStore.hasId( repeatCheck, data.user.id) ) {
-    return bot.sendChat( noRepeatPointMsg(data.user.username) );
+  if (!bot.myconfig.allow_multi_prop ) {
+    // no repeat giving
+    if ( userStore.hasId( repeatCheck, data.user.id ) ) {
+      return bot.sendChat( noRepeatPointMsg(data.user.username) );
+    }
   }
 
   var dj = bot.getDJ();

@@ -62,11 +62,12 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
         if (closing) {
           return;
         }
-
+        
         if (err) bot.log('error', 'BOT', err.stack);
 
         closing = true;
         if (bot.isConnected) {
+          bot.sendChat("I'm ded :skull:");
           bot.on('disconnected', function(data) {
             process.exit(1);
           });

@@ -12,14 +12,27 @@ require.extensions['.md'] = function (module, filename) {
 var index = require('./index.tmpl');
 var commands = require('./COMMANDS.md');
 
-var converted = marked(commands);
-var newIndex = index.replace("%%MARKDOWN%%", converted);
+function updateIndex() {
+  var converted = marked(commands);
+  var newIndex = index.replace("%%MARKDOWN%%", converted);
 
-/* eslint no-console: 0 */
-fs.writeFile("./index.html", newIndex, function(err) {
-    if(err) {
-        return console.log(err);
-    }
+  /* eslint no-console: 0 */
+  fs.writeFile("./index.html", newIndex, function(err) {
+      if(err) {
+          return console.log(err);
+      }
 
-    console.log("The file was saved!");
-}); 
+      console.log("The file was saved!");
+  });
+}
+
+var currentTask = process.argv[2]; 
+
+if (currentTask === "watch") {
+  fs.watchFile('./COMMANDS.md', (curr, prev) => {
+    updateIndex();
+  });
+} else {
+  updateIndex();
+}
+

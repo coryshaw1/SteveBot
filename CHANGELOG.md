@@ -7,13 +7,23 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-## [1.19.0] - 2018-01-1X
+## [1.19.0] - 2018-01-12
 ## Added
 - reset points at the beginning of the month
 - hourly prop leaders chat message
+- `!toggle` - ability to toggle boolean config items
+- `!leaders all` - get all time leaders, but of course this will be skewed
 
 ## Changed
 - stopped tracking song issues
+- updated leaders command to add month + year info
+- cleaned up code
+- deleted hardcoded `!sayhi` command, this can be done with dynamic trigger
+- update documentation to list config items that can be toggled
+
+## Fixed
+- Song warnings were giving warning for songs way out of range
+- was storing props as flows in the month leaderboards
 
 ## [1.18.0] - 2018-01-10
 ## Added

@@ -7,6 +7,7 @@
 </head>
 <body>
   <p><img src="http://i.imgur.com/p999E1u.png" alt="DerpyBot Avatar"></p>
+<p>Please add an <a href="https://github.com/franciscog/DerpyBot/issues">issue</a> for any suggestions, request, or bugs!</p>
 <h1 id="triggers">Triggers</h1>
 <p>You can create, update, and delete a trigger using the <code>!trigger</code> command</p>
 <h2 id="creating-a-trigger">Creating a trigger</h2>
@@ -39,7 +40,6 @@ trigger     0    1     2
 <h3 id="bot">Bot</h3>
 <ul>
 <li><strong>!bot</strong> - Chooses a random a response from <a href="https://github.com/FranciscoG/DerpyBot/blob/master/bot/commands/bot/bot.js#L10">this array</a></li>
-<li><strong>!sayhi @username</strong> - introduce the bot to a user</li>
 <li><strong>!ping</strong> - Bot responds with &quot;Pong!&quot;</li>
 <li><strong>!pong</strong> - Bot responds with &quot;Ping!&quot;</li>
 <li><strong>!thanks</strong> - Bot responds with &quot;You&#39;re welcome!&quot;</li>
@@ -107,7 +107,22 @@ trigger     0    1     2
 <li><strong>!skip op</strong> - Skip the current song giving a reason that the song/video is overplayed and banned from the room</li>
 <li><strong>!skip troll</strong> - Skip the current song giving a reason that the song/video is trolling, <em>this also then kicks the DJ</em></li>
 </ul>
-<p>Much more to come, and suggestions are welcome! Please add an <a href="https://github.com/franciscog/DerpyBot/issues">issue</a> for any requests or bugs!</p>
+<h1 id="config">Config</h1>
+<p>Here are a list of configuration items that can be toggled on/off with the <code>!toggle</code> command.</p>
+<p>Example usage:</p>
+<pre><code>!toggle allow_multi_prop
+</code></pre><p>All of these config items below will be reset if the bot happens to reboot, that&#39;s why the default state is listed. At some point I might try and make the changes persist. </p>
+<ul>
+<li><strong>muted</strong> -  (default: false) - Whether the bot is allowed to send chats or not    </li>
+<li><strong>allow_multi_prop</strong> -  (default: false) - allow people to give multiple props for the same song    </li>
+<li><strong>welcomeUsers</strong> -  (default: false) - display a welcome message to new users (default: false)    </li>
+<li><strong>autoUpvote</strong> - (default: true) - allow bot to auto upvote every song    </li>
+<li><strong>playOnEmpty</strong> - (default: false) - play music when the queue is empty    </li>
+<li><strong>autoskip_stuck</strong> - (default: true) - skip a song that is stuck because it has issues    </li>
+<li><strong>recently_played_warning</strong> - (default: true) - warn the room that a song in the queue was played within X amount of hours    </li>
+<li><strong>reset_points</strong> :  (default: true) - reset all user points back to 0 at the beginning of each month    </li>
+<li><strong>hourly_leader</strong> :  (default: true) - whether the bot should announce to the room every hour who the currently monthly leaders are</li>
+</ul>
 
 </body>
 </html>

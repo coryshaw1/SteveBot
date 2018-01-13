@@ -1,50 +1,21 @@
 /***************************************************************
+ * Event: room_playlist-queue-update-dub
+ * 
  * This event is fired when the queue is updated either by
- * someone joining it, someone leaving it, someone reordering it,
- * someone changing one of their own queued songs, etc, etc
+ *  someone joining it
+ *  someone leaving it
+ *  someone reordering it,
+ *  someone changing one of their own queued songs
+ *  a new song plays and whole playlist shifts up
+ *  etc.
  */
 
 'use strict';
 const historyStore = require(process.cwd()+ '/bot/store/history.js');
 const queue = require(process.cwd()+ '/bot/utilities/dj.js');
+const checkHistory = require(process.cwd()+ '/bot/utilities/checkHistory.js');
 const _ = require('lodash');
 const repo = require(process.cwd()+'/repo');
-
-function checkHistory(bot, data){
-  if (!historyStore.ready) {
-    return;
-  }
-
-  var dj = _.get(data, 'user.username');
-  var songName = _.get(data, 'media.name');
-  var id = _.get(data, 'media.id');
-
-  if (!id) { return; }
-
-  // check history
-  var check = historyStore.getSong(bot, data.media.id);
-  
-  if (check.length > 0) {
-    var time = historyStore.convertTime(check[0].lastplayed);
-    var msg;
-
-    if (!dj) {
-      msg = `FYI, there's a song in the queue that was played ${time}: *${songName}*`;
-    } else {
-      msg = `@${dj}, you have a song in the queue that was played ${time}: *${songName}*`;
-    }
-
-    if (time.toLowerCase().indexOf('seconds') >= 0) {
-      bot.log('info', 'BOT', `Not Warned: ${dj} - ${songName} - ${time}`);
-    } else {
-      bot.sendChat(msg);
-      dj = dj || 'dj';
-      bot.log('info', 'BOT', `Warned: ${dj} - ${songName} - ${time}`);
-    }
-  }
-
-  historyStore.save(bot, data);
-}
 
 function searchUsersObj(bot, username) {
   for (let key in bot.allUsers) {

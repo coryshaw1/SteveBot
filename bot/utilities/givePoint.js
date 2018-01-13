@@ -26,9 +26,11 @@ module.exports = function(bot, db, data, opts) {
   // if user just wrote "![pointType]"
   if (data.params === void(0) || data.params.length === 0){
 
-    // no repeat giving
-    if(userStore.hasId( opts.repeatCheck, data.user.id) ) {
-      return bot.sendChat( opts.noRepeatPointMsg(data.user.username) );
+    if (!bot.myconfig.allow_multi_prop ) {
+      // no repeat giving
+      if(userStore.hasId( opts.repeatCheck, data.user.id) ) {
+        return bot.sendChat( opts.noRepeatPointMsg(data.user.username) );
+      }
     }
 
     var dj = bot.getDJ();
@@ -58,9 +60,11 @@ module.exports = function(bot, db, data, opts) {
       return bot.sendChat( opts.noSelfAwardingMsg(data.user.username) );
     }
 
-    // can't give points twice for the same song
-    if(userStore.hasId( opts.repeatCheck, data.user.id) ) {
-      return bot.sendChat( opts.noRepeatPointMsg(data.user.username) );
+    if (!bot.myconfig.allow_multi_prop ) {
+      // can't give points twice for the same song
+      if(userStore.hasId( opts.repeatCheck, data.user.id) ) {
+        return bot.sendChat( opts.noRepeatPointMsg(data.user.username) );
+      }
     }
 
     var recipient = bot.getUserByName(data.params[0].replace('@', ''), true);

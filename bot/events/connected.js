@@ -6,6 +6,8 @@ const dmStore = require(process.cwd()+ '/bot/store/messages.js');
 const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
 const settings = require(process.cwd() + '/private/settings.js');
 const repo = require(process.cwd()+'/repo');
+const pointReset = require(process.cwd() + '/bot/utilities/point-reset.js');
+const setTimeout = require('timers').setTimeout;
 
 module.exports = function(bot, db) {
   bot.on('connected', function(data) {
@@ -62,9 +64,11 @@ module.exports = function(bot, db) {
           bot.log('error', 'BOT', `error getting leaderboard from firebase - ${error}`);
       });
 
+      pointReset(bot, db);
+
       var complete = (Date.now() - initStart)/1000;
       bot.sendChat(`\`Initialization completed in ${complete} seconds\``);
-      
+
     }, 3000);
   });
 };

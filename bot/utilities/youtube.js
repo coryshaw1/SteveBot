@@ -70,7 +70,7 @@ function regionBlock(bot, db, _region, yt, media){
   // yes we get THAT many blocked youtube videos in Germany that we might
   // as well make fun of it
   if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
-    trackIssue(db, yt, media, 'region restrictions');
+    // trackIssue(db, yt, media, 'region restrictions');
     bot.sendChat(`${media.name}`);
     return bot.sendChat( getRandom(responsesDE) );
   }
@@ -83,7 +83,17 @@ function regionBlock(bot, db, _region, yt, media){
     bot.sendChat(`See here for more details: ${ytchk}`);
   }
 
-  trackIssue(db, yt, media, 'region restrictions');
+  // trackIssue(db, yt, media, 'region restrictions');
+}
+
+function doSkip(bot, media, chatMsg, logReason) {
+  bot.log('info', 'BOT', `[SKIP] YouTube video with id ${media.fkid} - ${logReason}`);
+
+  if (bot.myconfig.autoskip_stuck) { 
+    return bot.moderateSkip(function(){
+      bot.sendChat(chatMsg);
+    });
+  }
 }
 
 function checkStatus(bot, db, media, body) {
@@ -101,27 +111,12 @@ function checkStatus(bot, db, media, body) {
     // if one of these bad uploadStatuses exist then we skip
     if (badStatuses.indexOf(status.uploadStatus) > -1) {
       var reason = yt.items[0].status.uploadStatus;
-
-      // log issues to console and to firebase
-      bot.log('info', 'BOT', `[SKIP] video with id ${media.fkid} had status of ${reason}`);
-      trackIssue(db, yt, media, `${reason}`);
-
-      // skip it and send message
-      return bot.moderateSkip(function(){
-        bot.sendChat(`Sorry ${dj} this Youtube video is broken`);
-      });
+      return doSkip(bot, media, `Sorry ${dj} this Youtube video is broken`, reason);
     }
 
     // if video is private then we skip
     if (_.get(status, 'privacyStatus') === 'private') {
-      // log to console and firebase
-      bot.log('info', 'BOT', `[SKIP] video with id ${media.fkid} was private`);
-      trackIssue(db, yt, media, 'private');
-
-      // skip it and send message
-      return bot.moderateSkip(function(){
-        bot.sendChat(`Sorry ${dj} this Youtube video is private`);
-      });
+      return doSkip(bot, media, `Sorry ${dj} this Youtube video is private`, 'private');
     }
 
   }
@@ -133,15 +128,9 @@ function checkStatus(bot, db, media, body) {
     regionBlock(bot, db, _region, yt, media);
   }
 
+  // video doesn't exist anymore
   if (yt && yt.items && yt.items.length === 0){
-    // log to console and firebase
-    bot.log('info', 'BOT', `[SKIP] video with id ${media.fkid} doesn't exist anymore`);
-    trackIssue(db, yt, media, 'video doesn\'t exist');
-    
-    // skip it and send message
-    return bot.moderateSkip(function(){
-      bot.sendChat(`Sorry ${dj} this Youtube video is broken`);
-    });
+    return doSkip(bot, media, `Sorry ${dj} this Youtube video does not exist anymore`, "doesn't exist anymore");
   }
 
 }

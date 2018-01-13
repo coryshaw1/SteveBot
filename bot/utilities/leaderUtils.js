@@ -58,7 +58,7 @@ function updateLeaderboard(bot, db) {
   flow.forEach(function(user){
     if (user.flow > 0) {
       flowArr.push(user.username + ' (' + user.flow + ')');
-      leaderObj.flowObj[user.username] = user.props;
+      leaderObj.flowObj[user.username] = user.flow;
     }
   });
   if (flowArr.length === 0){
@@ -76,8 +76,81 @@ function updateLeaderboard(bot, db) {
       bot.log('error', 'BOT', 'error updating leaderboard');
     });
 }
+/**
+ * Work in progress
+ * Update the All Time Leaders board
+ * 
+ * @param {Obect} bot instance of DubAPI
+ */
+function allTimeLeaders(bot) {
+  if (!bot.leaderboard) {
+    bot.sendChat("I don't have leader informtaion at the momemt but try again in a minute");
+    return;
+  }
+
+  /* 
+    Leaders object structure:
+      month_year
+        flowObj
+          user1: total
+          user2: total
+          user3: total
+        propsObj
+          user1: total
+          user2: total
+          user3: total
+  */
+
+
+  var flows = {};
+  var props = {};
+
+  // build our list of flows and props 
+  Object.keys(bot.leaderboard).forEach((key)=>{
+    let month_year = bot.leaderboard[key];
+    
+    // add up all the flows
+    for (let user in month_year.flowObj) {
+      if (!flows[user]) { flows[user] = month_year.flowObj[user]; }
+      else { flows[user] += month_year.flowObj[user]; }
+    }
+
+    // add up all the props
+    for (let user in month_year.propsObj) {
+      if (!props[user]) { props[user] = month_year.propsObj[user]; }
+      else { props[user] += month_year.propsObj[user]; }
+    }
+  });
+
+  // sort all the flows by this method: 
+  // https://stackoverflow.com/a/1069840/395414
+  var flow_sortable = [];
+  for (let u in flows) {
+    flow_sortable.push([u, flows[u]]);
+  }
+
+  var top3Flow = flow_sortable.sort(function(a, b) {
+      return a[1] - b[1];
+  }).reverse().slice(0, 3);
+
+  // sort all the props
+  var props_sortable = [];
+  for (let u in props) {
+    props_sortable.push([u, props[u]]);
+  }
+
+  var top3Props = props_sortable.sort(function(a, b) {
+      return a[1] - b[1];
+  }).reverse().slice(0, 3);
+
+  return {
+    props : top3Props,
+    flows : top3Flow
+  };
+}
 
 module.exports = {
   getTop3 : getTop3,
-  updateLeaderboard : updateLeaderboard
+  updateLeaderboard : updateLeaderboard,
+  allTimeLeaders: allTimeLeaders
 };

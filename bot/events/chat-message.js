@@ -1,4 +1,6 @@
-/**
+/***************************************************************
+ * Event: chat-message
+ *
  * Event fired for every new chat message
  */
 'use strict';
