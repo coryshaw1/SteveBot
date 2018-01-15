@@ -7,28 +7,35 @@ var config = require(process.cwd() + '/bot/config.js');
  */
 var bot = {
   sendChat : function(x) { 
-    return x; 
+    // this doesn't return anything
+    return;
   }, 
   getDJ : function() {
     // return DJ info object
     return {
       username : 'testDJname'
-    }
+    };
   },
   getMedia : function() {
     // return a media object
+    return {
+      name : '',
+      fkid : '',
+      type : 'youtube'
+    };
   },
   updub : function() {
     return; // do nothing
   },
   getUsers : function() {
     // return list of users
+    return {};
   },
   on : function(event, callback) {
     // probably do nothing during testing
   },
-  log : function(x,y,z) {
-    console.log('TEST',x,y,z);
+  log : function() {
+    console.log('TEST: ', ...arguments);
   },
   isMod : function(user){
     return user && user.niceRole && user.niceRole === 'mod';

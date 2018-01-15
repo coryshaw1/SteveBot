@@ -31,7 +31,7 @@ function getTokens(str) {
 
 function regEsc(s) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
+}
 
 function handleNumbered(text, c, bot, data) {
   let params = data.params || [];
