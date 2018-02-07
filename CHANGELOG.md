@@ -7,6 +7,13 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.19.1] - 2018-02-07
+### Fixed
+- fixed reset points issue
+### Added
+- added a way to run a test bot in parallel with the main bot. 
+- db migration tool
+
 ## [1.19.0] - 2018-01-12
 ## Added
 - reset points at the beginning of the month
