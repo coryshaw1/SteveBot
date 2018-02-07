@@ -11,14 +11,12 @@ var fs = require('fs');
 const moment = require('moment');
 const admin = require("firebase-admin");
 
-
-/*************************************
-  Back up our DB via Cron.  Mainly
-  to backup triggers
-*/
-
 const timestamp = moment().format('MMM-D-YYYY-hmmss');
 
+/**
+ * Load production data into test db
+ * @param {Object} val 
+ */
 function step2(val) {
   /** 
    * Test db setup
@@ -52,6 +50,9 @@ function step2(val) {
     });
 }
 
+/**
+ * Make local JSON copy of the production db
+ */
 function step1() {
   /**
    * Production db setup
@@ -86,7 +87,7 @@ function step1() {
         });
 
     } else {
-      console.log('val was null');
+      console.log('Error during step1, val was null');
       process.exit(1);
     }
   });

@@ -1,5 +1,12 @@
 # Private Credentials
 
+## Firebase
+Place your Firebase console service account credentials json file here
+
+rename it to:  `serviceAccountCredentials.json`
+
+## Settings
+
 create a settings.js file in this directory with the following info
 
 ```js
@@ -16,3 +23,6 @@ module.exports = {
   }
 };
 ```
+
+## Test 
+Create a subfolder called `test`. It should mimic the root `/private` folder but with test related credentials

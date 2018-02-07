@@ -10,18 +10,26 @@ const leaders = require(process.cwd() + '/bot/commands/credits/leaders.js');
 var resetAllUserPoints = function(bot, db){
   if (!bot.myconfig.reset_points) { return; }
 
+  var updatedUsers = {};
   Object.keys(bot.allUsers).forEach((key)=>{
-    var u = bot.allUsers[key];
-    u.fow = 0;
-    u.props = 0;
-    repo.updateUser(db, key, u, function(err){
-      if (err) {
-        bot.log('error', 'REPO', `Error updating user ${u.username} during reset points`);
-      }
-    });
-    
+    let user = bot.allUsers[key];
+    updatedUsers[key] = user;
+    updatedUsers[key].flow = 0;
+    updatedUsers[key].props = 0;
   });
 
+  repo.updateAllUsers(db, updatedUsers)
+    .then(function(err){
+      if (err) {
+        console.log('updateAllUsers', err);
+      } else {
+        bot.sendChat('All user points have been reset to 0.');
+        console.log('successfully updated all users and cleared their points');
+      }
+    })
+    .catch(function(){
+      console.log('error updating users', arguments);
+    });
 };
 
 module.exports = function pointReset(bot, db){

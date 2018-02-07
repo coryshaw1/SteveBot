@@ -32,6 +32,20 @@ var updateUser = function(db, userid, data, callback) {
 };
 
 /**
+ * Update the entire db.users object as a whole
+ * @param {Object} db  Firebase instance
+ * @param {Object} data all user data
+ * @returns {Promise}
+ */
+var updateAllUsers = function(db, data) {
+  if (db && data) {
+    return db.ref('users').set(data);
+  } else {
+    return Promise.reject('missing required arguments');
+  }
+};
+
+/**
  * Takes in a data object provided by DT and only returns an object
  * of the items we need in order to keep our DB small
  */
@@ -350,6 +364,7 @@ module.exports = {
   logUser  : logUser,
   findUserById  : findUserById,
   updateUser  : updateUser,
+  updateAllUsers  : updateAllUsers,
   insertUser  : insertUser,
   propsUser  : propsUser,
   heartsUser  : heartsUser,

@@ -10,8 +10,6 @@ function minToMs(x) {
  * @type {Object}
  */
 module.exports = {
-  "botName" : "derpybot",
-
   // url location of this bot's commands
   "commands" : "http://franciscog.com/DerpyBot/commands/",
 
