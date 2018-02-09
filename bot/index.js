@@ -47,6 +47,10 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
     bot.isDJing = false;
     bot.isConnected = false;
 
+    if (bot.myconfig.muted) {
+      bot.sendChat = function(x){return;};
+    }
+
     if (bot.myconfig.verboseLogging) {
       bot.log = require('jethro');
       bot.log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');

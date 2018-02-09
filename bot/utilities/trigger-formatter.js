@@ -65,6 +65,7 @@ function handleNumbered(text, c, bot, data) {
   return text;
 }
 
+
 module.exports = function triggerFormatter(text, bot, data){
   var tokens = getTokens(text);
 
@@ -76,6 +77,15 @@ module.exports = function triggerFormatter(text, bot, data){
     if (c === '%me%'){
       // replace with user who entered chat name
       text = text.replace('%me%', data.user.username);
+    }
+
+    if (/%[a-z]+\./.test(c)) {
+      let parts = c.replace(/%/g,'').split('.');
+      console.log(parts);
+      if (bot.sheetsData && bot.sheetsData[parts[0]]) {
+        console.log( bot.sheetsData[parts[0]] );
+        console.log( bot.sheetsData[parts[0]][parts[1]] );
+      }
     }
 
     // if it's a numbered one
