@@ -6,6 +6,7 @@
 const schedule = require('node-schedule');
 const repo = require(process.cwd()+'/repo');
 const leaders = require(process.cwd() + '/bot/commands/credits/leaders.js');
+const setTimeout = require('timers').setTimeout;
 
 var resetAllUserPoints = function(bot, db){
   if (!bot.myconfig.reset_points) { return; }
@@ -36,6 +37,9 @@ module.exports = function pointReset(bot, db){
 
   bot.log('info', 'BOT', 'Starting point reset scheduler: first of every month, at midnight');
   
+  // un comment this line to perform a manual reset
+  // setTimeout(()=>{resetAllUserPoints(bot, db);}, 10000);
+
   // this will run once a month, on the first of the month, at midnight
   var monthly = schedule.scheduleJob('0 0 1 * *', function(){
     // go through every user and reset their points
