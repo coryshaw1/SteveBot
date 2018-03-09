@@ -4,8 +4,9 @@
   "description": "A Dubtrack.fm Bot using DubAPI",
   "main": "index.js",
   "scripts": {
-    "start": "ENV=dev nodemon index.js",
-    "live": "nodemon index.js",
+    "start": "ENV=test nodemon index.js",
+    "start-muted": "MUTED=1 ENV=test nodemon index.js",
+    "live": "ENV=prod nodemon index.js",
     "test": "ENV=test mocha -c -t 10000 --reporter=spec tests",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "secrets": "tar cvf secrets.tar private && travis encrypt-file secrets.tar && rm secrets.tar"

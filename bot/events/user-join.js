@@ -1,6 +1,7 @@
 'use strict';
 const repo = require(process.cwd()+'/repo');
-const settings = require(process.cwd() + '/private/settings.js');
+const _private = require(process.cwd() + '/private/get'); 
+const settings = _private.settings;
 
 /**
  * When a new user joins the room, we log their info to the db and we begin storing

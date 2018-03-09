@@ -2,8 +2,9 @@
 'use strict';
 var fs = require('fs');
 var Database = require('../bot/db.js');
-var settings = require('../private/settings.js');
-var svcAcct = '../private/serviceAccountCredentials.json';
+const _private = require('../private/prod/settings.js');
+var settings = _private.settings;
+var svcAcct = _private.svcAcct;
 var BASEURL = settings.FIREBASE.BASEURL;
 var db = new Database(svcAcct, BASEURL);
 

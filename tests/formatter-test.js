@@ -74,4 +74,17 @@ describe('Trigger Formatter tests', function(){
     done();
   });
 
+  it('should get the correct spreadsheet data', function(done){
+    var text = "%nmm.date% - %nmm.artist% - %nmm.album%";
+    bot.sheetsData = bot.sheetsData || {};
+    bot.sheetsData.nmm = {
+      date : '3/12/2018',
+      artist : 'Blockhead',
+      album : 'Funeral Balloons'
+    };
+    var parsed = triggerFormatter(text, bot, data);
+    expect(parsed).to.equal('3/12/2018 - Blockhead - Funeral Balloons');
+    done();
+  });
+
 });

@@ -57,8 +57,8 @@ function step1() {
   /**
    * Production db setup
    */
-  var settings = require('../private/settings.js');
-  var svcAcct = '../private/serviceAccountCredentials.json';
+  var settings = require('../private/prod/settings.js');
+  var svcAcct = '../private/prod/serviceAccountCredentials.json';
   var prodApp =  admin.initializeApp({
     credential: admin.credential.cert(svcAcct),
     databaseURL: settings.FIREBASE.BASEURL

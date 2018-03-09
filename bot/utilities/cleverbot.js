@@ -1,6 +1,7 @@
 'use strict';
 const Cleverbot = require('cleverbot-node');
-const settings = require(process.cwd() + '/private/settings.js');
+const _private = require(process.cwd() + '/private/get'); 
+const settings = _private.settings;
 
 module.exports = function(bot, db, data) {
   if (!bot) {

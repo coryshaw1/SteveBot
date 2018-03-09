@@ -13,7 +13,7 @@ module.exports = {
   // url location of this bot's commands
   "commands" : "http://franciscog.com/DerpyBot/commands/",
 
-  "muted" : false,
+  "muted" : process.env.MUTED ? true : false,
 
   // allow a user to give multiple props for the same song
   "allow_multi_prop" : false,

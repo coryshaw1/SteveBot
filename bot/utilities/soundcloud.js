@@ -1,5 +1,6 @@
 'use strict';
-var settings = require(process.cwd() + '/private/settings.js');
+const _private = require(process.cwd() + '/private/get'); 
+const settings = _private.settings;
 var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 var request = require('request');
 var _ = require('lodash');

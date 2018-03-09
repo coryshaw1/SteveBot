@@ -1,8 +1,8 @@
 node_modules/
 settings.js
-private/*.json
-private/*.tar
-private/*.js
+private/*
+!private/README.md
+!private/get.js
 .DS_Store
 tool/*.json
 tool/temp.js

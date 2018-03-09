@@ -1,6 +1,7 @@
 'use strict';
 // var repo = require(process.cwd()+'/repo');
-var settings = require(process.cwd() + '/private/settings.js');
+const _private = require(process.cwd() + '/private/get'); 
+const settings = _private.settings;
 var request = require('request');
 var log = require('jethro');
 log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');

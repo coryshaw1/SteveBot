@@ -1,7 +1,8 @@
 'use strict';
 const _ = require('lodash');
 const roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
-const settings = require(process.cwd() + '/private/settings.js');
+const _private = require(process.cwd() + '/private/get'); 
+const settings = _private.settings;
 
 
 module.exports = function(bot, db, data) {

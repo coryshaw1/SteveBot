@@ -1,6 +1,7 @@
 'use strict';
 const _ = require('lodash');
-const settings = require(process.cwd() + '/private/settings.js');
+const _private = require(process.cwd() + '/private/get'); 
+const settings = _private.settings;
 const repo = require(process.cwd()+'/repo');
 const YOUR_API_KEY = settings.YT_API;
 const request = require('request');

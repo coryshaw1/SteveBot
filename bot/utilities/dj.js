@@ -1,6 +1,5 @@
 'use strict';
 const _ = require('lodash');
-const settings = require(process.cwd() + '/private/settings.js');
 
 module.exports = {
 

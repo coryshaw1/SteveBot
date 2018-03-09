@@ -10,26 +10,27 @@ var moment = require('moment');
 var sheetObj = {
 
   getNext(rows, dateCol) {
-    var closest = null;
     var closestRow = null;
+
+    // get today's day
     var a = moment(Date.now());
 
-    rows.forEach((row)=>{
+    rows.reverse().forEach((row)=>{
       if (!row[dateCol]) { return; }
 
+      // check the date of the row in the spreadsheet
       var b = moment(row[dateCol], "M/D/YYYY");
-      var diff = a.diff(b, 'days');
-      // console.log( diff  );
-      if (!closest) {
-        closest = diff;
+
+      // check the difference in days between today and spreadsheet
+      // positive int means event is in the future, 
+      // 0 is today,
+      // negative = event in the past
+      var diff = b.diff(a, 'days');
+      if (diff >= 0) {
         closestRow = row;
-      } else {
-        if (diff > closest) { 
-          closest = diff; 
-          closestRow = row;
-        }
       }
     });
+
     if (closestRow) {
       return Promise.resolve(closestRow);
     } else {
@@ -54,6 +55,7 @@ var sheetObj = {
             });
           },
           function workingWithRows(step) {
+            // console.log(sheet);
             sheet.getRows({
               offset: 1
             }, function( err, rows ){

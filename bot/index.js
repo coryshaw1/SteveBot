@@ -1,15 +1,11 @@
 'use strict';
+const _private = require(process.cwd() + '/private/get'); 
+const settings = _private.settings;
+const svcAcct = _private.svcAcct;
+
 var DubAPI = require('dubapi');
 var Database = require(process.cwd() + '/bot/db.js');
 var config = require(process.cwd() + '/bot/config.js');
-var ChatQueue = require(process.cwd() + '/bot/store/chat-queue.js');
-
-var settings = require(process.cwd() + '/private/settings.js');
-var svcAcct = process.cwd() + '/private/serviceAccountCredentials.json';
-if (process.env.ENV && process.env.ENV === 'dev') {
-  settings = require(process.cwd() + '/private/test/settings.js');
-  svcAcct = process.cwd() + '/private/test/serviceAccountCredentials.json';
-}
 
 config.botName = settings.USERNAME;
 var BASEURL = settings.FIREBASE.BASEURL;
@@ -32,14 +28,6 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
         process.exit(1); // exit so pm2 can restart
         return;
     }
-
-    /**
-     * Override sendChat to implement a chat queue so that the bot
-     * can not send more than 1 chat message a second
-     */
-    // bot.realSendChat = bot.sendChat;
-    // let chatQueue = new ChatQueue(bot, 2, 1000);
-    // bot.sendChat = chatQueue.schedule;
     
     bot.myconfig = config;
     bot.maxChatMessageSplits = 5;

@@ -65,6 +65,20 @@ function handleNumbered(text, c, bot, data) {
   return text;
 }
 
+function handleSpreadsheets(text,c,bot) {
+  if (!bot.sheetsData) {return text; }
+
+  let parts = c.replace(/%/g,'').split('.');
+  let sheet = bot.sheetsData[ parts[0] ];
+
+  if (sheet) {
+    // console.log(sheet);
+    let item = sheet[ parts[1] ];
+    // console.log( item );
+    text = text.replace(c,item);
+  }
+  return text;
+}
 
 module.exports = function triggerFormatter(text, bot, data){
   var tokens = getTokens(text);
@@ -80,12 +94,7 @@ module.exports = function triggerFormatter(text, bot, data){
     }
 
     if (/%[a-z]+\./.test(c)) {
-      let parts = c.replace(/%/g,'').split('.');
-      console.log(parts);
-      if (bot.sheetsData && bot.sheetsData[parts[0]]) {
-        console.log( bot.sheetsData[parts[0]] );
-        console.log( bot.sheetsData[parts[0]][parts[1]] );
-      }
+      text = handleSpreadsheets(text,c,bot);
     }
 
     // if it's a numbered one

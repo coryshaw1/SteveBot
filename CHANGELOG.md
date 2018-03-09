@@ -7,6 +7,18 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.20.0] - 2018-03-09
+### Added 
+- New Music Monday info available as trigger data. It will search the New Music Monday spreadsheet by row looking for the closest date possible >= today    
+    - %nmm.date% - will print the date    
+    - %nmm.artist% - will print the artist name    
+    - %nmm.album% - will print the album
+
+### Changed
+- reorganized the private data to have subfolders based on environment.    
+- added a `get` method to abstract loading private data to make it easily changed in the future
+- add support for new 'MUTED' env variable
+
 ## [1.19.1] - 2018-02-07
 ### Fixed
 - fixed reset points issue
