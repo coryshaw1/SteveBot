@@ -7,7 +7,30 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-## [1.20.0] - 2018-03-
+## [1.21.0] - 2018-03-14    
+### Added    
+- !sourcetext trigger_name - will show you the un-interpreted trigger source text    
+- change the trigger prop emoji with `+prop=EMOJI_NAME` [issue 43](https://github.com/FranciscoG/DerpyBot/issues/43)    
+
+### Changed    
+- prevented the bot from giving props so people can't trict the bot into giving multiple points for a song    
+- I moved the code for !source into the bot/trigger dir where it should go    
+- remove the self-prop warning from triggers with +prop and +flow [issue 42](https://github.com/FranciscoG/DerpyBot/issues/42)
+
+### Deleted    
+- removed hardcoded !props command, this should be added as a trigger    
+- removed hardcoded !tune command, this should be added as a trigger    
+- removed hardcoded !fire command, this should be added as a trigger    
+- removed hardcoded !love command, this should be added as a trigger    
+- removed hardcoded !flowpoint command, use the !flow trigger instead    
+
+## [1.20.0] - 2018-03-09
+### Added 
+- New Music Monday info available as trigger data. It will search the New Music Monday spreadsheet by row looking for the closest date possible >= today    
+    - %nmm.date% - will print the date    
+    - %nmm.artist% - will print the artist name    
+    - %nmm.album% - will print the album
+
 ### Changed
 - removed `!ping` hard coded command
 - removed `!pong` hard coded command

@@ -77,10 +77,9 @@ var handleCommands = function(bot, db, data) {
       var trigSplit  = trig.split(" ");
       var last = trigSplit[trigSplit.length - 1];
 
-      if (last === "+prop") {
-        return triggerPoint(bot, db, data, trig, "props");
-      } else if (last === "+flow")  {
-        return triggerPoint(bot, db, data, trig, "flow");
+      var pointCheck = new RegExp("\\+(props?|flow)(=[a-z0-9_-]+)?", "i");
+      if (pointCheck.test(last)) {
+        return triggerPoint(bot, db, data, trig, last);
       } else {
         return bot.sendChat(trig);
       }

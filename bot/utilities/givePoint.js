@@ -19,6 +19,11 @@ function addPoint(bot, db, data, recipient, opts) {
 
 
 module.exports = function(bot, db, data, opts) {
+  // check if user is the bot
+  if (data.user.username === bot.myconfig.botName) {
+    return bot.sendChat('I am not allowed to award points');
+  }
+
   if(!bot.getDJ()) {
       return bot.sendChat('There is no DJ playing!');
   }
@@ -56,8 +61,10 @@ module.exports = function(bot, db, data, opts) {
   if (data.params.length === 1 && data.params[0].charAt(0) === '@') {
 
     // can't give points to yourself
+    // but don't show a warning, just remain silent
     if (data.params[0] === '@'+data.user.username) {
-      return bot.sendChat( opts.noSelfAwardingMsg(data.user.username) );
+      // return bot.sendChat( opts.noSelfAwardingMsg(data.user.username) );
+      return;
     }
 
     if (!bot.myconfig.allow_multi_prop ) {
