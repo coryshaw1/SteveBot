@@ -45,7 +45,7 @@ module.exports = function(bot, db, data, trig, type) {
   var repeatCheck = 'usersThatPropped';
   var pointEmoji = type[1] || 'fist';
   
-  if (type[0] === 'flow') {
+  if (type[0] === '+flow') {
     pointType = 'flow'; // this must match the name in the db
     repeatCheck = 'usersThatFlowed';
     pointEmoji = type[1] || 'surfer';
