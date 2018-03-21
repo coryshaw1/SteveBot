@@ -7,59 +7,6 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-
-## [1.23.4] - 2018-07-26
-## Fixed
-- !urban was broken, fixed and removed dependency or urban npm pkg
-- updated !cat to use `!giphy cat` as a backup with random.cat rate limits me
-
-## Changed
-- updated the request npm pkg dependency version
-
-## [1.23.3] - 2018-07-25
-## Fixed
-- fix in recursiveSEarch
-
-## [1.23.2] - 2018-07-25
-## Changed
-- reduced `!search` result limit from 100 down to 50.
-- When an unrecognized command is given, the bot now suggests possible matches recursively reducing the string until it either finds matches or the string is 3 characters in length
-
-## Fixed
-- fixed undefined function error in the `!random` trigger file. 
-- fixed minor, probably no way unreachable, bug in an argument check in the soundcloud.getLink
-- added another test case in the soundcloud tests
-
-## [1.23.1] - 2018-05-14
-### Fixed
-- updated API for random.cat that `!cat` uses.  Closes [issue 45](https://github.com/FranciscoG/DerpyBot/issues/45)
-- bot will skip broken soundcloud links
-- removed the "recently warned" check, it will continually warn now
-
-### Added
-- added soundcloud.js utility tests
-
-### Changed
-- cleaned up some of the code
-
-## [1.23.0] - 2018-05-01
-### Fixed
-- fix issue with triggers not updating properly when changed
-- updated dependencies
-### Added
-- command: `!randomprop` - only picks a random trigger from triggers that have +prop
-- command: `!randomflow` - only picks a random trigger from triggers that have +flow
-
-## [1.22.2] - 2018-04-01
-### Fixed
-- fixed the monthly point reset always crashing.
-- fixed accessing property of undefined error in !leaders commad
-
-## [1.22.1] - 2018-03-23
-### Fixed
-- increased the bot warning time back to 12 hours
-- added new config settings `history_pages` - how many pages of history to scrape on initial load of bot
-
 ## [1.22.0] - 2018-03-20
 ### Added
 - `!translate` - generates link to google translate from auto-detect lang to english only
