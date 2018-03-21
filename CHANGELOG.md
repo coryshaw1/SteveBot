@@ -7,6 +7,16 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones    
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.22.0] - 2018-03-20
+### Added
+- `!translate` - generates link to google translate from auto-detect lang to english only
+### Changed
+- `!link` - simplified the output and added youtube region restriction info link
+
+## [1.21.1] - 2018-03-15
+### Hotfix
+- fixed +flow issue where it was showing in the response and giving prop points insteads
+
 ## [1.21.0] - 2018-03-14    
 ### Added    
 - !sourcetext trigger_name - will show you the un-interpreted trigger source text    
