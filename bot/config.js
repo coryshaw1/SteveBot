@@ -48,8 +48,11 @@ module.exports = {
   // should we warn the room that a song in the queue was played within X amount of hours
   'recently_played_warning' : true,
   // How many HOURS ago, or more, it's ok to allow a song to repeat
-  'recently_played_limit' : 8,
-  
+  'recently_played_limit' : 12,
+
+  // how many pages of history to scrape initially on load
+  'history_pages': 8,
+
   // reset all user prop/flow/etc points back to 0 at the beginning of each month
   'reset_points' : true,
 

@@ -93,6 +93,19 @@ var historyStore = {
     return result;
   },
 
+  /**
+   * Save the currently played song into the history array that 
+   * was initially created on load by scraping the last 8 pages
+   * of song history
+   * 
+   * For every new song that comes in, one song must be removed
+   * that way we always keep the array at a certain length which
+   * is (20 * config.history_pages)
+   * 1 history page = 20 songs
+   * 
+   * @param {object} bot instance of dubapi
+   * @param {object} song dubapi song info object
+   */
   save : function(bot, song){
     if (!song) { return; }
     if (!this.ready) {return;}
@@ -104,11 +117,9 @@ var historyStore = {
     var convert = this.fromUpdate(song);
     // add song to the beginning of the array
     this.songStore.unshift(convert);
-
-    // keep array at a max length of 140
-    if (this.songStore.length > 140) {
-      this.songStore.pop();
-    }
+    
+    // remove last element from array
+    this.songStore.pop();
   },
 
   clear : function(){
@@ -125,7 +136,7 @@ var historyStore = {
 
       var self = this;
 
-      bot.getRoomHistory(5, function(history){
+      bot.getRoomHistory(bot.myconfig.history_pages || 8, function(history){
         
         if (history && history.length > 0) {
           self.songStore = history.map(function(song){

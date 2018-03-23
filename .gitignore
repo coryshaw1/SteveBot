@@ -13,3 +13,5 @@ npm-debug.log
 secrets.tar
 # double overkill
 *.tar
+
+backup*.json
