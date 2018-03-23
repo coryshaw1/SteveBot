@@ -7,6 +7,11 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.22.1] - 2018-03-23
+### Fixed
+- increased the bot warning time back to 12 hours
+- added new config settings `history_pages` - how many pages of history to scrape on initial load of bot
+
 ## [1.22.0] - 2018-03-20
 ### Added
 - `!translate` - generates link to google translate from auto-detect lang to english only
