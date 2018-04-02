@@ -41,7 +41,7 @@ module.exports = function pointReset(bot, db){
   // setTimeout(()=>{resetAllUserPoints(bot, db);}, 10000);
 
   // this will run once a month, on the first of the month, at midnight
-  var monthly = schedule.scheduleJob('0 0 1 * *', function(){
+  var monthly = schedule.scheduleJob('15 0 1 * *', function(){
     // go through every user and reset their points
     resetAllUserPoints(bot, db);
   });

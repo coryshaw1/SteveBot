@@ -36,12 +36,18 @@ module.exports = function(bot, db, data) {
 
   bot.sendChat( `Current leaders for ${month_full} ${year} are:` );
 
-  bot.sendChat( 'By *props* :heart: :musical_note: :fist: :fire: etc...' );
-  bot.sendChat( bot.leaderboard[ month + year ].props );
-  
-  bot.sendChat( 'By *flow* :surfer:');
-  bot.sendChat( bot.leaderboard[ month + year ].flow );
+  let current_board = bot.leaderboard[ month + year ];
 
-  bot.sendChat( 'points will reset at the end of every month' );
+  if (!current_board) {
+    return bot.sendChat(`Error accessing data for ${month_full} ${year}`);
+  }
+
+  let info = `By *props* :heart: :musical_note: :fist: :fire: etc...
+    ${current_board.props}
+    By *flow* :surfer:
+    ${ current_board.flow }
+    points will reset at the end of every month
+  `;
+  bot.sendChat(info);
 };
 
