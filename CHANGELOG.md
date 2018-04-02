@@ -7,6 +7,11 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.22.2] - 2018-04-01
+### Fixed
+- fixed the monthly point reset always crashing.
+- fixed accessing property of undefined error in !leaders commad
+
 ## [1.22.1] - 2018-03-23
 ### Fixed
 - increased the bot warning time back to 12 hours
