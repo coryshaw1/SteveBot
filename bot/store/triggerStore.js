@@ -118,7 +118,7 @@ var TriggerStore = {
   updatePropGivers : function(trig,val) {
     if (this.propGivers.indexOf(trig) >= 0) {return;}
 
-    if (val.indexOf('+prop') >= 0) {
+    if (val && val.indexOf('+prop') >= 0) {
       this.propGivers.push(trig);
     }
   },
@@ -126,7 +126,7 @@ var TriggerStore = {
   updateFlowGivers : function(trig,val) {
     if (this.flowGivers.indexOf(trig) >= 0) {return;}
 
-    if (val.indexOf('+flow') >= 0) {
+    if (val && val.indexOf('+flow') >= 0) {
       this.flowGivers.push(trig);
     }
   },

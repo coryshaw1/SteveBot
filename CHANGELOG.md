@@ -7,6 +7,10 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.22.3] - 2018-05-01
+fix issue with triggers not updating properly when changes
+updated firebase admin to latest version
+
 ## [1.22.2] - 2018-04-01
 ### Fixed
 - fixed the monthly point reset always crashing.
