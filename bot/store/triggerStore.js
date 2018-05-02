@@ -8,8 +8,8 @@ const fuzzy = require('fuzzy');
 
 var TriggerStore = {
   triggers : {},
-  propGivers : [],
-  flowGivers : [],
+  propGivers : {},
+  flowGivers : {},
   lastTrigger : {},
 
 
@@ -36,7 +36,7 @@ var TriggerStore = {
     return this.flowGivers[randKey];
   },
 
-  search : function(term, returnLimit) {
+  search : function(term) {
     if (!term || term ==='') {return [];}
     var trigKeys = Object.keys(this.triggers);
     var finds = fuzzy.filter(term, trigKeys);
@@ -115,19 +115,20 @@ var TriggerStore = {
         });
   },
 
-  updatePropGivers : function(trig,val) {
-    if (this.propGivers.indexOf(trig) >= 0) {return;}
+  updateGivers : function(trig) {
+    let val = trig.Returns;
 
-    if (val && val.indexOf('+prop') >= 0) {
-      this.propGivers.push(trig);
+    // because there was a trigger that returned as a num
+    if (typeof val === 'number') {
+      val = val+''; // coerce to a number
     }
-  },
+    // just in case it's not still not a string
+    if (typeof val !== 'string') { return; }
 
-  updateFlowGivers : function(trig,val) {
-    if (this.flowGivers.indexOf(trig) >= 0) {return;}
-
-    if (val && val.indexOf('+flow') >= 0) {
-      this.flowGivers.push(trig);
+    if (val.indexOf('+flow') >= 0) {
+      this.flowGivers[trig.Trigger] = trig;
+    } else if (val.indexOf('+prop') >= 0) {
+      this.propGivers[trig.Trigger] = trig;
     }
   },
 
@@ -139,8 +140,7 @@ var TriggerStore = {
       thisTrig.fbkey = key;
       this.triggers[thisTrig.Trigger] = thisTrig;
       
-      this.updatePropGivers(thisTrig.Trigger, thisTrig.Returns);
-      this.updateFlowGivers(thisTrig.Trigger, thisTrig.Returns);
+      this.updateGivers(thisTrig);
     });
   },
 

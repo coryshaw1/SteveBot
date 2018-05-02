@@ -7,9 +7,13 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-## [1.22.3] - 2018-05-01
-fix issue with triggers not updating properly when changes
-updated firebase admin to latest version
+## [1.23.0] - 2018-05-01
+### Fixed
+- fix issue with triggers not updating properly when changed
+- updated dependencies
+### Added
+- command: `!randomprop` - only picks a random trigger from triggers that have +prop
+- command: `!randomflow` - only picks a random trigger from triggers that have +flow
 
 ## [1.22.2] - 2018-04-01
 ### Fixed
