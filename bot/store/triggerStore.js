@@ -7,12 +7,26 @@ const fuzzy = require('fuzzy');
 
 var TriggerStore = {
   triggers : {},
+  propGivers : {},
+  flowGivers : {},
   lastTrigger : {},
 
   random : function () {
     var trigKeys = Object.keys(this.triggers);
     var randKey = trigKeys[Math.floor((Math.random()*trigKeys.length))];
     return this.triggers[randKey];
+  },
+
+  randomProp : function() {
+    var trigKeys = Object.keys(this.propGivers);
+    var randKey = trigKeys[Math.floor((Math.random()*trigKeys.length))];
+    return this.propGivers[randKey];
+  },
+
+  randomFlow : function() {
+    var trigKeys = Object.keys(this.flowGivers);
+    var randKey = trigKeys[Math.floor((Math.random()*trigKeys.length))];
+    return this.flowGivers[randKey];
   },
 
   search : function(term) {
@@ -77,6 +91,23 @@ var TriggerStore = {
         });
   },
 
+  updateGivers : function(trig) {
+    let val = trig.Returns;
+
+    // because there was a trigger that returned as a num
+    if (typeof val === 'number') {
+      val = val+''; // coerce to a number
+    }
+    // just in case it's not still not a string
+    if (typeof val !== 'string') { return; }
+
+    if (val.indexOf('+flow') >= 0) {
+      this.flowGivers[trig.Trigger] = trig;
+    } else if (val.indexOf('+prop') >= 0) {
+      this.propGivers[trig.Trigger] = trig;
+    }
+  },
+
   setTriggers : function(bot, val) {
     bot.log('info', 'BOT', 'Trigger cache updated');
         // reorganize the triggers in memory to remove the keys that Firebase makes
@@ -84,6 +115,8 @@ var TriggerStore = {
       var thisTrig = val[key];
       thisTrig.fbkey = key;
       this.triggers[thisTrig.Trigger] = thisTrig;
+      
+      this.updateGivers(thisTrig);
     });
   },
 
@@ -94,11 +127,10 @@ var TriggerStore = {
   },
 
   init : function(bot, db){
-    var self = this;
     var triggers = db.ref('triggers');
 
     // Get ALL triggers and store them locally
-    // do this only once on init
+    // this will run everytime a trigger is updated or created
     triggers.on('value', (snapshot)=>{
         let val = snapshot.val();
         this.setTriggers.call(this,bot,val);
@@ -117,10 +149,10 @@ var TriggerStore = {
     });
 
     var lastTrigger = db.ref('lastTrigger');
-    lastTrigger.on('value', function(snapshot){
+    lastTrigger.on('value', (snapshot)=>{
       var val = snapshot.val();
       bot.log('info', 'BOT', 'lastTrigger updated');
-      self.lastTrigger = val;
+      this.lastTrigger = val;
     }, function(error){
         bot.log('error', 'BOT', 'error getting lastTrigger from firebase');
     });

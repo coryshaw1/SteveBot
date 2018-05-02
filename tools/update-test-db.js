@@ -22,7 +22,7 @@ function step2(val) {
    * Test db setup
    */
   var testSettings = require('../private/test/settings.js');
-  var svcAcct = '../private/test/serviceAccountCredentials.json';
+  var svcAcct = require('../private/test/serviceAccountCredentials.json');
   var testApp =  admin.initializeApp({
     credential: admin.credential.cert(svcAcct),
     databaseURL: testSettings.FIREBASE.BASEURL

@@ -74,9 +74,7 @@ var handleCommands = function(bot, db, data) {
   // check if it's an exsiting trigger
   triggerStore.get(bot, db, data, function(trig){
     if (trig !== null) {
-      var trigSplit  = trig.split(" ");
-      var last = trigSplit[trigSplit.length - 1];
-
+      var last = trig.split(" ").pop();
       var pointCheck = new RegExp("\\+(props?|flow)(=[a-z0-9_-]+)?", "i");
       if (pointCheck.test(last)) {
         return triggerPoint(bot, db, data, trig, last);

@@ -36,7 +36,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
     bot.isConnected = false;
 
     if (bot.myconfig.muted) {
-      bot.sendChat = function(x){return;};
+      bot.sendChat = function(x){ console.log('muted:', x); };
     }
 
     if (bot.myconfig.verboseLogging) {
