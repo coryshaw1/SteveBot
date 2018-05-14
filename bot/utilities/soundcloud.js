@@ -8,13 +8,6 @@ const settings = _private.settings;
 const request = require('request');
 const _ = require('lodash');
 
-/**
- * 
- * @param {object} bot instance of Dubapi
- * @param {object} media dubapi song info from playlist-update event: data.media
- * @param {string} chatMsg the message the bot will send to chat
- * @param {string} logReason the message the bot will use when logging
- */
 function doSkip(bot, media, chatMsg, logReason) {
   bot.log('info', 'BOT', `[SKIP] Soundcloud track - ${media.fkid} - ${media.name || 'unknown track name'} - ${logReason}`);
 
@@ -26,20 +19,12 @@ function doSkip(bot, media, chatMsg, logReason) {
 }
 
 /**
- * @typedef {Object} LinkResult
- * @property {string} error_message basic description of error
- * @property {string} link the full url to the soundcloud track
- * @property {boolen} skippable is this track skippable or not
- * @property {string} reason a more chat friendly reason why song is being skipped. 
- */
-
-/**
  * Callback for handling request response from getSCjson
  *
  * @callback getSCjsonCallback
- * @param {LinkResult} result
+ * @param {object} error - error object or null 
+ * @param {object} response - request response or null.
  */
-
 /**
  * Makes request to Soundcloud for a specific songs meta data
  * 
@@ -48,14 +33,10 @@ function doSkip(bot, media, chatMsg, logReason) {
  * @param {getSCjsonCallback} callback will be called on success/fail
  * @returns undefined
  */
-function getLink(bot, media, callback) {
-  if (!bot || !callback) { 
-    console.log('warn', 'BOT', 'soundcloud.getLink missing bot or callback arguments');
-    return; 
-  }
-
-  if (!media ){ return callback({error_message: 'soundcloud getSCjson: missing media object'}); }
-  if (!media.fkid ){ return callback({error_message: 'soundcloud getSCjson: missing song id'}); }
+function getSCjson(bot, media, callback) {
+  if (!bot || !callback) { return; } // silent return; 
+  if (!media ){ return callback({error_message: 'soundcloud getSCjson: missing media object'}, null); }
+  if (!media.fkid ){ return callback({error_message: 'soundcloud getSCjson: missing song id'}, null); }
 
   const songID = media.fkid;
 
@@ -64,34 +45,24 @@ function getLink(bot, media, callback) {
   };
 
   var responseBack = function(requestError, response, body) {
-    var customResponse = {
-      error_message : null,
-      link : null,
-      skippable : false,
-      reason : null
-    };
-
-    // something happenend connecting to the API endpoint
-    // we should NOT skip because we can't 100% know why this happened
+    // if callback returns this, we should NOT skip because we can't 100% know
+    // that it was a track issue. Maybe server went offline for a moment.  
     if (requestError) {
       bot.log('error', 'BOT', 'Soundcloud Error: ' + requestError);
-      customResponse.error_message = "an error occured connecting to Soundcloud";
-      return callback(customResponse);
+      return callback(requestError, null);
     }
 
     // if body is null then response.statusCode is most likely 403 forbidden
     // meaning owner of the track has disabled API request for their song
     // we can definitely skip the track if this is the case
     if (!body) {
-      customResponse.reason = 'Soundcloud link is broken';
-      customResponse.skippable = true;
-      customResponse.error_message = `${response.statusCode} - probably forbidden`;
-      return callback(customResponse);
+      bot.log('error', 'BOT', `Soundcloud track returned null response - status: ${response.statusCode} -  for track ${media.name || 'unknown track name'}`);
+      return callback(null, null);
     }
 
     try {
       // this is where it gets tricky.  if body.errors exists, then we skip
-      // anything else means probably means a good response
+      // anything else means good reponse
       var json = JSON.parse(body);
       var error404 = _.get(json, 'errors[0].error_message');
       if (error404) {
@@ -105,8 +76,56 @@ function getLink(bot, media, callback) {
       }
     } catch(e) {
       bot.log('error', 'BOT', `Soundcloud error parsing response.body - ${e}`);
-      customResponse.error_message = 'error parsing soundcloud response.body';
-      return callback(customResponse);
+      return callback({error_message: 'error parsing body'}, null);
+    }
+
+  };
+
+  request(options, responseBack);
+}
+
+
+/**
+ * Makes request to Soundcloud for a specific songs meta data
+ * 
+ * @param {object} bot instance of Dubapi
+ * @param {object} media dubtrack media info object
+ * @returns undefined
+ */
+function moderate(bot, media) {
+  if (!bot || !media || !media.fkid) { return; } // silent return; not skipping
+
+  const songID = media.fkid;
+
+  var options = {
+    url: `https://api.soundcloud.com/tracks/${songID}.json?client_id=${settings.SOUNDCLOUDID}`
+  };
+
+  var responseBack = function(requestError, response, body) {
+    // if callback returns this, we should NOT skip because we can't 100% know
+    // that it was a track issue. Maybe server went offline for a moment.  
+    if (requestError) {
+      bot.log('error', 'BOT', 'Soundcloud Error: ' + requestError);
+      return;
+    }
+
+    // if body is null then response.statusCode is most likely 403 forbidden
+    // meaning owner of the track has disabled API request for their song
+    // we can definitely skip the track if this is the case
+    if (!body) {
+      return doSkip(bot, media, 'Soundcloud user disabled their track from being accessed via API', 'probably because forbidden');
+    }
+
+    try {
+      // this is where it gets tricky.  if body.errors exists, then we skip
+      // anything else means good reponse
+      var json = JSON.parse(body);
+      var error404 = _.get(json, 'result.errors[0].error_message', null);
+      if (error404) {
+        return doSkip(bot, media, 'Soundcloud track does not exist aynmore', `${error404 || 'unknown error'}`);
+      }
+    } catch(e) {
+      bot.log('error', 'BOT', `Soundcloud error parsing response.body - ${e}`);
     }
 
   };
@@ -115,8 +134,8 @@ function getLink(bot, media, callback) {
 }
 
 module.exports = {
-  getLink : getLink,
-  skip : doSkip
+  getLink : getSCjson,
+  moderate : moderate
 };
 
 
