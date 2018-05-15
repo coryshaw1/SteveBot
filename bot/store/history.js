@@ -79,14 +79,14 @@ var historyStore = {
       }
 
       // giving DJs a 1 minute grace period between warnings
-      if (self.recentlyWarned(song)) {
-         bot.log('info', 'BOT', `Already warned: ${song.user} about ${song.name}`);
-        return;
-      }
+      // if (self.recentlyWarned(song)) {
+      //    bot.log('info', 'BOT', `Already warned: ${song.user} about ${song.name}`);
+      //   return;
+      // }
 
       result.push(song);
-      song.warned = Date.now();
-      self.warnedStore.push(song);
+      // song.warned = Date.now();
+      // self.warnedStore.push(song);
       
     });
 

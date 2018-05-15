@@ -47,48 +47,21 @@ var badStatuses = [
   'rejected'
 ];
 
-var getRandom = function (list) {
-  return list[Math.floor((Math.random()*list.length))];
-};
-
-var responsesDE = [
-  'Hey all, you\'ll never guess which country is blocking this video...',
-  'Oh look, another video blocked in Germany',
-  'Sucks to be :DE: right now',
-  'This video is blocked in Germany, how ... unusual ... :confused: ',
-  ':DE: :hear_no_evil: :mute: :-('
-];
-
-function trackIssue(db, ytResponse, media, reason){
-  // repo.trackSongIssues(db, ytResponse, media, reason);
-}
-
 function makeYTCheckerUrl(yid){
   return `https://polsy.org.uk/stuff/ytrestrict.cgi?ytid=${yid}`;
 }
 
 function regionBlock(bot, db, _region, yt, media){
-  // yes we get THAT many blocked youtube videos in Germany that we might
-  // as well make fun of it
-  if (_region.blocked && _region.blocked.length === 1 && _region.blocked[0] === 'DE') {
-    // trackIssue(db, yt, media, 'region restrictions');
-    bot.sendChat(`${media.name}`);
-    return bot.sendChat( getRandom(responsesDE) );
-  }
-
-  bot.sendChat(`*FYI, Youtube is saying this video has region restrictions:*`);
-  bot.sendChat(`${media.name}`);
+  bot.sendChat(`*FYI, Youtube is saying this video has region restrictions:* - ${media.name}`);
   var ytid = _.get(yt, 'items[0].id');
   if (ytid) {
     var ytchk = makeYTCheckerUrl(ytid);
     bot.sendChat(`See here for more details: ${ytchk}`);
   }
-
-  // trackIssue(db, yt, media, 'region restrictions');
 }
 
 function doSkip(bot, media, chatMsg, logReason) {
-  bot.log('info', 'BOT', `[SKIP] YouTube video with id ${media.fkid} - ${logReason}`);
+  bot.log('info', 'BOT', `[SKIP] YouTube video: ${media.fkid} - ${media.name||'unknown track'} - ${logReason}`);
 
   if (bot.myconfig.autoskip_stuck) { 
     return bot.moderateSkip(function(){
@@ -102,7 +75,7 @@ function checkStatus(bot, db, media, body) {
 
   // set DJ name
   var dj = bot.getDJ();
-  dj = dj === void(0) ? '@'+dj : dj.username;
+  dj = dj === void(0) ? 'dj' : dj.username;
 
   var yt = JSON.parse(body);
   var status = _.get(yt, 'items[0].status');
@@ -110,14 +83,14 @@ function checkStatus(bot, db, media, body) {
   if (status) {
     
     // if one of these bad uploadStatuses exist then we skip
-    if (badStatuses.indexOf(status.uploadStatus) > -1) {
+    if (badStatuses.includes(status.uploadStatus)) {
       var reason = yt.items[0].status.uploadStatus;
-      return doSkip(bot, media, `Sorry ${dj} this Youtube video is broken`, reason);
+      return doSkip(bot, media, `Sorry @${dj} this Youtube video is broken`, reason);
     }
 
     // if video is private then we skip
     if (_.get(status, 'privacyStatus') === 'private') {
-      return doSkip(bot, media, `Sorry ${dj} this Youtube video is private`, 'private');
+      return doSkip(bot, media, `Sorry @${dj} this Youtube video is private`, 'private');
     }
 
   }
@@ -149,20 +122,4 @@ module.exports = function(bot, db, media) {
 
   start(bot, db, media);
   return;
-
-  // var savedIssue = null;
-  // var now = Date.now();
-
-  // repo.getSongIssue(db, media.fkid)
-  //   .then(function(snapshot){
-  //     savedIssue = snapshot.val();
-      
-  //     // if the song issue doesn't exist (so it's a new issue)
-  //     // OR it was tracked more than 15min ago
-  //     if (!savedIssue || now - savedIssue.timestamp > 900000) {
-  //       start(bot, db, media);
-  //     }
-
-  //   })
-  //   .catch(function(err){});
 };

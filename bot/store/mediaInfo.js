@@ -3,26 +3,6 @@ var sc = require(process.cwd() + '/bot/utilities/soundcloud.js');
 var _ = require('lodash');
 var repo = require(process.cwd()+'/repo');
 
-// TODO: move this to another file
-var getSongLink = function(bot, callback){
-  var media = bot.getMedia();
-
-  if(!media) {
-    return callback(null);
-  }
-
-  if(media.type.toUpperCase() === 'SOUNDCLOUD') {
-    sc(bot, media, function(error, result){
-      if (error) {
-        return callback('https://api.dubtrack.fm/song/' + media.id + '/redirect');
-      }
-      return callback(_.get(result, 'permalink_url', null));
-    });
-  } else {
-    return callback('http://www.youtube.com/watch?v=' + media.fkid);
-  }
-};
-
 var mediaStore = {
   current : {
     link : null,
@@ -113,7 +93,9 @@ var mediaStore = {
     }
   },
 
-  getLink : getSongLink
+  getLink : function(){
+    return this.current.link;
+  }
 };
 
 module.exports = mediaStore;

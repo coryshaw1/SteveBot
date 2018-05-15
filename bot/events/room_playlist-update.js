@@ -4,16 +4,20 @@
  * This event is fired when a new song begins to play
  */
 'use strict';
-var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
-var userStore = require(process.cwd()+ '/bot/store/users.js');
-var youtube = require(process.cwd()+'/bot/utilities/youtube.js');
-var historyStore = require(process.cwd()+ '/bot/store/history.js');
-var _ = require('lodash');
-var moment = require('moment');
-var repo = require(process.cwd()+'/repo');
+const mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
+const userStore = require(process.cwd()+ '/bot/store/users.js');
+const youtube = require(process.cwd()+'/bot/utilities/youtube.js');
+const soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
+const historyStore = require(process.cwd()+ '/bot/store/history.js');
+const _ = require('lodash');
+const moment = require('moment');
+const repo = require(process.cwd()+'/repo');
 
-// var soundcloud = require(process.cwd()+'/bot/utilities/soundcloud');
-
+/**
+ * 
+ * @param {object} bot instance of dubapi
+ * @param {object} currentSong song data of current track playing
+ */
 function reviewPoints(bot, currentSong) {
   var propped = userStore.getProps();
   var flowed = userStore.getFlows();
@@ -41,16 +45,14 @@ function reviewPoints(bot, currentSong) {
 }
 
 /**
- * Send a warning to chat when a song exceeds 
- * a certaim time length limit set in config
- * also checks YouTube for song issues and stores it
+ * handles various song warning and skipping of broken tracks
+ * for now this only handles youtube because it's more complex
  * 
  * @param {Object} bot instanceOf dubapi
  * @param {Object} db database object
  * @param {Object} data dubapi song data
- * @returns 
  */
-function songWarning(bot, db, data){ 
+function songModerate(bot, db, data){ 
   var songLength = _.get(data, 'media.songLength');
   if (songLength &&
       bot.myconfig.longSongs.warn && 
@@ -63,48 +65,9 @@ function songWarning(bot, db, data){
   var type = _.get(data, 'media.type');
   if (!type || !songID) { return; }
 
-  type = type.toUpperCase();
-  if (type === 'YOUTUBE'){
+  if (type.toUpperCase() === 'YOUTUBE'){
     return youtube(bot, db, data.media);
   }
-  if (type === 'SOUNDCLOUD'){
-    // return soundcloud(bot, songID);
-  }
-}
-
-function lastPlayModel(currentSong, storedData) {
-  var obj = {
-    id : currentSong.id,
-    type : currentSong.type,
-    name : currentSong.name,
-    firstplay : { 
-      user : _.get(storedData , 'firstplay.user', currentSong.dj),
-      when : _.get(storedData , 'firstplay.when', Date.now())
-    }
-  };
-
-  var total = 1;
-  var lastWhen = Date.now();
-
-  if (storedData) {
-    lastWhen = storedData.lastplay.when;
-    total = storedData.plays;
-
-    // don't want to incrememt time and plays if the bot reboot for some reason
-    var songTime = storedData.lastplay.when + currentSong.length;
-    if ( Date.now() - songTime > 0  ) {
-      total = storedData.plays + 1;
-      lastWhen = Date.now();
-    }
-
-  }
-
-  obj.plays = total;
-  obj.lastplay =  {
-    user : currentSong.dj,
-    when : lastWhen
-  };
-  return obj;
 }
 
 /**
@@ -148,6 +111,8 @@ function saveSong(db, bot, song) {
 module.exports = function(bot, db) {
   bot.on(bot.events.roomPlaylistUpdate, function(data) {
     bot.updub();
+
+    let dj = _.get(data, 'user.username', '404usernamenotfound');
     
     /************************************************************
      *  song info and trackinng
@@ -165,9 +130,9 @@ module.exports = function(bot, db) {
 
     /************************************************************
      * save current song as last song data in the store
+     * !lastplayed uses it
      */
     
-    //Save previous song for !lastplayed
     currentSong.usersThatFlowed = flowed.length;
     currentSong.usersThatPropped = propped.length;
     mediaStore.setLast(db, currentSong);
@@ -178,30 +143,41 @@ module.exports = function(bot, db) {
     // start new song store
     var newSong = {};
 
-    // get current song link
-    mediaStore.getLink(bot, function(link){
-        var val = !link ? '' : link;
-        mediaStore.setCurrentKey('link', val);
-    });
-
-    // if no data.media from the api then stop now
+    // if no data.media from the api then stop now because everything below needs it
     if(!data.media) { return; }
 
     newSong.name = data.media.name;
     newSong.id = data.media.fkid;
     newSong.type = data.media.type;
     newSong.length = data.media.songLength;
-    newSong.dj = _.get(data, 'user.username', '404usernamenotfound');
+    newSong.dj = dj;
     newSong.when = Date.now();
 
     // store new song data reseting current in the store
     mediaStore.setCurrent(newSong);
 
+    if (data.media.type.toUpperCase() === 'SOUNDCLOUD') {
+
+      soundcloud.getLink(bot, data.media ,function(result){
+        mediaStore.setCurrentKey('link', result.link);
+        // by doing this we also check if we need to skip because track is broken
+        // youtube has much more various reasons for being skipped, sc is more basic
+        // so we can do it here 
+        if (result.skippable) {
+          soundcloud.skip(bot, data.media, `Sorry @${dj} that ${result.reason}`, result.error_message);
+        }
+
+      });
+
+    } else {
+      mediaStore.setCurrentKey('link', `http://www.youtube.com/watch?v=${data.media.fkid}`);
+    }
+
     /************************************************************
-     * song issues
+     * check youtube links for various issues
      */
     
-    songWarning(bot, db, data);
+    songModerate(bot, db, data);
 
     /************************************************************
      * Save song to playlist and for last/first-play func

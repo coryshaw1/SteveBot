@@ -35,7 +35,7 @@ var bot = {
     // probably do nothing during testing
   },
   log : function() {
-    console.log('TEST: ', ...arguments);
+    console.log('bot.log: ', ...arguments);
   },
   isMod : function(user){
     return user && user.niceRole && user.niceRole === 'mod';

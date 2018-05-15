@@ -12,7 +12,7 @@ module.exports = function(bot, db, data) {
   var restrictions = '';
 
   var whoAsked = _.get(data, 'user.username', '');
-  if (whoAsked !== ''){ 
+  if (whoAsked){ 
     whoAsked = "@"+whoAsked;
   }
 
@@ -20,8 +20,8 @@ module.exports = function(bot, db, data) {
     bot.sendChat('Sorry I couldn\'t get the link for this track');
   } else {
     if (current.type === 'youtube') {
-      restrictions = `YouTube region restriction info: ${makeYTCheckerUrl(current.id)}`;
+      restrictions = ` - YouTube region restriction info: ${makeYTCheckerUrl(current.id)}`;
     }
-    bot.sendChat(`${whoAsked} - ${current.link} - ${restrictions}`);
+    bot.sendChat(`${whoAsked} - ${current.link}${restrictions}`);
   }
 };
