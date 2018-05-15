@@ -33,49 +33,42 @@ describe('Soundcloud track info tests', function(){
 
   it('Should successfully connect to soundcloud', function(done){
     var media = {fkid: 123456789, name: 'not a real track' };
-    sc(bot, media, function(error, result){
-      expect(error).to.be.null;
+    sc.getLink(bot, media, function(error, result){
       expect(result).to.not.be.null;
       done();
     });
   });
 
   it('Missing bot argument should return undefined', function(done){
-    expect(sc()).to.be.undefined;
+    expect(sc.getLink()).to.be.undefined;
     done();
   });
 
   it('Missing callback argument should return undefined', function(done){
-    expect( sc(bot) ).to.be.undefined;
+    expect( sc.getLink(bot) ).to.be.undefined;
     done();
   });
 
   it('Should return an error message when media object is missing', function(done){
-    sc(bot, null, function(error, result){
-      expect(result).to.be.null;
-      expect(error.error_message).to.be.string;
-      expect(error.error_message).to.equal('soundcloud getSCjson: missing media object');
+    sc.getLink(bot, null, function(result){
+      expect(result.error_message).to.equal('soundcloud getSCjson: missing media object');
       done();
     });
   });
 
   it('Should return an error message when song ID is missing', function(done){
-    sc(bot, {}, function(error, result){
-      expect(result).to.be.null;
-      expect(error.error_message).to.be.string;
-      expect(error.error_message).to.equal('soundcloud getSCjson: missing song id');
+    sc.getLink(bot, {}, function(result){
+      expect(result.error_message).to.equal('soundcloud getSCjson: missing song id');
       done();
     });
   });
 
   it('Should return a 404 for made-up id', function(done){
-    var media = {fkid: 111111111111111, name: 'not a real track' };
+    var media = { fkid: 111111111111111 };
 
-    sc(bot, media, function(error, result){
-      expect(error).to.be.null;
-      // { errors: [ { error_message: '404 - Not Found' } ] }
-      expect(Array.isArray(result.errors)).to.be.true;
-      expect(result.errors[0].error_message).to.equal('404 - Not Found');
+    sc.getLink(bot, media, function(result){
+      expect(result.skippable).to.be.true;
+      expect(result.error_message).to.equal('404 - Not Found');
       done();
     });
   });
@@ -83,10 +76,10 @@ describe('Soundcloud track info tests', function(){
   it('Should return a 404 for a confirmed broken id', function(done){
     var media = {fkid: 87380722, name: 'Chamber Of Secrets' };
 
-    sc(bot, media, function(error, result){
-      expect(error).to.be.null;
-      expect(Array.isArray(result.errors)).to.be.true;
-      expect(result.errors[0].error_message).to.equal('404 - Not Found');
+    sc.getLink(bot, media, function(result){
+      expect(result.link).to.be.null;
+      expect(result.skippable).to.be.true;
+      expect(result.error_message).to.equal('404 - Not Found');
       done();
     });
   });
@@ -94,9 +87,10 @@ describe('Soundcloud track info tests', function(){
   it('Body should be null for api forbidden track', function(done){
     var media = {fkid: 116534641, name: 'The Other Side - Help Me (FilososfischeStilte Remix)' };
 
-    sc(bot, media, function(error, result){
-      expect(error).to.be.null;
-      expect(result).to.be.null;
+    sc.getLink(bot, media, function(result){
+      expect(result.link).to.be.null;
+      expect(result.skippable).to.be.true;
+      expect(result.error_message).to.be.a.string;
       done();
     });
   });
@@ -104,20 +98,20 @@ describe('Soundcloud track info tests', function(){
   it('Body should be null for api forbidden track', function(done){
     var media = {fkid: 54816877, name: 'Morning in Japan' };
 
-    sc(bot, media, function(error, result){
-      expect(error).to.be.null;
-      expect(result).to.be.null;
+    sc.getLink(bot, media, function(result){
+      expect(result.link).to.be.null;
+      expect(result.skippable).to.be.true;
+      expect(result.error_message).to.be.a.string;
       done();
     });
   });
 
-  it('Should successfully return track ino', function(done){
+  it('Should successfully return track info', function(done){
     var media = {fkid: 223456028, name: 'Mz Boom Bap - Fast Life (Instrumental)' };
 
-    sc(bot, media, function(error, result){
-      expect(error).to.be.null;
-      expect(result.id).to.equal(223456028);
-      expect(result.kind).to.equal('track');
+    sc.getLink(bot, media, function(result){
+      expect(result.link).to.be.a.string;
+      expect(/^https?/.test(result.link)).to.be.true;
       done();
     });
   });

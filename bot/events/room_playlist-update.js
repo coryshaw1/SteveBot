@@ -68,44 +68,6 @@ function songModerate(bot, db, data){
   if (type.toUpperCase() === 'YOUTUBE'){
     return youtube(bot, db, data.media);
   }
-  if (type === 'SOUNDCLOUD'){
-    soundcloud.moderate(bot, data.media);
-  }
-}
-
-function lastPlayModel(currentSong, storedData) {
-  var obj = {
-    id : currentSong.id,
-    type : currentSong.type,
-    name : currentSong.name,
-    firstplay : { 
-      user : _.get(storedData , 'firstplay.user', currentSong.dj),
-      when : _.get(storedData , 'firstplay.when', Date.now())
-    }
-  };
-
-  var total = 1;
-  var lastWhen = Date.now();
-
-  if (storedData) {
-    lastWhen = storedData.lastplay.when;
-    total = storedData.plays;
-
-    // don't want to incrememt time and plays if the bot reboot for some reason
-    var songTime = storedData.lastplay.when + currentSong.length;
-    if ( Date.now() - songTime > 0  ) {
-      total = storedData.plays + 1;
-      lastWhen = Date.now();
-    }
-
-  }
-
-  obj.plays = total;
-  obj.lastplay =  {
-    user : currentSong.dj,
-    when : lastWhen
-  };
-  return obj;
 }
 
 /**
@@ -181,10 +143,7 @@ module.exports = function(bot, db) {
     // start new song store
     var newSong = {};
 
-    // get current song link
-    mediaStore.setLink(bot);
-
-    // if no data.media from the api then stop now
+    // if no data.media from the api then stop now because everything below needs it
     if(!data.media) { return; }
 
     newSong.name = data.media.name;

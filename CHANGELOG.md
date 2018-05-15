@@ -10,11 +10,14 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 ## [1.23.1] - 2018-05-14
 ### Fixed
 - updated API for random.cat that `!cat` uses.  Closes [issue 45](https://github.com/FranciscoG/DerpyBot/issues/45)
+- bot will skip broken soundcloud links
+- removed the "recently warned" check, it will continually warn now
 
 ### Added
-- bot will skip broken soundcloud links
 - added soundcloud.js utility tests
 
+### Changed
+- cleaned up some of the code
 
 ## [1.23.0] - 2018-05-01
 ### Fixed
