@@ -13,13 +13,13 @@ var TriggerStore = {
   lastTrigger : {},
 
 
-  getRandom : function (bot, data) {
+  random : function () {
     var trigKeys = Object.keys(this.triggers);
     var randKey = trigKeys[Math.floor((Math.random()*trigKeys.length))];
     var trig = this.triggers[randKey];
     var theReturn = null;
     if (trig){
-      theReturn = triggerFormatter(trig.Returns, bot, data);
+      theReturn = triggerFormatter(trig.Returns);
     }
     return {Trigger: trig.Trigger, Returns: theReturn};
   },
