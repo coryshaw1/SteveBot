@@ -52,7 +52,7 @@ var TriggerStore = {
     var finds = fuzzy.filter(term, trigKeys);
     if (finds.length === 0 && term.length > 3) {
       term = term.slice(0, term.length-1);
-      return this.recursiveSearch(term);
+      return this.recursiveSearch(term, returnLimit);
     }
     if (returnLimit) {
       finds = finds.slice(0,returnLimit);
