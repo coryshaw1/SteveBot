@@ -7,13 +7,15 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
-## [1.23.3] - 2018-07-25
+## [1.23.2] - 2018-07-25
 ## Changed
 - reduced `!search` result limit from 100 down to 50.
-- When an unrecognized command is given, the bot now suggests possible matches recursively reducing the string until it either finds matches or the str is 3 characters in length
+- When an unrecognized command is given, the bot now suggests possible matches recursively reducing the string until it either finds matches or the string is 3 characters in length
 
 ## Fixed
 - fixed undefined function error in the `!random` trigger file. 
+- fixed minor, probably no way unreachable, bug in an argument check in the soundcloud.getLink
+- added another test case in the soundcloud tests
 
 ## [1.23.1] - 2018-05-14
 ### Fixed
