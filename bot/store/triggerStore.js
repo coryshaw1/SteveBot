@@ -13,13 +13,13 @@ var TriggerStore = {
   lastTrigger : {},
 
 
-  random : function () {
+  getRandom : function (bot, data) {
     var trigKeys = Object.keys(this.triggers);
     var randKey = trigKeys[Math.floor((Math.random()*trigKeys.length))];
     var trig = this.triggers[randKey];
     var theReturn = null;
     if (trig){
-      theReturn = triggerFormatter(trig.Returns);
+      theReturn = triggerFormatter(trig.Returns, bot, data);
     }
     return {Trigger: trig.Trigger, Returns: theReturn};
   },
@@ -36,7 +36,7 @@ var TriggerStore = {
     return this.flowGivers[randKey];
   },
 
-  search : function(term) {
+  search : function(term, returnLimit) {
     if (!term || term ==='') {return [];}
     var trigKeys = Object.keys(this.triggers);
     var finds = fuzzy.filter(term, trigKeys);
@@ -52,7 +52,7 @@ var TriggerStore = {
     var finds = fuzzy.filter(term, trigKeys);
     if (finds.length === 0 && term.length > 3) {
       term = term.slice(0, term.length-1);
-      return this.recursiveSearch(term, returnLimit);
+      return this.recursiveSearch(term);
     }
     if (returnLimit) {
       finds = finds.slice(0,returnLimit);

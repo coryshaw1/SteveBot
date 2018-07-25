@@ -11,7 +11,7 @@ module.exports = function(bot, db, data) {
    * This handles just calling !random by itself
    */
   if (data.params.length === 0) {
-    var randomTrigger = triggerStore.random();
+    var randomTrigger = triggerStore.getRandom(bot, data);
 
     if (randomTrigger) {
       bot.sendChat('Trigger name: ' + randomTrigger.Trigger.replace(/\:$/, ''));
