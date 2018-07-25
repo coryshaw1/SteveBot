@@ -44,6 +44,23 @@ var walk = function(dir) {
   });
 };
 
+function unrecognized(bot, trigger) {
+  let msg = `*!${trigger}* is not a recognized trigger. `;
+  
+  let results = triggerStore.recursiveSearch(trigger, 5);
+  
+  if (!results || results.length === 0) {
+    return bot.sendChat(msg);
+  }
+
+  let moreMsg = "Did you mean one of these: ";
+  if (results.length === 1) {
+    moreMsg = "Did you mean this:  ";
+  }
+  moreMsg += results.join(', ');
+  return bot.sendChat(msg + moreMsg);
+}
+
 var handleCommands = function(bot, db, data) {
   // first go through the commands in /commands to see if they exist
   if (typeof(commands[data.trigger]) !== 'undefined'){
@@ -65,7 +82,7 @@ var handleCommands = function(bot, db, data) {
       if (trig) {
         triggerStore.append(bot, db, data, trig);
       } else {
-        return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
+        return unrecognized(bot, data.trigger);
       }
     }, true);
     return;
@@ -82,7 +99,7 @@ var handleCommands = function(bot, db, data) {
         return bot.sendChat(trig);
       }
     } else {
-      return bot.sendChat(`beep boop, *!${data.trigger}* is not a recognized command or trigger, beep boop`);
+      return unrecognized(bot, data.trigger);
     }
   });
 

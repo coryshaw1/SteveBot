@@ -17,9 +17,9 @@ module.exports = function(bot, db, data)  {
 
   var results = triggerStore.search(data.params[0]);
   
-  if (results.length > 100) {
-    bot.sendChat('Too many results, only showing first 100:');
-    let str = results.slice(0,99).join(', ');
+  if (results.length > 50) {
+    bot.sendChat('Too many results, only showing first 50:');
+    let str = results.slice(0,50).join(', ');
     bot.sendChat(str);
     return;
   }

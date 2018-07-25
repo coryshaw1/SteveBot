@@ -2,6 +2,7 @@
 var repo = require(process.cwd()+'/repo');
 const roleChecker = require(process.cwd()+ '/bot/utilities/roleChecker.js');
 const triggerFormatter = require(process.cwd()+ '/bot/utilities/trigger-formatter.js');
+const triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
 const _ = require('lodash');
 const fuzzy = require('fuzzy');
 
@@ -11,10 +12,16 @@ var TriggerStore = {
   flowGivers : {},
   lastTrigger : {},
 
-  random : function () {
+
+  getRandom : function (bot, data) {
     var trigKeys = Object.keys(this.triggers);
     var randKey = trigKeys[Math.floor((Math.random()*trigKeys.length))];
-    return this.triggers[randKey];
+    var trig = this.triggers[randKey];
+    var theReturn = null;
+    if (trig){
+      theReturn = triggerFormatter(trig.Returns, bot, data);
+    }
+    return {Trigger: trig.Trigger, Returns: theReturn};
   },
 
   randomProp : function() {
@@ -29,10 +36,27 @@ var TriggerStore = {
     return this.flowGivers[randKey];
   },
 
-  search : function(term) {
+  search : function(term, returnLimit) {
     if (!term || term ==='') {return [];}
     var trigKeys = Object.keys(this.triggers);
     var finds = fuzzy.filter(term, trigKeys);
+    if (returnLimit) {
+      finds = finds.slice(0,returnLimit);
+    }
+    return finds.map(function(el) { return el.string.replace(/\:$/, ''); });
+  },
+
+  recursiveSearch : function(term, returnLimit) {
+    if (!term || term ==='') {return [];}
+    var trigKeys = Object.keys(this.triggers);
+    var finds = fuzzy.filter(term, trigKeys);
+    if (finds.length === 0 && term.length > 3) {
+      term = term.slice(0, term.length-1);
+      return this.recursiveSearch(term);
+    }
+    if (returnLimit) {
+      finds = finds.slice(0,returnLimit);
+    }
     return finds.map(function(el) { return el.string.replace(/\:$/, ''); });
   },
 

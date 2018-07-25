@@ -1,4 +1,5 @@
 'use strict';
+require('./extend/array-extensions.js');
 const _private = require(process.cwd() + '/private/get'); 
 const settings = _private.settings;
 const svcAcct = _private.svcAcct;

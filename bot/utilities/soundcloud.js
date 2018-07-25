@@ -50,7 +50,7 @@ function doSkip(bot, media, chatMsg, logReason) {
  */
 function getLink(bot, media, callback) {
   if (!bot || !callback) { 
-    bot.log('warn', 'BOT', 'soundcloud.getLink missing bot or callback arguments');
+    console.log('warn', 'BOT', 'soundcloud.getLink missing bot or callback arguments');
     return; 
   }
 
