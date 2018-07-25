@@ -7,6 +7,10 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.23.3] - 2018-07-25
+## Fixed
+- fix in recursiveSEarch
+
 ## [1.23.2] - 2018-07-25
 ## Changed
 - reduced `!search` result limit from 100 down to 50.
