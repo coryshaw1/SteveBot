@@ -23,6 +23,8 @@ IDs of confirmed broken songs
 
 IDs of working sonds (as of May 2018)
 223456028 - Mz Boom Bap - Fast Life (Instrumental)
+
+276516174 - https://soundcloud.com/pryced/grown - why did the bot skip this song?
 */
 
 // require our file to test
@@ -111,7 +113,20 @@ describe('Soundcloud track info tests', function(){
 
     sc.getLink(bot, media, function(result){
       expect(result.link).to.be.a.string;
+      expect(result.skippable).to.be.false;
+      expect(result.error_message).to.be.null;
       expect(/^https?/.test(result.link)).to.be.true;
+      done();
+    });
+  });
+
+  it('Should not skip this track but the bot did anyways which is weird, oh well', function(done){
+    var media = {fkid: 276516174, name: 'Grown' };
+
+    sc.getLink(bot, media, function(result){
+      expect(result.link).to.equal('https://soundcloud.com/pryced/grown');
+      expect(result.skippable).to.be.false;
+      expect(result.error_message).to.be.null;
       done();
     });
   });
