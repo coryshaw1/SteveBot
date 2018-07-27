@@ -1,53 +1,45 @@
 'use strict';
-var urban = require('urban');
+const request = require('request');
+const API_URL = "http://api.urbandictionary.com/v0/";
 
-function displayHelp(bot){
-  bot.sendChat('*usage:* !urban [word or phrase]');
-}
-
-/*
-sample response
-
-{ definition: 'Glorified Ignorance ',
-  permalink: 'http://faith.urbanup.com/2103793',
-  thumbs_up: 902,
-  author: 'Crayola_the_crayon_king',
-  word: 'faith',
-  defid: 2103793,
-  current_vote: '',
-  example: 'I love a person I have never met and have only heard stories of and there is no proof of outside of a single book, this is my faith.',
-  thumbs_down: 682 }
- */
 
 function showResult(bot, json){
   if (!bot) { return; }
 
-  if (!json) {
+  if (!json || !json.list || json.list.length === 0) {
     return bot.sendChat('Sorry no results for that');
   }
 
-  let def = json.definition;
-  let word = json.word;
-  let link = json.permalink;
+  var first = json.list[0];
+
+  let def = first.definition;
+  let word = first.word;
+  let link = first.permalink;
 
   bot.sendChat(`*${word}* - ${def} ${link}`);
+}
+
+function getFirstResult(path, bot) {
+  request(API_URL + path, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var json = JSON.parse(body);
+      showResult(bot, json);
+    } else {
+      bot.log('error', 'BOT', `[!urban] ${response.statusCode} ${error}`);
+      bot.sendChat('Something happened connecting with urban dictionairy');
+    }
+  });
 }
 
 module.exports = function(bot, db, data) {
   if (!bot || !data) { return; }
 
-  if (data.params.length === 0) {
-    urban.random().first(function(json) {
-      showResult(bot, json);
-    });
+  if (data.params.length === 0) {  
+    getFirstResult("random", bot);
     return;
   }
 
-  var search = data.params.join(" ");
-  var find = urban(search);
-  find.first(function(json) {
-    showResult(bot, json);
-  });
-
+  var search = encodeURI( data.params.join(" ").trim() );
+  getFirstResult("define?term="+search, bot);
 
 };
