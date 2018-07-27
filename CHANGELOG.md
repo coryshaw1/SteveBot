@@ -7,6 +7,15 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+
+## [1.23.4] - 2018-07-26
+## Fixed
+- !urban was broken, fixed and removed dependency or urban npm pkg
+- updated !cat to use `!giphy cat` as a backup with random.cat rate limits me
+
+## Changed
+- updated the request npm pkg dependency version
+
 ## [1.23.3] - 2018-07-25
 ## Fixed
 - fix in recursiveSEarch

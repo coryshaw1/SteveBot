@@ -25,7 +25,7 @@ function getFirstResult(path, bot) {
       var json = JSON.parse(body);
       showResult(bot, json);
     } else {
-      bot.log('error', 'BOT', `[urban] ${error}`);
+      bot.log('error', 'BOT', `[!urban] ${response.statusCode} ${error}`);
       bot.sendChat('Something happened connecting with urban dictionairy');
     }
   });
