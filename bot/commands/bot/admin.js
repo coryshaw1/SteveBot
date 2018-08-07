@@ -2,6 +2,8 @@
 const _private = require(process.cwd() + '/private/get'); 
 const settings = _private.settings;
 var historyStore = require(process.cwd()+ '/bot/store/history.js');
+const nmm = require(process.cwd()+ '/bot/store/nmm.js');
+const ff = require(process.cwd()+ '/bot/store/ff.js');
 var _ = require('lodash');
 
 settings.APPROVED_USERS.push(settings.OWNER);
@@ -58,6 +60,11 @@ module.exports = function(bot, db, data) {
     case 'history':
       bot.sendChat('ok, updating my room playlist history');
       historyStore.init(bot);
+      break;
+    case 'refresh':
+      bot.sendChat('refreshing all spreadsheet data');
+      nmm.load(bot);
+      ff.load(bot);
       break;
     case 'unmute':
       if (bot.myconfig.muted) {

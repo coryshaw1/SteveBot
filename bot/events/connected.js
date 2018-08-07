@@ -10,6 +10,7 @@ const repo = require(process.cwd()+'/repo');
 const pointReset = require(process.cwd() + '/bot/utilities/point-reset.js');
 const setTimeout = require('timers').setTimeout;
 const nmm = require(process.cwd()+ '/bot/store/nmm.js');
+const ff = require(process.cwd()+ '/bot/store/ff.js');
 
 module.exports = function(bot, db) {
   bot.on('connected', function(data) {
@@ -43,8 +44,15 @@ module.exports = function(bot, db) {
 
       historyStore.init(bot);
 
-      // load new music monday next row into mem
-      nmm(bot);
+      // load new music monday next row into memory
+      nmm.load(bot);
+      // schedule it to refresh
+      nmm.schedule(bot);
+
+      // load new music monday next row into memory
+      ff.load(bot);
+      // schedule it to refresh
+      ff.schedule(bot);
 
       // store user info locally
       var user = db.ref('users');

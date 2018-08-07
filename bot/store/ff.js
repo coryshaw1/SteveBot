@@ -10,25 +10,29 @@ const spreadsheet = require(process.cwd() + '/bot/utilities/spreadsheet');
 
 
 function loadIntoMemory(bot) {
-  spreadsheet.loadSheet(settings.spreadsheets.weekly_events, 3)
+  spreadsheet.loadSheet(settings.spreadsheets.weekly_events, 2)
     .then((sheet)=>{
-      return spreadsheet.getRows(sheet, 1);
+      return spreadsheet.getCells(sheet,3);
     })
-    .then(function(rows){
+    .then((sheet, cells)=>{
+      console.log(cells);
+      return spreadsheet.getRows(sheet,3);
+    })
+    .then(function(sheet, rows){
       // console.log(rows);
       return spreadsheet.getNext(rows, 'date');
     })
     .then(function(row){
       bot.sheetsData = bot.sheetsData || {};
-      bot.sheetsData.nmm = row;
+      bot.sheetsData.ff = row;
     })
     .catch(function(err){
-      bot.log('error', 'BOT', 'nmm '+err);
+      bot.log('error', 'BOT', 'ff '+err);
     });
 }
 
 module.exports = {
-  "load" : function(bot) {
+  "load" : function(bot, rowOffset) {
     loadIntoMemory(bot);
   },
   "schedule" : function(bot) {

@@ -38,36 +38,44 @@ var sheetObj = {
     }
   },
 
+  getRows : function(sheet, rowOffset=1) {
+    return new Promise((resolve,reject)=>{
+      sheet.getRows({
+        offset: rowOffset
+      }, function( err, rows ){
+        if (err) {
+          reject(err);
+        } 
+        resolve(sheet, rows);
+      });
+    });
+  },
+
+  getCells : function(sheet, rowOffset){
+    return new Promise((resolve,reject)=>{
+      sheet.getCells({
+        'min-row': rowOffset,
+        'max-row': rowOffset,
+        'return-empty': true
+      }, function(err, cells) {
+        if (err) {
+          reject(err);
+        } 
+        resolve(sheet, cells);
+      });
+    });
+  },
+
   loadSheet : function (urlID, sheetIndex) {
     var doc = new GoogleSpreadsheet(urlID);
-    var sheet = {};
-  
-    return new Promise(function(resolve, reject){
-      async.series(
-        [
-          function getInfoAndWorksheets(step) {
-            doc.getInfo(function(err, info) {
-              if (err) {
-                reject(err);
-              }
-              sheet = info.worksheets[sheetIndex];
-              step();
-            });
-          },
-          function workingWithRows(step) {
-            // console.log(sheet);
-            sheet.getRows({
-              offset: 1
-            }, function( err, rows ){
-              resolve(rows);
-              step();
-            });
-          }
-      
-      ], function(err){
+
+    return new Promise((resolve, reject) => {
+      doc.getInfo(function(err, info) {
+        if (err) {
           reject(err);
         }
-      );
+        resolve(info.worksheets[sheetIndex]);
+      });
     });
   }
 };
