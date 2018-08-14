@@ -2,15 +2,51 @@
 /**
  * Loads spreadsheet data into memory
  */
-
-var GoogleSpreadsheet = require('google-spreadsheet');
-var async = require('async');
 var moment = require('moment');
+const {google} = require('googleapis');
 
-var sheetObj = {
+class MySheet {
+  constructor(id, key) {
+    this.sheetid = id;
+
+    this.sheets = google.sheets({
+      version: 'v4', 
+      auth: key
+    });
+  }
+
+  getRows(name, range) {
+    return new Promise((resolve, reject)=>{
+      this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.sheetid,
+        range: `${name}!${range}`
+      }, (err, res) => {
+        if (err) return reject(err);
+        const rows = res.data.values;
+        resolve(rows);
+      });
+    });
+
+  }
+
+  /**
+   * take the returned row and convert it into an object
+   * @param {array} headersRow 
+   * @param {array} rows 
+   */
+  toObj(headersRow, rows) {
+    headersRow = headersRow.map(h => h.replace(/ /g, '_'));
+    return rows.map((row)=>{
+      let obj = {};
+      row.forEach((cell,i)=>{
+        obj[headersRow[i]] = cell;
+      });
+      return obj;
+    });
+  }
 
   getNext(rows, dateCol) {
-    var closestRow = null;
+    var closestRow = 'no rows found';
 
     // get today's day
     var a = moment(Date.now());
@@ -31,53 +67,9 @@ var sheetObj = {
       }
     });
 
-    if (closestRow) {
-      return Promise.resolve(closestRow);
-    } else {
-      return Promise.reject('no rows found');
-    }
-  },
-
-  getRows : function(sheet, rowOffset=1) {
-    return new Promise((resolve,reject)=>{
-      sheet.getRows({
-        offset: rowOffset
-      }, function( err, rows ){
-        if (err) {
-          reject(err);
-        } 
-        resolve(sheet, rows);
-      });
-    });
-  },
-
-  getCells : function(sheet, rowOffset){
-    return new Promise((resolve,reject)=>{
-      sheet.getCells({
-        'min-row': rowOffset,
-        'max-row': rowOffset,
-        'return-empty': true
-      }, function(err, cells) {
-        if (err) {
-          reject(err);
-        } 
-        resolve(sheet, cells);
-      });
-    });
-  },
-
-  loadSheet : function (urlID, sheetIndex) {
-    var doc = new GoogleSpreadsheet(urlID);
-
-    return new Promise((resolve, reject) => {
-      doc.getInfo(function(err, info) {
-        if (err) {
-          reject(err);
-        }
-        resolve(info.worksheets[sheetIndex]);
-      });
-    });
+    return closestRow;
   }
-};
 
-module.exports = sheetObj;
+}
+
+module.exports = MySheet;
