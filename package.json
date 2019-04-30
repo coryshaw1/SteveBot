@@ -17,7 +17,6 @@
     "dubapi": "^1.6.9",
     "firebase-admin": "^5.13.1",
     "fuzzy": "^0.1.3",
-    "google-spreadsheet": "^2.0.5",
     "googleapis": "^27.0.0",
     "jethro": "^2.6.6",
     "lodash": "^4.16.3",
