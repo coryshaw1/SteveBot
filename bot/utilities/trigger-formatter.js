@@ -1,36 +1,36 @@
 /**
- * This formats a Trigger text with dynamic replacements 
+ * This formats a Trigger text with dynamic replacements
  */
 
-'use strict';
+"use strict";
 function getTokens(str) {
   var found = [];
 
   var openToken = false;
-  var storage = '';
-  
-  str.split('').forEach(function(char){
-    if (char === "%" && !openToken) { 
+  var storage = "";
+
+  str.split("").forEach(function(char) {
+    if (char === "%" && !openToken) {
       openToken = true;
       storage = "%";
       return;
     }
-    if (char === "%" && openToken) { 
+    if (char === "%" && openToken) {
       openToken = false;
       storage += "%";
       found.push(storage);
       return;
     }
-    if (openToken) { 
+    if (openToken) {
       storage += char;
     }
   });
-  
+
   return found;
 }
 
 function regEsc(s) {
-  return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 }
 
 function handleNumbered(text, c, bot, data) {
@@ -38,8 +38,8 @@ function handleNumbered(text, c, bot, data) {
 
   // if only %n%, then replace
   if (/^%[0-9]+%$/.test(c)) {
-    let num = parseInt( c.replace("%",'') ,10);
-    let item = new RegExp(regEsc(c), 'g');
+    let num = parseInt(c.replace("%", ""), 10);
+    let item = new RegExp(regEsc(c), "g");
     if (params[num]) {
       text = text.replace(item, params[num]);
     }
@@ -47,12 +47,12 @@ function handleNumbered(text, c, bot, data) {
 
   // now handle default params
   if (/^%[0-9]+\|/.test(c)) {
-    let parts = c.replace(/%/g,'').split("|");
-    
-    let dflt = parts[1];
-    let num = parseInt( parts[0] ,10);
+    let parts = c.replace(/%/g, "").split("|");
 
-    let item = new RegExp(regEsc(c), 'g');
+    let dflt = parts[1];
+    let num = parseInt(parts[0], 10);
+
+    let item = new RegExp(regEsc(c), "g");
     if (dflt === "me") {
       dflt = data.user.username;
     }
@@ -65,43 +65,44 @@ function handleNumbered(text, c, bot, data) {
   return text;
 }
 
-function handleSpreadsheets(text,c,bot) {
-  if (!bot.sheetsData) {return text; }
+function handleSpreadsheets(text, c, bot) {
+  if (!bot.sheetsData) {
+    return text;
+  }
 
-  let parts = c.replace(/%/g,'').split('.');
-  let sheet = bot.sheetsData[ parts[0] ];
+  let parts = c.replace(/%/g, "").split(".");
+  let sheet = bot.sheetsData[parts[0]];
 
   if (sheet) {
     // console.log(sheet);
-    let item = sheet[ parts[1] ];
+    let item = sheet[parts[1]];
     // console.log( item );
-    text = text.replace(c,item);
+    text = text.replace(c, item);
   }
   return text;
 }
 
-module.exports = function triggerFormatter(text, bot, data){
+module.exports = function triggerFormatter(text, bot, data) {
   var tokens = getTokens(text);
 
-  tokens.forEach(function(c){
-    if (c === '%dj%'){
+  tokens.forEach(function(c) {
+    if (c === "%dj%") {
       // replace with current DJ name
-      text = text.replace('%dj%', '@' + bot.getDJ().username);
+      text = text.replace("%dj%", "@" + bot.getDJ().username);
     }
-    if (c === '%me%'){
+    if (c === "%me%") {
       // replace with user who entered chat name
-      text = text.replace('%me%', data.user.username);
+      text = text.replace("%me%", data.user.username);
     }
 
-    if (/%[a-z]+\./.test(c)) {
-      text = handleSpreadsheets(text,c,bot);
-    }
+    // if (/%[a-z]+\./.test(c)) {
+    //   text = handleSpreadsheets(text,c,bot);
+    // }
 
     // if it's a numbered one
     if (/%[0-9]/.test(c)) {
       text = handleNumbered(text, c, bot, data);
     }
-
   });
 
   return text;

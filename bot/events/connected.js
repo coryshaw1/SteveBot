@@ -1,28 +1,28 @@
-'use strict';
-const mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
-const historyStore = require(process.cwd()+ '/bot/store/history.js');
-const triggerStore = require(process.cwd()+ '/bot/store/triggerStore.js');
-const dmStore = require(process.cwd()+ '/bot/store/messages.js');
-const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
-const _private = require(process.cwd() + '/private/get'); 
+"use strict";
+const mediaStore = require(process.cwd() + "/bot/store/mediaInfo.js");
+const historyStore = require(process.cwd() + "/bot/store/history.js");
+const triggerStore = require(process.cwd() + "/bot/store/triggerStore.js");
+const dmStore = require(process.cwd() + "/bot/store/messages.js");
+const leaderUtils = require(process.cwd() + "/bot/utilities/leaderUtils.js");
+const _private = require(process.cwd() + "/private/get");
 const settings = _private.settings;
-const repo = require(process.cwd()+'/repo');
-const pointReset = require(process.cwd() + '/bot/utilities/point-reset.js');
-const setTimeout = require('timers').setTimeout;
-const nmm = require(process.cwd()+ '/bot/store/nmm.js');
-const ff = require(process.cwd()+ '/bot/store/ff.js');
+const repo = require(process.cwd() + "/repo");
+const pointReset = require(process.cwd() + "/bot/utilities/point-reset.js");
+const setTimeout = require("timers").setTimeout;
+// const nmm = require(process.cwd()+ '/bot/store/nmm.js');
+// const ff = require(process.cwd()+ '/bot/store/ff.js');
 
 module.exports = function(bot, db) {
-  bot.on('connected', function(data) {
+  bot.on("connected", function(data) {
     bot.isConnected = true;
-    bot.log('info', 'BOT', 'Connected to ' + data);
+    bot.log("info", "BOT", "Connected to " + data);
     bot.sendChat("`Initializing...`");
     var initStart = Date.now();
 
-    setTimeout(function(){
+    setTimeout(function() {
       // log current logged in user data
       var users = bot.getUsers();
-      for(var i = 0; i < users.length; i++) {
+      for (var i = 0; i < users.length; i++) {
         repo.logUser(db, users[i]);
       }
 
@@ -30,12 +30,12 @@ module.exports = function(bot, db) {
       bot.updub();
       var media = bot.getMedia();
       var dj = bot.getDJ();
-      if(media) {
+      if (media) {
         var currentSong = {
-          name : media.name,
-          id : media.fkid,
-          type : media.type,
-          dj : !dj || !dj.username ? '404usernamenotfound' : dj.username
+          name: media.name,
+          id: media.fkid,
+          type: media.type,
+          dj: !dj || !dj.username ? "404usernamenotfound" : dj.username
         };
         mediaStore.setCurrent(currentSong);
       }
@@ -44,44 +44,59 @@ module.exports = function(bot, db) {
 
       historyStore.init(bot);
 
-      // load new music monday next row into memory
-      nmm.load(bot);
-      // schedule it to refresh
-      nmm.schedule(bot);
+      // // load new music monday next row into memory
+      // nmm.load(bot);
+      // // schedule it to refresh
+      // nmm.schedule(bot);
 
-      // load new music monday next row into memory
-      ff.load(bot);
-      // schedule it to refresh
-      ff.schedule(bot);
+      // // load FF info
+      // ff.load(bot);
+      // // schedule it to refresh
+      // ff.schedule(bot);
 
       // store user info locally
-      var user = db.ref('users');
-      user.on('value', function(snapshot){
+      var user = db.ref("users");
+      user.on(
+        "value",
+        function(snapshot) {
           var val = snapshot.val();
           bot.allUsers = val;
           // update leaderboard everytime someone gives a point
           leaderUtils.updateLeaderboard(bot, db);
-        }, function(error){
-          bot.log('error', 'BOT', `error getting users from firebase - ${error}`);
-      });
+        },
+        function(error) {
+          bot.log(
+            "error",
+            "BOT",
+            `error getting users from firebase - ${error}`
+          );
+        }
+      );
 
       // store trigger info locally
-      triggerStore.init(bot,db);
+      triggerStore.init(bot, db);
 
       // store leaderboard info locally
-      var leaderboard = db.ref('leaderboard');
-      leaderboard.on('value', function(snapshot){
+      var leaderboard = db.ref("leaderboard");
+      leaderboard.on(
+        "value",
+        function(snapshot) {
           var val = snapshot.val();
           bot.leaderboard = val;
-        }, function(error){
-          bot.log('error', 'BOT', `error getting leaderboard from firebase - ${error}`);
-      });
+        },
+        function(error) {
+          bot.log(
+            "error",
+            "BOT",
+            `error getting leaderboard from firebase - ${error}`
+          );
+        }
+      );
 
       pointReset(bot, db);
 
-      var complete = (Date.now() - initStart)/1000;
+      var complete = (Date.now() - initStart) / 1000;
       bot.sendChat(`\`Initialization completed in ${complete} seconds\``);
-
     }, 3000);
   });
 };
