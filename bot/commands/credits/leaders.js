@@ -5,6 +5,7 @@
 'use strict';
 const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
 const moment = require('moment');
+const _get = require('lodash/get');
 
 module.exports = function(bot, db, data) {
   if (!bot.leaderboard) {
@@ -12,7 +13,11 @@ module.exports = function(bot, db, data) {
     return;
   }
 
-  if (data && data.params && data.params[0] && data.params[0] === "all") {
+  const param1 = _get(data, 'params[0]');
+  const param2 = _get(data, 'params[1]');
+
+  // get all time leaders
+  if (param1 && param1 === "all") {
     var all_time = leaderUtils.allTimeLeaders(bot);
 
     var propString = all_time.props.reduce(function(a,v){
@@ -27,6 +32,17 @@ module.exports = function(bot, db, data) {
     bot.sendChat(propString);
     bot.sendChat(`All time flow leaders are:`);
     bot.sendChat(flowString);
+    return;
+  }
+
+  if (param1 && param2) { 
+    var monthResult = leaderUtils.getLeadersByMonthYear(bot, param1, param2);
+
+    let monthInfo = `The leaders for ${param1} ${param2} were:
+      *props*: ${monthResult.props}
+      *flow*: ${ monthResult.flow }
+    `;
+    bot.sendChat(monthInfo);
     return;
   }
 

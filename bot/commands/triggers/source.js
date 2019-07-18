@@ -2,7 +2,7 @@
 var repo = require(process.cwd()+'/repo');
 var moment = require('moment');
 
-module.exports = function (bot, db, data) {
+module.exports = function (bot, db, data, isBrad = false) {
   if (data.params === void(0) || data.params.length < 1) {
     return bot.sendChat('*usage:* !source <trigger_name>');
   }
@@ -26,6 +26,13 @@ module.exports = function (bot, db, data) {
       let extendedInfo = false;
       let chatMsg = `the trigger ${trigger}`;
       let chatMsgEnd = ` was created/updated by ${theAuthor}`;
+
+      if (isBrad) {
+        if (theAuthor.toLowerCase() === "brad") { 
+          return bot.sendChat("Yes");
+        }
+        return bot.sendChat(`No, it was ${theAuthor}`);
+      }
 
       if (result.createdOn && result.createdBy) {
         let when = moment(result.createdOn).format('MMM Do YYYY');

@@ -24,6 +24,8 @@ module.exports = function(bot, db, data) {
     return bot.sendChat('An error occured, try again');
   }
 
+  const isMod = roleChecker(bot, data.user, 'mod');
+
   // if just "!trigger" was used then we show the help info for using it
   if (data.params === void(0) || data.params.length < 1) {
     return displayHelp(bot);
@@ -39,6 +41,11 @@ module.exports = function(bot, db, data) {
      * min role:  Resident DJs
      */
     if (val === null && data.params.length > 1) {
+
+      if (/^\{.+\}$/.test(data.trigger) && !isMod) {
+        bot.sendChat('Sorry only Mods can create code triggers');
+        return;
+      }
 
       if ( !roleChecker(bot, data.user, 'residentdj') ) {
         bot.sendChat('Sorry only ResidentDJs and above can create triggers');
@@ -63,7 +70,7 @@ module.exports = function(bot, db, data) {
     }
 
     // everything below this block is mod only action
-    if ( !roleChecker(bot, data.user, 'mod') ) {
+    if ( !isMod ) {
       bot.sendChat('Sorry only Mods and above can update or delete a triggers');
       return;
     }

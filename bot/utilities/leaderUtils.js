@@ -149,8 +149,41 @@ function allTimeLeaders(bot) {
   };
 }
 
+/**
+ * convert string to Capitlized 3 letter month
+ */
+const alphaRegex = new RegExp("[^a-z]+", "ig");
+function formatMonth(str) {
+  str = str.replace(alphaRegex, ""); // sanitize
+  const first = str.charAt(0).toUpperCase();
+  return (first +  str.toLowerCase().substr(1)).replace(/([a-z]{3}).+/i, '$1');
+}
+
+function getLeadersByMonthYear(bot, month, year) {
+  if (!bot.leaderboard) {
+    bot.sendChat("I don't have leader informtaion at the momemt but try again in a minute");
+    return;
+  }
+
+  if (!/^\d{4}$/.test(year)) {
+    bot.sendChat(`Month or year was formatted wrong.`);
+    bot.sendChat(`Please use \`!leaders <Month> <4-digit-year>\``);
+    return;
+  }
+
+  const key = formatMonth(month) + year;
+  const info = bot.leaderboard[key];
+  if (!info) {
+    bot.sendChat(`Sorry no info exists for ${month} ${year}`);
+    return;
+  }
+
+  return info;
+}
+
 module.exports = {
   getTop3 : getTop3,
   updateLeaderboard : updateLeaderboard,
-  allTimeLeaders: allTimeLeaders
+  allTimeLeaders: allTimeLeaders,
+  getLeadersByMonthYear: getLeadersByMonthYear
 };

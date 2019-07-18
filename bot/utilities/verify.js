@@ -1,4 +1,10 @@
 'use strict';
+/**
+ * Verifier
+ * Utility to add a "are you sure?" functionality 
+ * it waits for a 'yes/no' response within in given amount of time
+ */
+
 const setInterval = require('timers').setInterval;
 const clearInterval = require('timers').clearInterval;
 

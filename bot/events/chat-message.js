@@ -9,7 +9,7 @@ const path = require('path');
 const triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
 const cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
 const triggerStore = require(process.cwd()+ '/bot/store/triggerStore.js');
-const repo = require(process.cwd()+'/repo');
+const triggerCode = require(process.cwd() + '/bot/utilities/triggerCode.js');
 
 var commands = {};
 var localCommands = process.cwd() + '/bot/commands';
@@ -91,6 +91,13 @@ var handleCommands = function(bot, db, data) {
   // check if it's an exsiting trigger
   triggerStore.get(bot, db, data, function(trig){
     if (trig !== null) {
+      
+      // if this is a special code trigger that is wrapped in brackets "{ }"
+      if (/^\{.+\}$/.test(trig)) {
+        triggerCode(bot, trig, data);
+        return;
+      }
+
       var last = trig.split(" ").pop();
       var pointCheck = new RegExp("\\+(props?|flow)(=[a-z0-9_-]+)?", "i");
       if (pointCheck.test(last)) {

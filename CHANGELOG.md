@@ -7,6 +7,17 @@ The Commands of the bot are its API so here's how it will adhere to Semantic Ver
 **MINOR** - Adding new commands or functionality that won't affect or break existing ones     
 **PATCH** - Bug fixes, code improvements (backwards-compatible bug fixes)
 
+## [1.24.0] - 2019-07-18
+## Fixed
+- updated internal dependencies
+
+## Changed
+- I changed how the initialization time is calculated. Now using Promise.all to get a more accurate time
+- updated `!leaders` accepts "month" and "year" now to get a specific month's leaders
+
+## Added
+- new Trigger `!wasitbrad` at the request of ChilloutMixer
+- mods only - a new way to create a trigger that makes simple GET request to JSON apis and returns a specific json path
 
 ## [1.23.4] - 2018-07-26
 ## Fixed
