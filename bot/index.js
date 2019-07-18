@@ -42,7 +42,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
 
     if (bot.myconfig.verboseLogging) {
       bot.log = require('jethro');
-      bot.log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
+      bot.log.setTimestampFormat(null,'YYYY-MM-DD HH:mm:ss:SSS');
     } else {
       bot.log = function(){return;}; // do nothing
     }

@@ -4,7 +4,7 @@ const _private = require(process.cwd() + '/private/get');
 const settings = _private.settings;
 var request = require('request');
 var log = require('jethro');
-log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
+log.setTimestampFormat(null, 'YYYY-MM-DD HH:mm:ss:SSS');
 
 var flattrApi = {
   'authorize' : 'https://flattr.com/oauth/authorize',

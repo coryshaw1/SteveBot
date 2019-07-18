@@ -8,22 +8,20 @@
     "start-muted": "MUTED=1 ENV=test nodemon index.js",
     "live": "ENV=prod nodemon index.js",
     "test": "ENV=test mocha -c -t 10000 --reporter=spec tests",
-    "lint": "./node_modules/eslint/bin/eslint.js .",
     "secrets": "tar cvf secrets.tar private && travis encrypt-file secrets.tar && rm secrets.tar"
   },
   "dependencies": {
     "bluebird": "^3.4.6",
     "cleverbot-node": "latest",
     "dubapi": "^1.6.9",
-    "firebase-admin": "^5.13.1",
+    "firebase-admin": "^8.2.0",
     "fuzzy": "^0.1.3",
-    "googleapis": "^27.0.0",
-    "jethro": "^2.6.6",
-    "lodash": "^4.16.3",
-    "moment": "^2.15.1",
+    "googleapis": "^41.0.1",
+    "jethro": "^4.4.3",
+    "lodash": "^4.17.14",
+    "moment": "^2.24.0",
     "node-schedule": "^1.3.0",
-    "request": "^2.87.0",
-    "superagent": "^3.5.2",
+    "request": "^2.88.0",
     "underscore": "^1.8.3"
   },
   "engines": {
@@ -43,9 +41,7 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^1.10.3",
-    "marked": "^0.3.6",
-    "mocha": "^5.1.1",
-    "supertest": "^2.0.0"
+    "marked": "^0.7.0",
+    "mocha": "^5.1.1"
   }
 }

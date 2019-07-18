@@ -1,6 +1,6 @@
 'use strict';
 var log = require('jethro');
-log.setTimeformat('YYYY-MM-DD HH:mm:ss:SSS');
+log.setTimestampFormat(null, 'YYYY-MM-DD HH:mm:ss:SSS');
 var _ = require('lodash');
 
 /**
