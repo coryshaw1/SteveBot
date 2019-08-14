@@ -52,12 +52,24 @@ var _get = require('lodash/get');
       url = url.replace(`{${i}}`, p);
     });
   }
+  
+  var options = {
+    url: url,
+    headers: {
+      'Accept' : 'application/json'
+    }
+  };
 
-  request(url, function (error, response, body) {
+  request(options, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      let json = JSON.parse(body);
-      let result = _get(json, deets.jsonPath, "No results");
-      bot.sendChat(result);
+      try {
+        let json = JSON.parse(body);
+        let result = _get(json, deets.jsonPath, "No results");
+        bot.sendChat(result);
+      } catch(e) { 
+        bot.sendChat("Error")
+        bot.log('error', 'BOT', e.message);
+      }
       return;
     } 
     
