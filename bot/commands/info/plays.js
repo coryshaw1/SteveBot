@@ -5,9 +5,9 @@ var moment = require('moment');
 
 /**
  * Command to show number of plays current song including last play info
- * @param  {Object} bot  dubapi instance
- * @param  {Object} db   Firebase instance
- * @param  {Object} data Room info object
+ * @param  {DubAPI} bot  dubapi instance
+ * @param  {import('firebase-admin').database} db   Firebase instance
+ * @param  {object} data Room info object
  */
 module.exports = function(bot, db, data) {
   return bot.sendChat('*plays* has been disabled until further notice.');
