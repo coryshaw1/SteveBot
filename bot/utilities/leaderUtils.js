@@ -76,7 +76,7 @@ function decodeUsername(str) {
  */
 function getTop3(bot, prop) {
   /**
-   * @type {DubAPIUser[]}
+   * @type {DerpyUser[]}
    */
   const arr = [];
   Object.values(bot.allUsers).forEach((user) => {
