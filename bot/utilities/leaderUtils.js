@@ -1,5 +1,4 @@
 "use strict";
-const moment = require("moment");
 const repo = require(process.cwd() + "/repo");
 
 /**
@@ -101,17 +100,20 @@ function getTop3(bot, prop) {
   return finalArr;
 }
 
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"]
+
 /**
  *
  * @param {DubAPI} bot
  * @param {object} db
  */
 function updateLeaderboard(bot, db) {
-  var year = moment().format("Y");
-  var month = moment().format("MMM");
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = months[date.getMonth()];
 
   /**
-   * @type {{month: string, year: string, props: string, propsObj: { [key: string]: number }, flow: string, flowObj: { [key: string]: number }}}
+   * @type {{month: string, year: number, props: string, propsObj: { [key: string]: number }, flow: string, flowObj: { [key: string]: number }}}
    */
   var leaderObj = {
     month,
