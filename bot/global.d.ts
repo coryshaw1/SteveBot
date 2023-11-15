@@ -1,11 +1,13 @@
 interface DubAPI {
-  allUsers: { [key: string]: DubAPIUser };
+  allUsers: { [key: string]: DerpyUser };
   log: (type: 'error' | 'info', name: string, message: string) => void;
   leaderboard: { [key: string]: LeaderboardEntry };
   sendChat: (message: string) => void;
+  on: (event: string, callback: (data: any) => void) => void;
+  events: { [key:string]: string }
 }
 
-interface DubAPIUser {
+interface DerpyUser {
   DateAdded: string;
   LastConnected: number;
   flow: number;
