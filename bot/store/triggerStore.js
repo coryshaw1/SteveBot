@@ -71,11 +71,17 @@ var TriggerStore = {
    * callback = fn
    * full [bool] = whether to return full trigger object or just the text
    */
+  /**
+   * 
+   * @param {DubAPI} bot 
+   * @param {import('firebase-admin').database} db 
+   * @param {object} data 
+   * @param {(str: string) => void} callback 
+   * @param {boolean} full 
+   * @returns 
+   */
   get: function(bot, db, data, callback, full) {
-    var theReturn = null;
-    if (this.triggers[data.trigger.toLowerCase() + ":"]) {
-      theReturn = this.triggers[data.trigger + ":"];
-    }
+    let theReturn = this.triggers[data.trigger + ":"] || this.triggers[data.trigger] || null;
 
     if (theReturn && !full){
       theReturn = triggerFormatter(theReturn.Returns, bot, data);
