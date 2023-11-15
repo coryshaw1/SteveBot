@@ -1,0 +1,15 @@
+{
+  "include": [
+    "bot/**/*.js",
+    "bot/global.d.ts"
+  ],
+  "compilerOptions": {
+    "checkJs": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "lib": ["es2022"],
+    "target": "ES6",
+    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+  }
+}
