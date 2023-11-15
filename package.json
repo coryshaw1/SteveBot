@@ -13,7 +13,7 @@
   "dependencies": {
     "bluebird": "^3.4.6",
     "cleverbot-node": "latest",
-    "dubapi": "^1.6.9",
+    "dubapi": "^2.0.0",
     "firebase-admin": "^8.2.0",
     "fuzzy": "^0.1.3",
     "googleapis": "^41.0.1",
@@ -25,7 +25,7 @@
     "underscore": "^1.8.3"
   },
   "engines": {
-    "node": "4.0.0"
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "marked": "^0.7.0",
-    "mocha": "^5.1.1"
+    "mocha": "^5.1.1",
+    "nodemon": "^3.0.1"
   }
 }
