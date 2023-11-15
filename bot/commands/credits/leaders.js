@@ -4,7 +4,7 @@
  */
 'use strict';
 const leaderUtils = require(process.cwd() + '/bot/utilities/leaderUtils.js');
-const moment = require('moment');
+const { getMonthYear } = require(process.cwd() + '/bot/utilities/date.js');
 const _get = require('lodash/get');
 
 module.exports = function(bot, db, data) {
@@ -45,10 +45,8 @@ module.exports = function(bot, db, data) {
     bot.sendChat(monthInfo);
     return;
   }
-
-  var year = moment().format('Y');
-  var month = moment().format('MMM');
-  var month_full = moment().format('MMMM');
+  
+  const [month, year, month_full] = getMonthYear();
 
   bot.sendChat( `Current leaders for ${month_full} ${year} are:` );
 

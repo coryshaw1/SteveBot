@@ -1,4 +1,5 @@
 "use strict";
+const { getMonthYear } = require('./date');
 const repo = require(process.cwd() + "/repo");
 
 /**
@@ -108,9 +109,7 @@ const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
  * @param {object} db
  */
 function updateLeaderboard(bot, db) {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = months[date.getMonth()];
+  const [month, year] = getMonthYear();
 
   /**
    * @type {{month: string, year: number, props: string, propsObj: { [key: string]: number }, flow: string, flowObj: { [key: string]: number }}}
