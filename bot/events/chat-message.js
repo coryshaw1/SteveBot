@@ -7,7 +7,6 @@
 const fs = require('fs');
 const path = require('path');
 const triggerPoint = require(process.cwd()+ '/bot/utilities/triggerPoint.js');
-const cleverbot = require( process.cwd() + '/bot/utilities/cleverbot.js');
 const triggerStore = require(process.cwd()+ '/bot/store/triggerStore.js');
 const triggerCode = require(process.cwd() + '/bot/utilities/triggerCode.js');
 
@@ -129,11 +128,5 @@ module.exports = function(bot, db) {
       data.params = tokens.slice(1);
       return handleCommands(bot, db, data);
     }
-
-    if (tokens[0].toLowerCase() === '@'+bot.myconfig.botName.toLowerCase() && bot.myconfig.cleverbot) {
-      data.params = tokens.slice(1);
-      return cleverbot(bot, db, data);
-    }
-
   });
 };

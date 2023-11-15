@@ -11,8 +11,6 @@
     "secrets": "tar cvf secrets.tar private && travis encrypt-file secrets.tar && rm secrets.tar"
   },
   "dependencies": {
-    "bluebird": "^3.4.6",
-    "cleverbot-node": "latest",
     "dubapi": "^2.0.0",
     "firebase-admin": "^8.2.0",
     "fuzzy": "^0.1.3",

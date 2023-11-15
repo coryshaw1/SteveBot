@@ -27,9 +27,6 @@ module.exports = {
   // auto upvote every song
   'autoUpvote' : true, 
 
-  // enable cleverbot API to respond whenever someone @ the bot 
-  'cleverbot' : true,
-
   // play music when the queue is empty
   'playOnEmpty' : false,
 
