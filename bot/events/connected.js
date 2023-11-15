@@ -16,7 +16,7 @@ module.exports = function(bot, db) {
   bot.on("connected", function(data) {
     bot.isConnected = true;
     bot.log("info", "BOT", "Connected to " + data);
-    bot.sendChat("`Initializing...`");
+    bot.sendChat("Initializing...");
     var initStart = Date.now();
 
     setTimeout(function() {
