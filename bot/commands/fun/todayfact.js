@@ -1,17 +1,21 @@
-'use strict';
-var request = require('request');
+"use strict";
 
-// 'http://numbersapi.com/' + (new Date().getMonth() + 1) + '/' + new Date().getDate() + '/date'
-// 
-module.exports = function(bot, db) {
-  var month = new Date().getMonth() + 1;
-  var day = new Date().getDate();
-  var factApi = `http://numbersapi.com/${month}/${day}`;
-  request(factApi, function (error, response, body) {
-    var result = 'Bad request to facts...';
-    if (!error && response.statusCode === 200 ) {
-      result = body;
-    }
-    bot.sendChat(result);
-  });
+/**
+ * @param {DubAPI} bot
+ */
+module.exports = function (bot) {
+  const month = new Date().getMonth() + 1;
+  const day = new Date().getDate();
+  const factApi = `http://numbersapi.com/${month}/${day}`;
+
+  fetch(factApi)
+    .then((res) => {
+      if (res.ok) return res.text();
+      else throw new Error(res.status.toString());
+    })
+    .then((text) => bot.sendChat(text))
+    .catch((err) => {
+      bot.log("error", "BOT", `[!fact] ${err.message}`);
+      bot.sendChat("Bad request to facts...");
+    });
 };

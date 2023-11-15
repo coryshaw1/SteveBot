@@ -1,21 +1,23 @@
 'use strict';
-var request = require('request');
 
+/**
+ * @param {DubAPI} bot
+ */
 module.exports = function(bot) {
-  request('http://aws.random.cat/meow', function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var json = JSON.parse(body);
-      bot.sendChat(json.file);
-      return;
-    } 
-    
-    if (!error && response.statusCode === 403) {
-      bot.sendChat('!giphy cat');
-      return;
-    }
-
-    bot.log('error', 'BOT', `[!cat] ${response.statusCode} ${error}`);
-    bot.sendChat('Bad request to cats...');
-    
-  });
+  fetch('http://aws.random.cat/meow')
+    .then(res => {
+      if (res.status === 403) {
+        // default to trying giphy
+        bot.sendChat('!giphy cat');
+        return;
+      }
+      return res.json()
+    })
+    .then(json => {
+      if (json)  bot.sendChat(json.file)
+    })
+    .catch(err => {
+      bot.log('error', 'BOT', `[!cat] ${err}`);
+      bot.sendChat('Bad request to cats...');
+    });
 };

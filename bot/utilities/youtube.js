@@ -2,13 +2,9 @@
 const _ = require('lodash');
 const _private = require(process.cwd() + '/private/get'); 
 const settings = _private.settings;
-const repo = require(process.cwd()+'/repo');
 const YOUR_API_KEY = settings.YT_API;
-const request = require('request');
-// var countryCodes = require(process.cwd() + '/bot/utilities/countries.js');
 
-
-var Youtube = {
+const Youtube = {
   'base' : 'https://www.googleapis.com/youtube/v3/videos?',
   options : {
     part : 'status,contentDetails',
@@ -16,8 +12,13 @@ var Youtube = {
   }
 };
 
+/**
+ * 
+ * @param {string} id 
+ * @returns {string}
+ */
 function makeYTurl(id) {
-  var queryString = [];
+  const queryString = [];
   Youtube.options.id = id;
   for (var key in Youtube.options) {
     queryString.push(key + '=' + Youtube.options[key] );
@@ -41,16 +42,29 @@ function makeYTurl(id) {
   https://developers.google.com/youtube/v3/docs/videos#status.uploadStatus
   https://developers.google.com/youtube/v3/docs/videos#contentDetails.regionRestriction
  */
-var badStatuses = [
+const badStatuses = [
   'deleted',
   'failed',
   'rejected'
 ];
 
+/**
+ * 
+ * @param {string} yid 
+ * @returns {string}
+ */
 function makeYTCheckerUrl(yid){
   return `https://polsy.org.uk/stuff/ytrestrict.cgi?ytid=${yid}`;
 }
 
+/**
+ * 
+ * @param {DubAPI} bot 
+ * @param {*} db 
+ * @param {string} _region 
+ * @param {object} yt 
+ * @param {object} media 
+ */
 function regionBlock(bot, db, _region, yt, media){
   bot.sendChat(`*FYI, Youtube is saying this video has region restrictions:* - ${media.name}`);
   var ytid = _.get(yt, 'items[0].id');
@@ -70,21 +84,27 @@ function doSkip(bot, media, chatMsg, logReason) {
   }
 }
 
-function checkStatus(bot, db, media, body) {
-  if (!body) { return; }
+/**
+ * 
+ * @param {DubAPI} bot 
+ * @param {object} db 
+ * @param {object} media 
+ * @param {unknown} json 
+ * @returns 
+ */
+function checkStatus(bot, db, media, json) {
+  if (!json) { return; }
 
   // set DJ name
-  var dj = bot.getDJ();
-  dj = dj === void(0) ? 'dj' : dj.username;
-
-  var yt = JSON.parse(body);
-  var status = _.get(yt, 'items[0].status');
+  const dj = bot.getDJ()?.username || 'dj';
+  
+  const status = _.get(json, 'items[0].status');
   
   if (status) {
     
     // if one of these bad uploadStatuses exist then we skip
     if (badStatuses.includes(status.uploadStatus)) {
-      var reason = yt.items[0].status.uploadStatus;
+      var reason = json.items[0].status.uploadStatus;
       return doSkip(bot, media, `Sorry @${dj} this Youtube video is broken`, reason);
     }
 
@@ -97,29 +117,45 @@ function checkStatus(bot, db, media, body) {
 
   // check if a video has region restrictions. For now just put that info in the chat
   // and log it, but do nothing else
-  var _region = _.get(yt, 'items[0].contentDetails.regionRestriction');
+  var _region = _.get(json, 'items[0].contentDetails.regionRestriction');
   if (_region) {
-    regionBlock(bot, db, _region, yt, media);
+    regionBlock(bot, db, _region, json, media);
   }
 
   // video doesn't exist anymore
-  if (yt && yt.items && yt.items.length === 0){
+  if (json && json.items && json.items.length === 0){
     return doSkip(bot, media, `Sorry ${dj} this Youtube video does not exist anymore`, "doesn't exist anymore");
   }
 
 }
 
+/**
+ * 
+ * @param {DubAPI} bot 
+ * @param {*} db 
+ * @param {*} media 
+ */
 var start = function(bot, db, media){
-  request(makeYTurl(media.fkid), function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      return checkStatus(bot, db, media, body);
-    }
-  });
+  fetch(makeYTurl(media.fkid))
+    .then((res) => {
+      if (res.ok) return res.json();
+      else throw new Error(res.status.toString());
+    })
+    .then((json) => checkStatus(bot, db, media, json))
+    .catch((error) => {
+      bot.log('error', 'BOT', `[!yt] ${error}`);
+      bot.sendChat('Something happened connecting with Youtube');
+    });
 };
 
+/**
+ * 
+ * @param {DubAPI} bot 
+ * @param {*} db 
+ * @param {*} media 
+ */
 module.exports = function(bot, db, media) {
   if (!settings || !YOUR_API_KEY || !media || !bot) { return; }
 
   start(bot, db, media);
-  return;
 };

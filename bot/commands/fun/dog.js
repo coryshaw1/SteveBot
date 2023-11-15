@@ -1,14 +1,17 @@
 'use strict';
 
-var request = require('request');
-
+/**
+ * @param {DubAPI} bot 
+ */
 module.exports = function(bot) {
-  request('https://random.dog/woof.json', function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var json = JSON.parse(body);
-      bot.sendChat(json.url);
-    } else {
+  fetch('https://random.dog/woof.json')
+    .then(res => {
+      if (res.ok) return res.json()
+      else throw new Error(res.status.toString());
+    })
+    .then(json => bot.sendChat(json.url))
+    .catch(err => {
+      bot.log('error', 'BOT', `[!dog] ${err.message}`);
       bot.sendChat('Bad request to dog...');
-    }
-  });
+    });
 };

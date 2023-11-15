@@ -1,13 +1,17 @@
 'use strict';
 
-var request = require('request');
-
-module.exports = function(bot, db) {
-	request('http://numbersapi.com/random/trivia', function (error, response, body) {
-        var result = 'Bad request to facts...';
-        if (!error && response.statusCode === 200){
-          result = body;
-        }
-        bot.sendChat(result);
-    });
+/**
+ * @param {DubAPI} bot
+ */
+module.exports = function(bot) {
+  fetch('http://numbersapi.com/random/trivia')
+    .then(res => {
+      if (res.ok) return res.text()
+      else throw new Error(res.status.toString());
+    })
+    .then(text => bot.sendChat(text))
+    .catch(err => {
+      bot.log('error', 'BOT', `[!fact] ${err.message}`);
+      bot.sendChat('Bad request to facts...');
+    }
 };
