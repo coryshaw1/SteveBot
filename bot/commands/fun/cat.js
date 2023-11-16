@@ -1,21 +1,20 @@
-'use strict';
-var request = require('request');
+"use strict";
 
-module.exports = function(bot) {
-  request('http://aws.random.cat/meow', function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var json = JSON.parse(body);
-      bot.sendChat(json.file);
-      return;
-    } 
-    
-    if (!error && response.statusCode === 403) {
-      bot.sendChat('!giphy cat');
-      return;
+/**
+ * @param {DubAPI} bot
+ */
+module.exports = async function (bot) {
+  try {
+    const res = await fetch("https://cataas.com/cat?json=true");
+    if (!res.ok) {
+      // default to trying giphy
+      bot.sendChat("!giphy cat");
+    } else {
+      const json = await res.json();
+      if (json?._id) bot.sendChat(`https://cataas.com/cat/${json._id}.jpeg`);
     }
-
-    bot.log('error', 'BOT', `[!cat] ${response.statusCode} ${error}`);
-    bot.sendChat('Bad request to cats...');
-    
-  });
+  } catch (error) {
+    bot.log("error", "BOT", `[!cat] ${error}`);
+    bot.sendChat("Bad request to cats...");
+  }
 };

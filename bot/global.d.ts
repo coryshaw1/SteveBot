@@ -4,7 +4,13 @@ interface DubAPI {
   leaderboard: { [key: string]: LeaderboardEntry };
   sendChat: (message: string) => void;
   on: (event: string, callback: (data: any) => void) => void;
-  events: { [key:string]: string }
+  events: { [key:string]: string };
+  moderateSkip: (cb: () => void) => void;
+  getDJ: () => DubAPIUser;
+}
+
+interface DubAPIUser {
+  username: string;
 }
 
 interface DerpyUser {
