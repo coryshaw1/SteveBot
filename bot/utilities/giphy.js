@@ -71,26 +71,18 @@ const buildAPI = function (query) {
 /**
  *
  * @param {string} query
- * @param {(error: Error | null, str: string | null )} callback
  */
-function apiCall(query, callback) {
-  var apiPath = buildAPI(query);
+async function apiCall(query) {
+  const apiPath = buildAPI(query);
 
-  fetch(apiPath)
-    .then((res) => {
-      if (res.ok) return res.json();
-      else throw new Error(res.status.toString());
-    })
-    .then((json) => {
-      if (!Giphy.options.random) {
-        callback(null, getRandom(json.data).images[Giphy.options.size]);
-      } else {
-        callback(null, reformatRandomImage(json.data));
-      }
-    })
-    .catch((error) => {
-      callback(error, null);
-    });
+  const res = await fetch(apiPath)
+  if (!res.ok) throw new Error(res.status.toString());
+  const json = await res.json();
+  if (!Giphy.options.random) {
+    return getRandom(json.data).images[Giphy.options.size];
+  } else {
+    return reformatRandomImage(json.data);
+  }
 }
 
 /*
@@ -100,19 +92,15 @@ function apiCall(query, callback) {
   size : {string} [fixed, downsized, original] 
  */
 
-const getGif = function (options, query, callback) {
-  if (typeof callback !== "function") {
-    return; // what's the point if we're not going to do anything with it
-  }
-
+const getGif = function (options, query) {
   if (options && typeof options === "object") {
     Giphy.options = Object.assign({}, Giphy.options, options);
   }
 
-  apiCall(query, callback);
+  return apiCall(query);
 };
 
 module.exports = {
-  getGif: getGif,
-  getRandom: getRandom,
+  getGif,
+  getRandom,
 };
