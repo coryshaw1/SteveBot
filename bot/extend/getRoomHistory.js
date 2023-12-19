@@ -29,7 +29,7 @@ endpoints.roomPlaylistHistory = 'room/%RID%/playlist/history?page=%PAGENUM%';
  * return array sequential history endpoints
  * @param  {string} roomID  the RoomID (might be an int, I'm not sure. doesnt matter)
  * @param  {integer} pages  total number of history pages desired
- * @return {array}          Array of url strings
+ * @return {string[]}          Array of url strings
  */
 function makeRequestArray(roomID, pages) {
   var url = endpoints.roomPlaylistHistory.replace('%RID%', roomID);
@@ -45,18 +45,24 @@ var hist;
 
 /**
  * Make requests to url and return results to yield
- * @param  {Object} context "this" of DubAPI
- * @param  {String} url     The url to make GET request to
+ * @param  {object} context "this" of DubAPI
+ * @param  {string} url     The url to make GET request to
  */
 function requestWrapper(context, url) {
-  context._.reqHandler.queue({method: 'GET', url: url}, function(code, body) {
+  /**
+   * @param {number} code 
+   * @param {{ data: any }} body 
+   */
+  function handleQueue(code, body) {
     if (code !== 200) {
         context.emit('error', new DubAPIRequestError(code, url));
         hist.next( null );
       } else {
         hist.next( body.data );
       }
-  } );
+  }
+
+  context._.reqHandler.queue({method: 'GET', url}, handleQueue);
 }
 
 /**

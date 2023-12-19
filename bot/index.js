@@ -4,23 +4,23 @@ const _private = require(process.cwd() + '/private/get');
 const settings = _private.settings;
 const svcAcct = _private.svcAcct;
 
-var DubAPI = require('dubapi');
-var Database = require(process.cwd() + '/bot/db.js');
-var config = require(process.cwd() + '/bot/config.js');
+const DubAPI = require('dubapi');
+const database = require('./db.js');
+const config = require('./config.js');
 
 config.botName = settings.USERNAME;
-var BASEURL = settings.FIREBASE.BASEURL;
-var db = new Database(svcAcct, BASEURL);
+const BASEURL = settings.FIREBASE.BASEURL;
+const db = database(svcAcct, BASEURL);
 
 /**
  * Add my own extensions
  */
-DubAPI.prototype.getRoomHistory = require(process.cwd() + '/bot/extend/getRoomHistory.js');
-DubAPI.prototype.addToPlaylist = require(process.cwd() + '/bot/extend/addToPlaylist.js');
-DubAPI.prototype.getPlaylists = require(process.cwd() + '/bot/extend/getPlaylists.js');
-DubAPI.prototype.shufflePlaylist = require(process.cwd() + '/bot/extend/shufflePlaylist.js');
-DubAPI.prototype.getUserQueue = require(process.cwd() + '/bot/extend/getUserQueue.js');
-DubAPI.prototype.DM = require(process.cwd() + '/bot/extend/directMessages.js');
+DubAPI.prototype.getRoomHistory = require('./extend/getRoomHistory.js');
+DubAPI.prototype.addToPlaylist = require('./extend/addToPlaylist.js');
+DubAPI.prototype.getPlaylists = require('./extend/getPlaylists.js');
+DubAPI.prototype.shufflePlaylist = require('./extend/shufflePlaylist.js');
+DubAPI.prototype.getUserQueue = require('./extend/getUserQueue.js');
+DubAPI.prototype.DM = require('./extend/directMessages.js');
 
 new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, function(err, bot) {
         
@@ -67,7 +67,7 @@ new DubAPI({ username: settings.USERNAME, password: settings.PASSWORD }, functio
         closing = true;
         if (bot.isConnected) {
           bot.sendChat("I'm ded :skull:");
-          bot.on('disconnected', function(data) {
+          bot.on('disconnected', function() {
             process.exit(1);
           });
           bot.disconnect();
