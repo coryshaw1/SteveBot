@@ -3,7 +3,7 @@ var config = require(process.cwd() + '/bot/config.js');
 
 /**
  * [bot description]
- * @type {Object}
+ * @type {object}
  */
 var bot = {
   sendChat : function(x) { 

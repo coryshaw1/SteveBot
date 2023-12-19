@@ -3,7 +3,7 @@
 /**
  * When a user leaves, we don't really do anything so not sure why this is here
  * maybe just in case we need it in the future
- * @param  {Object} bot  Dubapi instance
+ * @param  {DubAPI} bot  Dubapi instance
  */
 module.exports = function(bot) {
   bot.on(bot.events.userLeave, function(data) {

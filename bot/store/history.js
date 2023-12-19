@@ -8,10 +8,18 @@ var historyStore = {
 
   ready : false,
 
+  /**
+   * 
+   * @param {string | number} timestamp 
+   * @returns 
+   */
   convertTime : function (timestamp){
     return moment(timestamp).fromNow();
   },
 
+  /**
+   * @param {Song} song 
+   */
   fromHistory : function(song) {
     return {
       songid : song.songid,
@@ -22,6 +30,9 @@ var historyStore = {
     };
   },
 
+  /**
+   * @param {Song} song 
+   */
   fromUpdate : function(song){
     return {
       songid : song.media.id,
@@ -34,8 +45,8 @@ var historyStore = {
 
   /**
    * checks to see if a user was already warned about a song within the last minute
-   * @param  {Object} warnSong
-   * @return {Bool}
+   * @param  {object} warnSong
+   * @return {boolean}
    */
   recentlyWarned : function(warnSong){
     var result = false;
@@ -61,10 +72,13 @@ var historyStore = {
 
   /**
    * check history to see if songid is present
+   * @param  {DubAPI} bot
+   * @param  {string} songid
    */
   getSong : function(bot, songid){
     if (!songid) { return; }
     if (!this.ready) {return;}
+  
     var result = [];
     var self = this;
 

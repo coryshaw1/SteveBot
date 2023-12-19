@@ -48,9 +48,9 @@ function reviewPoints(bot, currentSong) {
  * handles various song warning and skipping of broken tracks
  * for now this only handles youtube because it's more complex
  * 
- * @param {Object} bot instanceOf dubapi
- * @param {Object} db database object
- * @param {Object} data dubapi song data
+ * @param {DubAPI} bot instanceOf dubapi
+ * @param {import('firebase-admin').database} db database object
+ * @param {object} data dubapi song data
  */
 function songModerate(bot, db, data){ 
   var songLength = _.get(data, 'media.songLength');
@@ -74,9 +74,9 @@ function songModerate(bot, db, data){
  * Save song to bot's own playlist.
  * Helpful to build a large playlist so bot can play during off hours
  * 
- * @param {Object} db 
- * @param {Object} bot 
- * @param {Object} song 
+ * @param {import('firebase-admin').database} db 
+ * @param {DubAPI} bot 
+ * @param {object} song 
  */
 function saveSong(db, bot, song) {
   // then save songs to bot's playlist for later use

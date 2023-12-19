@@ -6,8 +6,8 @@ const settings = _private.settings;
 /**
  * When a new user joins the room, we log their info to the db and we begin storing
  * props and what not
- * @param  {Object} bot Dubapi instance
- * @param  {Object} db  Firebase db instance
+ * @param  {DubAPI} bot Dubapi instance
+ * @param  {import('firebase-admin').database} db  Firebase db instance
  */
 module.exports = function(bot, db) {
   bot.on(bot.events.userJoin, function(data) {

@@ -1,6 +1,10 @@
 'use strict';
 
-// convert X minutes to ms
+/**
+ * convert X minutes to ms
+ * @param {number} x 
+ * @returns {number}
+ */
 function minToMs(x) {
   return  x/*min*/ * 60/*sec*/ * 1000 /*ms*/;
 }

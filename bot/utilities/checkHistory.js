@@ -7,8 +7,8 @@ const _ = require('lodash');
  * gives a warning if song was played within a specific
  * time frame
  * 
- * @param {Object} bot 
- * @param {Object} data 
+ * @param {DubAPI} bot 
+ * @param {object} data 
  * @returns 
  */
 module.exports = function checkHistory(bot, data){

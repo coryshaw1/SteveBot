@@ -20,10 +20,10 @@ var noRepeatPointMsg = function(username, pointEmoji){
 
 /**
  * Save point to db and send chat message
- * @param {Object} bot       Dubapi instance
- * @param {Object} db        Firebase instance
- * @param {Object} data      user info
- * @param {Object} recipient target user info
+ * @param {DubAPI} bot       Dubapi instance
+ * @param {import('firebase-admin').database} db        Firebase instance
+ * @param {object} data      user info
+ * @param {object} recipient target user info
  */
 function addPoint(bot, db, data, recipient, pointType, repeatCheck, pointEmoji) {
   repo.incrementUser(db, recipient, pointType, function(user){

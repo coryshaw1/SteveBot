@@ -29,7 +29,7 @@ function doSkip(bot, media, chatMsg, logReason) {
 }
 
 /**
- * @typedef {Object} LinkResult
+ * @typedef {object} LinkResult
  * @property {string} error_message basic description of error
  * @property {string} [link] the full url to the soundcloud track
  * @property {boolean} [skippable] is this track skippable or not

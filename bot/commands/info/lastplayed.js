@@ -3,9 +3,9 @@ var mediaStore = require(process.cwd()+ '/bot/store/mediaInfo.js');
 
 /**
  * Gives you info about the song that was just previously played
- * @param  {Object} bot  dubapi instance
- * @param  {Object} db   Firebase instance
- * @param  {Object} data Room info object
+ * @param  {DubAPI} bot  dubapi instance
+ * @param  {import('firebase-admin').database} db   Firebase instance
+ * @param  {object} data Room info object
  */
 module.exports = function(bot, db, data) {
   if(!data){ return;}

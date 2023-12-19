@@ -5,10 +5,10 @@ const admin = require("firebase-admin");
  * 
  * @param {string} serviceAccount 
  * @param {string} BASEURL 
- * @param {string} optionalAppName 
+ * @param {string} [optionalAppName] 
  * @returns 
  */
-module.exports = function Database(serviceAccount, BASEURL, optionalAppName) {
+module.exports = function database(serviceAccount, BASEURL, optionalAppName) {
   if (!serviceAccount || !BASEURL) {
     throw new Error("Missing databse credentials for Database");
   }

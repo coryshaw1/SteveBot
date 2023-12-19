@@ -18,7 +18,7 @@ endpoints.messageConv = 'message/%CONVID%';
 endpoints.messagePoll = 'message/new';
 endpoints.messageRead = 'message/%CONVID%/read';
 
-var DM = {
+const DM = {
   getConvo : function(bot, convoID, callback) {
    // GET https://api.dubtrack.fm/message/%CONVID% - Get messages in a given conversation
 
@@ -32,9 +32,9 @@ var DM = {
 
   /**
    * Gets all the DMs for the bot
-   * @param  {Object}   bot      the dubapi instance
-   * @param  {Function} callback
-   * @return {Boolean}            
+   * @param  {DubAPI}   bot      the dubapi instance
+   * @param  {() => void} callback
+   * @return {boolean}            
    */
   getAll : function(bot, callback) {
      if (!bot._.connected){ return false; }
@@ -45,8 +45,8 @@ var DM = {
 
   /**
    * Checks to see if there's one or more new DMs
-   * @param  {Object}   bot      the dubapi instance
-   * @param  {Function} callback on success, data.data only returns a the number of new mesaages, it does not return the messages themselves
+   * @param  {DubAPI}   bot      the dubapi instance
+   * @param  {() => void} callback on success, data.data only returns a the number of new mesaages, it does not return the messages themselves
    * @return {Boolean}            
    */
   getAllNew : function(bot, callback) {
@@ -58,10 +58,10 @@ var DM = {
 
   /**
    * Mark a specific DM conversation as read
-   * @param  {Object}   bot      the dubapi instance
-   * @param  {Number}   convoID  the conversation ID
-   * @param  {Function} callback 
-   * @return {Boolean}            
+   * @param  {object}   bot      the dubapi instance
+   * @param  {number}   convoID  the conversation ID
+   * @param  {() => void} callback 
+   * @return {boolean}            
    */
   markRead : function(bot, convoID, callback) {
     // POST https://api.dubtrack.fm/message/%CONVID%/read - Mark conversation as read

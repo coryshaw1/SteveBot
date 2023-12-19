@@ -4,10 +4,10 @@ var userStore = require(process.cwd()+ '/bot/store/users.js');
 
 /**
  * Save point to db and send chat message
- * @param {Object} bot       Dubapi instance
- * @param {Object} db        Firebase instance
- * @param {Object} data      user info
- * @param {Object} recipient target user info
+ * @param {object} bot       Dubapi instance
+ * @param {object} db        Firebase instance
+ * @param {object} data      user info
+ * @param {object} recipient target user info
  */
 function addPoint(bot, db, data, recipient, opts) {
   repo.incrementUser(db, recipient, opts.pointType, function(user){
