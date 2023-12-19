@@ -4,7 +4,7 @@ interface DubAPI {
   leaderboard: { [key: string]: LeaderboardEntry };
   sendChat: (message: string) => void;
   on: (event: string, callback: (data: any) => void) => void;
-  events: { [key:string]: string };
+  events: { [key: string]: string };
   moderateSkip: (cb: () => void) => void;
   getDJ: () => DubAPIUser;
 }
@@ -49,4 +49,18 @@ interface Trigger {
   propsEmoji?: string;
   givesFlow?: boolean;
   flowEmoji?: string;
+}
+
+interface Song {
+  songid: string;
+  played: number;
+  _user: { username: string };
+  _song: { name: string };
+  raw: {
+    song: {
+      played: number;
+    };
+  };
+  user: { username: string };
+  media: { id: string; name: string };
 }

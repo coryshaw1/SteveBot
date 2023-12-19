@@ -9,11 +9,9 @@ function minToMs(x) {
   return  x/*min*/ * 60/*sec*/ * 1000 /*ms*/;
 }
 
-/**
- * Some basic configs for the bot
- * @type {Object}
- */
 module.exports = {
+  "botName" : "DerpyBot",
+
   // url location of this bot's commands
   "commands" : "http://franciscog.com/DerpyBot/commands/",
 
@@ -68,6 +66,6 @@ module.exports = {
     // auto skip a song that's long
     'skip' : false,
     // chat message to show when a song is skipped
-    'message' : 'Just a friendly warning that this song is 10 minutes or longer'
+    'message' : `Just a friendly warning that this song exceeds max limit of ${10}minutes.`
   }
 };
